@@ -298,14 +298,13 @@ document.getElementById("changeColors").addEventListener("click", function() {
 // mobile fullscreen
 let body = window.document.documentElement;
 let fullButt = document.getElementById("fullButt");
-body.addEventListener("swipe", function() {
+fullButt.addEventListener("click", function() {
   if (body.requestFullscreen) {
     body.requestFullscreen();
   } else if (body.webkitRequestFullscreen) {
     body.webkitRequestFullscreen();
   }
 });
-console.log(body);
 
 // to do:
 

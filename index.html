@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="styles.css">
+
+  <title>EDH Life Counter</title>
+</head>
+<body>
+  <div id="root">
+    <div id="player0">
+      <button class="mainButtons" id="rotate0" value="0"><img src="rotate.png" class="rotate"></button>
+      <button class="mainButtons" id="life0">40</button>
+      <button class="mainButtons" id="cmdBtn0"><img src="edh.png" class="cmdSymbol"></button>
+    </div>
+    <div id="player1">
+      <button class="mainButtons" id="rotate1" value="1"><img src="rotate.png" class="rotate"></button>
+      <button class="mainButtons" id="life1">40</button>
+      <button class="mainButtons" id="cmdBtn1"><img src="edh.png" class="cmdSymbol"></button>
+    </div>
+    <div id="player2">
+      <button class="mainButtons" id="rotate2" value="2"><img src="rotate.png" class="rotate"></button>
+      <button class="mainButtons" id="life2">40</button>
+      <button class="mainButtons" id="cmdBtn2"><img src="edh.png" class="cmdSymbol"></button>
+    </div>
+    <div id="player3">
+      <button class="mainButtons" id="rotate3" value="3"><img src="rotate.png" class="rotate"></button>
+      <button class="mainButtons" id="life3">40</button>
+      <button class="mainButtons" id="cmdBtn3"><img src="edh.png" class="cmdSymbol"></button>
+    </div>
+    <div id="player4" class="hidden">
+      <button class="mainButtons" id="rotate4" value="4"><img src="rotate.png" class="rotate"></button>
+      <button class="mainButtons" id="life4">40</button>
+      <button class="mainButtons" id="cmdBtn4"><img src="edh.png" class="cmdSymbol"></button>
+    </div>
+    <div id="player5" class="hidden">
+      <button class="mainButtons" id="rotate5" value="5"><img src="rotate.png" class="rotate"></button>
+      <button class="mainButtons" id="life5">40</button>
+      <button class="mainButtons" id="cmdBtn5"><img src="edh.png" class="cmdSymbol"></button>
+    </div>
+  </div>
+  <div id="modalBackground" class="hidden">
+    <div id="modalWindow" class="hidden">
+      <div id="plusButtons">
+        <button value="1" class="plusMinus">&#43; 1</button>
+        <button value="5" class="plusMinus">&#43; 5</button>
+        <button value="2" id="double">double</button>
+      </div>
+      <div id="modalLifeContainer">
+        <p id="modalLife"></p>
+        <button id="lifeExit">EXIT</button>
+      </div>
+      <div id="minusButtons">
+        <button value="-1" class="plusMinus">&#8211; 1</button>
+        <button value="-5" class="plusMinus">&#8211; 5</button>
+        <button value="0.5" id="halve">halve</button>
+      </div>
+    </div>
+    <div>
+      <div id="modalWindow2" class="hidden">
+        <p id="currentPlayer"></p>
+        <button value="0" id="cmdButton0" class="commanderDamage">0</button>
+        <button value="1" id="cmdButton1" class="commanderDamage">0</button>
+        <button value="2" id="cmdButton2" class="commanderDamage">0</button>
+        <button value="3" id="cmdButton3" class="commanderDamage">0</button>
+        <button value="4" id="cmdButton4" class="commanderDamage hidden">0</button>
+        <button value="5" id="cmdButton5" class="commanderDamage hidden">0</button>
+        <input id="cmdSlider0" class="hidden" value="0" min="0" max="21" type="range">
+        <input id="cmdSlider1" class="commanderDamageSlider hidden" value="0" min="0" max="21" type="range">
+        <input id="cmdSlider2" class="commanderDamageSlider hidden" value="0" min="0" max="21" type="range">
+        <input id="cmdSlider3" class="commanderDamageSlider hidden" value="0" min="0" max="21" type="range">
+        <input id="cmdSlider4" class="commanderDamageSlider hidden" value="0" min="0" max="21" type="range">
+        <input id="cmdSlider5" class="commanderDamageSlider hidden" value="0" min="0" max="21" type="range">
+        <p class="headline">poison = <span id="poison">0</span></p>
+        <input id="poisonSlider" value="0" min="0" max="10" type="range">
+        <button id="cmdExit" class="exit">EXIT</button>
+      </div>
+    </div>
+    <div id="modalWindow3" class="hidden">
+      <button id="addPlayer" class="utiliBtns">Add Player</button>
+      <button id="hidePlayer" class="utiliBtns">Remove Player</button>
+      <button id="newGamePrompt" class="utiliBtns">Start New Game</button>
+      <button id="changeColors" class="utiliBtns">Change Player Colors</button>
+      <button id="utiliExit" class="exit">EXIT</button>
+    </div>
+    <div id="modalWindow4" class="hidden">
+      <p>select new color first, then select player below:</p>
+      <div>
+        <input type="radio" name="chooseColor" value="0" id="radio0"><label for="radio0" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="1" id="radio1"><label for="radio1" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="2" id="radio2"><label for="radio2" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="3" id="radio3"><label for="radio3" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="4" id="radio4"><label for="radio4" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="5" id="radio5"><label for="radio5" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="6" id="radio6"><label for="radio6" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="7" id="radio7"><label for="radio7" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="8" id="radio8"><label for="radio8" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="9" id="radio9"><label for="radio9" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="10" id="radio10"><label for="radio10" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="11" id="radio11"><label for="radio11" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="12" id="radio12"><label for="radio12" class="allColors"></label>
+        <input type="radio" name="chooseColor" value="13" id="radio13"><label for="radio13" class="allColors"></label>
+      </div>
+      <button value="0" id="pBox0" class="playerBox commanderDamage player0">1</button>
+      <button value="1" id="pBox1" class="playerBox commanderDamage player1">2</button>
+      <button value="2" id="pBox2" class="playerBox commanderDamage player2">3</button>
+      <button value="3" id="pBox3" class="playerBox commanderDamage player3">4</button>
+      <button value="4" id="pBox4" class="playerBox commanderDamage player4 hidden">5</button>
+      <button value="5" id="pBox5" class="playerBox commanderDamage player5 hidden">6</button>
+      <button id="choosePlayerExit" class="exit">EXIT</button>
+    </div>
+  </div>
+  <button id="gearBtn"></button>
+  <script src="app.js"></script>
+</body>
+</html>

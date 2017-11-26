@@ -295,17 +295,22 @@ document.getElementById("changeColors").addEventListener("click", function() {
     modalWindow4.classList.add("hidden");
   });
 });
-// mobile fullscreen
-let body = window.document.documentElement;
-let fullButt = document.getElementById("fullButt");
-fullButt.addEventListener("click", function() {
-  if (body.requestFullscreen) {
-    body.requestFullscreen();
-  } else if (body.webkitRequestFullscreen) {
-    body.webkitRequestFullscreen();
-  }
-});
+// mozilla full screen function
+function toggleFullScreen() {
+  var doc = window.document;
+  var docEl = doc.documentElement;
 
+  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    requestFullScreen.call(docEl);
+  }
+  else {
+    cancelFullScreen.call(doc);
+  }
+}
+document.getElementById("fullButt").addEventListener("click", toggleFullScreen);
 // to do:
 
 // toggle column view?

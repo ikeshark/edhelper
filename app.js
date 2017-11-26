@@ -295,6 +295,8 @@ document.getElementById("changeColors").addEventListener("click", function() {
     modalWindow4.classList.add("hidden");
   });
 });
+// hack to make mobile fullscreen
+window.scrollTo(0,1);
 
 // to do:
 

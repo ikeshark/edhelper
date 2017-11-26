@@ -297,6 +297,7 @@ document.getElementById("changeColors").addEventListener("click", function() {
 });
 // mobile fullscreen
 let body = window.document.documentElement;
+let fullButt = document.getElementById("fullButt");
 body.addEventListener("swipe", function() {
   if (body.requestFullscreen) {
     body.requestFullscreen();
@@ -304,6 +305,7 @@ body.addEventListener("swipe", function() {
     body.webkitRequestFullscreen();
   }
 });
+console.log(body);
 
 // to do:
 

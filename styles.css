@@ -236,3 +236,11 @@ input[type=radio]:checked + label {
    background-color: black;
    background-blend-mode: difference;
 }
+#fullButt {
+  position: fixed;
+  top: 48%;
+  left: 5%;
+  width: 5vh;
+  height: 5vh;
+  background-color: black;
+}

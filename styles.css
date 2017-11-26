@@ -8,6 +8,11 @@ button {
 button:focus {
   outline: none;
 }
+body {
+  margin: 0px;
+  /*this is for mobile testing*/
+  font-size: 8px;
+}
 /*Hidden and Exit classes*/
 
 .hidden {
@@ -28,9 +33,6 @@ button:focus {
   width: 100vw;
   display: flex;
   flex-wrap: wrap;
-}
-body {
-  margin: 0px;
 }
 
 /*Player*/
@@ -112,18 +114,19 @@ body {
   width: 100%;
 }
 #modalLife {
-  font-size: 20em;
+  font-size: 12em;
   margin: 0;
 }
 #plusButtons > button, #minusButtons > button {
   width: 100%;
-  font-size: 4em;
+  font-size: 3em;
 }
 .rotate, .cmdSymbol {
   width: 40%;
 }
 
 /* commander damage modal */
+
 
 .commanderDamage {
    width: 10%;
@@ -137,7 +140,7 @@ body {
   margin-bottom: -0.5%;
 }
 [id^=cmdSlider] {
-   top: 33%;
+   top: 35%;
    left: 12.2%;
    position: absolute;
    -webkit-appearance: none;
@@ -149,8 +152,10 @@ body {
 }
 /* this is only used on poison */
 .headline {
-  font-size: 3em;
-  margin-top: 2em;
+  font-size: 2em;
+  font-weight: bold;
+  margin-top: 9%;
+  margin-bottom: 0.5%;
 }
 #poisonSlider {
    -webkit-appearance: none;
@@ -159,36 +164,39 @@ body {
     height: 5%;
     border: .3em black solid;
     background: #66cc1a;
-    margin-bottom: 5%;
+    margin-bottom: 4%;
 }
 #poisonSlider::-webkit-slider-thumb, [id^=cmdSlider]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 3.3em;
-    height: 3.3em;
-    border: black 1px solid;
+    height: 1em;
+    width: 4%;
+    border: black 1% solid;
     background: black;
     cursor: pointer;
 }
 #poisonSlider::-moz-range-thumb, [id^=cmdSlider]::-moz-range-thumb {
-  width: 4em;
-  height: 4em;
-  border: black 1px solid;
+  height: 1em;
+  width: 4%;
+  border: black 1% solid;
   background: black;
   cursor: pointer;
 }
 
 /* utilities modal */
-
 #modalWindow3 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
+#modalWindow4 > p {
+  font-size: 1.2em;
+  font-weight: bold;
+}
 .utiliBtns {
   height: 60%;
   width: 18%;
-  font-size: 3em;
+  font-size: 1.8em;
   margin: 2% 1% 1% 1%;
   background-color: white;
   display: block;
@@ -196,9 +204,9 @@ body {
 .allColors {
   display: inline-block;
   border: 2px solid white;
-  width: 10%;
-  height: 100px;
-  margin: 10px;
+  width: 2.5em;
+  height: 2.5em;
+  margin: 0.5%;
   font-size: 2em;
   cursor: pointer;
 }

@@ -302,3 +302,5 @@ document.getElementById("changeColors").addEventListener("click", function() {
 // better colors? only use magic colors?
 // rotate function should work on all rotations
 //  might need to use bind to accomplish this
+
+// make styles work in desktop or mobile, maybe all percentages when possible?

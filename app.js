@@ -296,12 +296,14 @@ document.getElementById("changeColors").addEventListener("click", function() {
   });
 });
 // mobile fullscreen
-let body = document.querySelector("body");
-if (body.requestFullscreen) {
-  body.requestFullscreen();
-} else if (body.webkitRequestFullscreen) {
-  body.webkitRequestFullscreen();
-}
+let body = window.document.documentElement;
+body.addEventListener("swipe", function() {
+  if (body.requestFullscreen) {
+    body.requestFullscreen();
+  } else if (body.webkitRequestFullscreen) {
+    body.webkitRequestFullscreen();
+  }
+});
 
 // to do:
 

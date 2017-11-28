@@ -24,6 +24,7 @@ Player.prototype.poison = 0;
 Player.prototype.rotated = false;
 Player.prototype.life = 40;
 Player.prototype.color = "";
+Player.prototype.castCount = 0;
 Player.prototype.displayLife = function() {
   let id = "life" + this.i;
   document.getElementById(id).innerHTML = this.life;
@@ -171,14 +172,13 @@ lifeButtons.forEach(function (element, i) {
 });
 // commander damage modal window
 let commanderButtons = document.querySelectorAll("[id^=cmdBtn]");
-let commanderDamageButtons = document.querySelectorAll("[id^=cmdButton]");
+let commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + label");
 commanderButtons.forEach(function (element, i) {
   element.addEventListener("click", function(){
     // variables
     let player = players[i];
-    let poisonSlider = document.getElementById("poisonSlider");
-    let poison = document.getElementById("poison");
-    let commanderDamageSliders = document.querySelectorAll("[id^=cmdSlider]");
+    let castCount = document.querySelector("#castCount + label");
+    let poison = document.querySelector("#poison + label");
     // opening and orienting modal window
     let deg = player.rotated ? 180 : 0;
     modalWindow2.style.webkitTransform = "rotate("+deg+"deg)";
@@ -192,48 +192,44 @@ commanderButtons.forEach(function (element, i) {
     let currentPlayer = document.getElementById("currentPlayer");
     currentPlayer.innerHTML = "Player Number: " + playerNumber;
     currentPlayer.style.background = player.color;
+    castCount.innerHTML = player.castCount;
     // functions
-    function onCmdBtnClick() {
-      commanderDamageSliders.forEach(function(element){
-        element.classList.add("hidden");
-      });
-      commanderDamageSliders[this.value].classList.remove("hidden");
-    };
-    function onCmdSliderChange() {
-      let i = this.id[9];
-      player.commanderDamage[i] = this.value;
-      commanderDamageButtons[i].innerHTML = this.value;
-    };
-    let onPoisonInput = () => {
-      player.poison = poisonSlider.value;
-      poison.innerHTML = player.poison;
-    };
+    function plusAndMinus() {
+      let checkedValue = document.querySelector("input[name=cmdModalGroup]:checked").value;
+      let increment = parseInt(this.value);
+      if (checkedValue === "poison") {
+        player.poison += increment;
+        poison.innerHTML = player.poison;
+      } else if (checkedValue === "castCount") {
+        player.castCount += increment;
+        castCount.innerHTML = player.castCount;
+      } else {
+        let i = parseInt(checkedValue);
+        player.commanderDamage[i] += increment;
+        commanderDamageButtons[i].innerHTML = player.commanderDamage[i];
+      }
+    }
     let closeCmdModal = () => {
-      commanderDamageButtons.forEach(function (element) {
-        element.removeEventListener("click", onCmdBtnClick);
+      buttons.forEach(function(element) {
+        element.addEventListener("click", plusAndMinus);
       });
-      commanderDamageSliders.forEach(function (element) {
-        element.classList.add("hidden");
-        element.removeEventListener("input", onCmdSliderChange);
-      });
-      poisonSlider.removeEventListener("input", onPoisonInput);
       closeModal();
     };
     // button event listeners and displays
     commanderDamageButtons.forEach(function (element, i) {
       element.style.background = players[i].color;
       element.innerHTML = player.commanderDamage[i];
-      element.addEventListener("click", onCmdBtnClick);
     });
-    commanderDamageSliders.forEach(function (element, i) {
-      element.style.background = players[i].color;
-      element.value = player.commanderDamage[i];
-      element.addEventListener("input", onCmdSliderChange);
+    let buttons = document.querySelectorAll("#cmdPlusMinus button");
+    console.log(buttons);
+    buttons.forEach(function(element) {
+      element.addEventListener("click", plusAndMinus);
     });
-    // poison slider display and event listener
-    poisonSlider.value = player.poison;
+    // let plusBtn = document.getElementById("plus");
+    // let minusBtn = document.getElementById("minus");
+    // plusBtn.addEventListener("click", plusAndMinus);
+    // minusBtn.addEventListener("click", plusAndMinus);
     poison.innerHTML = player.poison;
-    poisonSlider.addEventListener("input", onPoisonInput);
     // close modal event listeners
     document.getElementById("cmdExit").addEventListener("click", closeCmdModal);
   //  modalBackground.addEventListener("click", closeCmdModal);
@@ -281,7 +277,7 @@ colorBoxes.forEach(function(element, i) {
 // change colors sub modal
 function changeColor() {
   let player = players[this.value];
-  let colorI = document.querySelector("input[type=radio]:checked").value;
+  let colorI = document.querySelector("input[name=chooseColor]:checked").value;
   player.color = colors[colorI];
   playerDivs[this.value].style.background = player.color;
   pBoxes[this.value].style.background = player.color;
@@ -310,7 +306,8 @@ function toggleFullScreen() {
     cancelFullScreen.call(doc);
   }
 }
-document.getElementById("fullButt").addEventListener("click", toggleFullScreen);
+
+
 // to do:
 
 // toggle column view?
@@ -319,3 +316,5 @@ document.getElementById("fullButt").addEventListener("click", toggleFullScreen);
 //  might need to use bind to accomplish this
 
 // make styles work in desktop or mobile, maybe all percentages when possible?
+
+// i think i only need hidden on the modalBackground div. since i turn hidden on parent all children are hidden too?

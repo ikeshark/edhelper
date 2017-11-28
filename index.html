@@ -11,34 +11,34 @@
 <body>
   <div id="root">
     <div id="player0">
-      <button class="mainButtons" id="rotate0" value="0"><img src="rotate.png" class="rotate"></button>
-      <button class="mainButtons" id="life0">40</button>
-      <button class="mainButtons" id="cmdBtn0"><img src="edh.png" class="cmdSymbol"></button>
+      <button  id="rotate0" value="0"><img src="rotate.png" class="rotate"></button>
+      <button  id="life0">40</button>
+      <button  id="cmdBtn0"><img src="edh.png" class="cmdSymbol"></button>
     </div>
     <div id="player1">
-      <button class="mainButtons" id="rotate1" value="1"><img src="rotate.png" class="rotate"></button>
-      <button class="mainButtons" id="life1">40</button>
-      <button class="mainButtons" id="cmdBtn1"><img src="edh.png" class="cmdSymbol"></button>
+      <button  id="rotate1" value="1"><img src="rotate.png" class="rotate"></button>
+      <button  id="life1">40</button>
+      <button  id="cmdBtn1"><img src="edh.png" class="cmdSymbol"></button>
     </div>
     <div id="player2">
-      <button class="mainButtons" id="rotate2" value="2"><img src="rotate.png" class="rotate"></button>
-      <button class="mainButtons" id="life2">40</button>
-      <button class="mainButtons" id="cmdBtn2"><img src="edh.png" class="cmdSymbol"></button>
+      <button  id="rotate2" value="2"><img src="rotate.png" class="rotate"></button>
+      <button  id="life2">40</button>
+      <button  id="cmdBtn2"><img src="edh.png" class="cmdSymbol"></button>
     </div>
     <div id="player3">
-      <button class="mainButtons" id="rotate3" value="3"><img src="rotate.png" class="rotate"></button>
-      <button class="mainButtons" id="life3">40</button>
-      <button class="mainButtons" id="cmdBtn3"><img src="edh.png" class="cmdSymbol"></button>
+      <button  id="rotate3" value="3"><img src="rotate.png" class="rotate"></button>
+      <button  id="life3">40</button>
+      <button  id="cmdBtn3"><img src="edh.png" class="cmdSymbol"></button>
     </div>
     <div id="player4" class="hidden">
-      <button class="mainButtons" id="rotate4" value="4"><img src="rotate.png" class="rotate"></button>
-      <button class="mainButtons" id="life4">40</button>
-      <button class="mainButtons" id="cmdBtn4"><img src="edh.png" class="cmdSymbol"></button>
+      <button  id="rotate4" value="4"><img src="rotate.png" class="rotate"></button>
+      <button  id="life4">40</button>
+      <button  id="cmdBtn4"><img src="edh.png" class="cmdSymbol"></button>
     </div>
     <div id="player5" class="hidden">
-      <button class="mainButtons" id="rotate5" value="5"><img src="rotate.png" class="rotate"></button>
-      <button class="mainButtons" id="life5">40</button>
-      <button class="mainButtons" id="cmdBtn5"><img src="edh.png" class="cmdSymbol"></button>
+      <button  id="rotate5" value="5"><img src="rotate.png" class="rotate"></button>
+      <button  id="life5">40</button>
+      <button  id="cmdBtn5"><img src="edh.png" class="cmdSymbol"></button>
     </div>
   </div>
   <div id="modalBackground" class="hidden">
@@ -61,21 +61,32 @@
     <div>
       <div id="modalWindow2" class="hidden">
         <p id="currentPlayer"></p>
-        <button value="0" id="cmdButton0" class="commanderDamage">0</button>
-        <button value="1" id="cmdButton1" class="commanderDamage">0</button>
-        <button value="2" id="cmdButton2" class="commanderDamage">0</button>
-        <button value="3" id="cmdButton3" class="commanderDamage">0</button>
-        <button value="4" id="cmdButton4" class="commanderDamage hidden">0</button>
-        <button value="5" id="cmdButton5" class="commanderDamage hidden">0</button>
-        <input id="cmdSlider0" class="hidden" value="0" min="0" max="21" type="range">
-        <input id="cmdSlider1" class="commanderDamageSlider hidden" value="0" min="0" max="21" type="range">
-        <input id="cmdSlider2" class="commanderDamageSlider hidden" value="0" min="0" max="21" type="range">
-        <input id="cmdSlider3" class="commanderDamageSlider hidden" value="0" min="0" max="21" type="range">
-        <input id="cmdSlider4" class="commanderDamageSlider hidden" value="0" min="0" max="21" type="range">
-        <input id="cmdSlider5" class="commanderDamageSlider hidden" value="0" min="0" max="21" type="range">
-        <p class="headline">poison = <span id="poison">0</span></p>
-        <input id="poisonSlider" value="0" min="0" max="10" type="range">
-        <button id="cmdExit" class="exit">EXIT</button>
+        <div id="flexContainer">
+          <div id="cmdContainer">
+            <p class="headline">commanders</p>
+            <div id="cmdInnerContainer">
+              <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0"><label for="cmdButton0" class="commanderDamage"></label>
+              <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1"><label for="cmdButton1" class="commanderDamage"></label>
+              <input type="radio" name="cmdModalGroup" value="2" id="cmdButton2"><label for="cmdButton2" class="commanderDamage"></label>
+              <input type="radio" name="cmdModalGroup" value="3" id="cmdButton3"><label for="cmdButton3" class="commanderDamage"></label>
+              <input type="radio" name="cmdModalGroup" value="4" id="cmdButton4"><label for="cmdButton4" class="commanderDamage hidden"></label>
+              <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5"><label for="cmdButton5" class="commanderDamage hidden"></label>
+            </div>
+          </div>
+          <div id="cmdPlusMinus">
+            <button value="5" id="plus5">&#43;5</button>
+            <button value="1" id="plus">&#43;1</button>
+            <button value="-1" id="minus">&#8211;1</button>
+            <button value="-5" id="minus5">&#8211;5</button>
+          </div>
+          <div id="cmdPoisonContainer">
+            <p class="headline">poison</p>
+             <input type="radio" value="poison" name="cmdModalGroup" id="poison"><label class="commanderDamage" for="poison"></label>
+             <p class="headline">commander <br />cast count</p>
+             <input type="radio" value="castCount" name="cmdModalGroup" id="castCount"><label for="castCount"></label>
+            <button id="cmdExit" class="exit">EXIT</button>
+          </div>
+        </div>
       </div>
     </div>
     <div id="modalWindow3" class="hidden">
@@ -113,7 +124,6 @@
     </div>
   </div>
   <button id="gearBtn"></button>
-  <button id="fullButt"></button>
   <script src="app.js"></script>
 </body>
 </html>

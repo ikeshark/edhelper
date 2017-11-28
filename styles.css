@@ -1,7 +1,6 @@
 /*Style Reset*/
 
 button {
-  /*border: solid black 1px;*/
   background-color: inherit;
   cursor: pointer;
 }
@@ -12,6 +11,16 @@ body {
   margin: 0px;
   /*this is for mobile testing*/
   font-size: 8px;
+}
+p {
+  margin: 0px;
+}
+
+label {
+  border: .1em solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /*Hidden and Exit classes*/
 
@@ -46,7 +55,7 @@ body {
 }
 [id^=life] {
   font-size: 8em;
-  margin: 0% 0.5% 0% 0.5%;
+  margin: auto;
   border-left: 0;
   border-right: 0;
   width: 50%;
@@ -85,7 +94,7 @@ body {
   width: 100%;
   height: 20%;
   font-size: 3em;
-  margin-top: 2em;
+  /*margin-top: 2em;*/
   background-color: black;
   color: white;
 }
@@ -115,73 +124,101 @@ body {
 }
 #modalLife {
   font-size: 12em;
-  margin: 0;
+  margin: auto;
 }
 #plusButtons > button, #minusButtons > button {
   width: 100%;
   font-size: 3em;
 }
 .rotate, .cmdSymbol {
-  width: 40%;
+  width: 50%;
+}
+#headlines {
+  text-align: left;
+  margin: -1% 0% 0% 1.5%;
 }
 
 /* commander damage modal */
 
-
-.commanderDamage {
-   width: 10%;
-   height: 20%;
-   margin: 2% 1% 2.5% 1%;
-   font-size: 2em;
-   border: .1em solid black;
+#castCount + label {
+  width: 60%;
+  height: 20%;
+  margin: 2%;
+  background-color: white;
+  font-size: 2em;
 }
 #currentPlayer {
   font-size: 1.5em;
-  margin-bottom: -0.5%;
+  margin: 2.5%;
+  height: 5%;
 }
-[id^=cmdSlider] {
-   top: 35%;
-   left: 12.2%;
-   position: absolute;
-   -webkit-appearance: none;
-   appearance: none;
-   width: 75%;
-   height: 5.1%;
-   border: .3em black solid;
-   margin-bottom: -50%;
+#cmdContainer {
+  width: 50%;
+  margin-left: 5%;
 }
-/* this is only used on poison */
-.headline {
-  font-size: 2em;
-  font-weight: bold;
-  margin-top: 9%;
-  margin-bottom: 0.5%;
+#cmdInnerContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 80%;
+  justify-content: space-around;
 }
-#poisonSlider {
-   -webkit-appearance: none;
-    appearance: none;
-    width: 75%;
-    height: 5%;
-    border: .3em black solid;
-    background: #66cc1a;
-    margin-bottom: 4%;
+#cmdPlusMinus {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-#poisonSlider::-webkit-slider-thumb, [id^=cmdSlider]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 1em;
-    width: 4%;
-    border: black 1% solid;
-    background: black;
-    cursor: pointer;
-}
-#poisonSlider::-moz-range-thumb, [id^=cmdSlider]::-moz-range-thumb {
-  height: 1em;
-  width: 4%;
-  border: black 1% solid;
+#cmdPlusMinus > button {
+  height: 20%;
+  width: 80%;
+  margin: 5% 0 5% 0;
+  color: white;
   background: black;
-  cursor: pointer;
+  font-size: 4em;
+  font-weight: bold;
 }
+#cmdPoisonContainer {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+#poison + label {
+  background: lightgreen;
+  width: 60%;
+  height: 20%;
+  margin: 2%;
+
+}
+#cmdCastCount + label {
+  width: 60%;
+  height: 20%;
+  margin: 2%;
+  background: white;
+}
+.commanderDamage {
+   width: 30%;
+   height: 30%;
+   margin: 1%;
+   font-size: 2em;
+
+}
+
+
+.headline {
+  font-size: 1.5em;
+  font-weight: bold;
+  /*margin-top: 9%;
+  margin-bottom: 0.5%;*/
+}
+#flexContainer {
+  display: flex;
+  height: 80%;
+}
+
 
 /* utilities modal */
 #modalWindow3 {
@@ -215,6 +252,7 @@ body {
 }
 input[type=radio] {
   visibility: hidden;
+  position: absolute;
 }
 input[type=radio]:checked + label {
   border-color: pink;
@@ -227,8 +265,8 @@ input[type=radio]:checked + label {
    top: 50%;
    left: 50%;
    transform: translate(-50%, -50%);
-   width: 5vh;
-   height: 5vh;
+   width: 10vh;
+   height: 10vh;
    border: 0;
    background-size: contain;
    background-image: url("https://upload.wikimedia.org/wikipedia/commons/4/4b/Gear_icon-72a7cf.svg");

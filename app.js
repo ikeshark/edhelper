@@ -190,7 +190,8 @@ commanderButtons.forEach(function (element, i) {
     currentPlayer.style.background = player.color;
     castCount.innerHTML = player.castCount;
     // functions
-    function plusAndMinus() {
+    function plusAndMinus(e) {
+      e.preventDefault();
       let checkedValue = document.querySelector("input[name=cmdModalGroup]:checked").value;
       let increment = parseInt(this.value);
       if (checkedValue === "poison") {
@@ -217,21 +218,12 @@ commanderButtons.forEach(function (element, i) {
       element.innerHTML = player.commanderDamage[i];
     });
     cmdPlusMinusButtons.forEach(function(element) {
-      element.addEventListener("click", plusAndMinus);
+      element.addEventListener("touchend", plusAndMinus);
     });
     poison.innerHTML = player.poison;
     // close modal event listeners
     document.getElementById("cmdExit").addEventListener("click", closeCmdModal);
   });
-});
-function preventZoom(e) {
-  e.preventDefault();
-};
-cmdPlusMinusButtons.forEach(function(element) {
-  element.addEventListener("dblclick", preventZoom);
-});
-lifePlusMinusButtons.forEach(function(element) {
-  element.addEventListener("dblclick", preventZoom);
 });
 // utilities modal
 let pBoxes = document.querySelectorAll(".choosePlayerButtons");
@@ -288,22 +280,6 @@ document.getElementById("changeColors").addEventListener("click", function() {
     modalWindows[3].classList.add("hidden");
   });
 });
-// mozilla full screen function
-function toggleFullScreen() {
-  var doc = window.document;
-  var docEl = doc.documentElement;
-
-  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-    requestFullScreen.call(docEl);
-  }
-  else {
-    cancelFullScreen.call(doc);
-  }
-};
-document.getElementById("fullButt").addEventListener("click", toggleFullScreen);
 displayBoard();
 
 // to do:

@@ -40,6 +40,8 @@ label {
 #playersContainer {
   height: 100vh;
   width: 100vw;
+  /*unlikely hack to get mobile centering*/
+  max-width: 1000px;
   display: flex;
   flex-wrap: wrap;
 }

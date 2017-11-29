@@ -20,14 +20,18 @@ const colors = [red, orange, gold, yellow, green, teal, blue, purple, pink, tan,
 function Player(i) {
   this.i = i;
 }
+Player.prototype.name = function() {
+    return "Player " + (1 + this.i);
+}
 Player.prototype.poison = 0;
 Player.prototype.rotated = false;
+Player.prototype.parentRotated = false;
 Player.prototype.life = 40;
 Player.prototype.color = "";
 Player.prototype.castCount = 0;
 Player.prototype.displayLife = function() {
-  let id = "life" + this.i;
-  document.getElementById(id).innerHTML = this.life;
+  lifeButtons[this.i].innerHTML = this.life;
+  lifeDisplay.innerHTML = this.life;
 };
 let player0 = new Player(0);
 let player1 = new Player(1);
@@ -43,6 +47,7 @@ player2.commanderDamage = Array(6).fill(0);
 player3.commanderDamage = Array(6).fill(0);
 player4.commanderDamage = Array(6).fill(0);
 player5.commanderDamage = Array(6).fill(0);
+// default color assignment
 player0.color = colors[0];
 player1.color = colors[7];
 player2.color = colors[3];
@@ -50,11 +55,12 @@ player3.color = colors[5];
 player4.color = colors[1];
 player5.color = colors[6];
 // setting up the colors and setting starting number of players
-let playerDivs = document.querySelectorAll("[id^=player]");
+const playerDivs = document.querySelectorAll("#playersContainer > div");
 playerDivs.forEach(function(element, i) {
   element.style.background = players[i].color;
 });
 let numPlayers = 4;
+// display board is primarily used for changing number of players
 function displayBoard() {
   if (numPlayers === 6) {
     for (let i = 3; i < 6; i++) {
@@ -82,97 +88,92 @@ function displayBoard() {
   for (i = 0; i < numPlayers; i++) {
     playerDivs[i].classList.remove("hidden");
     commanderDamageButtons[i].classList.remove("hidden");
-    choosePlayerButtons[i].classList.remove("hidden");
+    pBoxes[i].classList.remove("hidden");
   }
   for (i = numPlayers; i < 6; i++) {
     playerDivs[i].classList.add("hidden");
     commanderDamageButtons[i].classList.add("hidden");
-    choosePlayerButtons[i].classList.add("hidden");
+    pBoxes[i].classList.add("hidden");
   }
 }
-// rotate function and event listeners
-function rotate() {
-  let parent = this.parentNode;
-  let player = players[this.value];
-  let deg = player.rotated ? 0 : 180;
-  parent.style.webkitTransform = "rotate("+deg+"deg)";
-  parent.style.mozTransform = "rotate("+deg+"deg)";
-  parent.style.msTransform = "rotate("+deg+"deg)";
-  parent.style.oTransform = "rotate("+deg+"deg)";
-  parent.style.transform = "rotate("+deg+"deg)";
-  player.rotated = !player.rotated;
+// rotate function
+function rotate(element, deg) {
+  element.style.webkitTransform = "rotate("+deg+"deg)";
+  element.style.mozTransform = "rotate("+deg+"deg)";
+  element.style.msTransform = "rotate("+deg+"deg)";
+  element.style.oTransform = "rotate("+deg+"deg)";
+  element.style.transform = "rotate("+deg+"deg)";
 };
-let rotateButtons = document.querySelectorAll("[id^=rotate]");
-rotateButtons.forEach(function(element) {
-  element.addEventListener("click", rotate);
-});
-
 // modal window variables and close function
-const modalWindow = document.getElementById("modalWindow");
-const modalWindow2 = document.getElementById("modalWindow2");
-const modalWindow3 = document.getElementById("modalWindow3");
+// reminder: below is in DOM order
+const modalWindows = document.querySelectorAll("[id^=modalWindow]");
 const modalBackground = document.getElementById("modalBackground");
-
 const closeModal = () => {
-  modalWindow.classList.add("hidden");
-  modalWindow2.classList.add("hidden");
-  modalWindow3.classList.add("hidden");
-  modalWindow4.classList.add("hidden");
+  modalWindows.forEach(function(element) {
+    element.classList.add("hidden");
+  })
   modalBackground.classList.add("hidden");
 };
-
+// rotate buttons
+let rotateButtons = document.querySelectorAll("#playersContainer button:nth-child(1)");
+rotateButtons.forEach(function(element, i) {
+  element.addEventListener("click", function() {
+    let deg = players[i].rotated ? 0 : 180;
+    rotate(playerDivs[i], deg);
+    players[i].rotated = !players[i].rotated;
+  });
+});
 // life change modal window
-var lifeButtons = document.querySelectorAll("[id^=life]")
+const lifeButtons = document.querySelectorAll("#playersContainer button:nth-child(2)");
+const lifeDisplay = document.getElementById("modalLifeDisplay");
+const lifePlusMinusButtons = document.querySelectorAll(".plusMinus");
+const doubleHalveButtons = document.querySelectorAll(".doubleHalve");
 lifeButtons.forEach(function (element, i) {
   element.addEventListener("click", function(){
     // variables
     let player = players[i];
-    let lifeDisplay = document.getElementById("modalLife");
-    let plusMinusButtons = document.querySelectorAll(".plusMinus");
     // functions
-    function plusAndMinusLife() {
+    function plusMinusLife() {
       player.life += parseInt(this.value);
       player.displayLife();
-      lifeDisplay.innerHTML = player.life;
     };
-    function doubleAndHalveLife() {
+    function doubleHalveLife() {
       player.life = Math.floor(player.life * parseFloat(this.value));
       player.displayLife();
-      lifeDisplay.innerHTML = player.life;
     }
     let closeLifeModal = () => {
-      plusMinusButtons.forEach(function(element) {
-        element.removeEventListener("click", plusAndMinusLife);
+      lifePlusMinusButtons.forEach(function(element) {
+        element.removeEventListener("click", plusMinusLife);
       });
-      document.getElementById("double").removeEventListener("click", doubleAndHalveLife);
-      document.getElementById("halve").removeEventListener("click", doubleAndHalveLife);
+      doubleHalveButtons.forEach(function(element) {
+        element.removeEventListener("click", doubleHalveLife);
+      });
+      document.getElementById("lifeExit").removeEventListener("click", closeLifeModal);
       closeModal();
     };
     // opening and orienting modal window and displaying current life total
     let deg = player.rotated ? 180 : 0;
-    modalWindow.style.webkitTransform = "rotate("+deg+"deg)";
-    modalWindow.style.mozTransform = "rotate("+deg+"deg)";
-    modalWindow.style.msTransform = "rotate("+deg+"deg)";
-    modalWindow.style.oTransform = "rotate("+deg+"deg)";
-    modalWindow.style.transform = "rotate("+deg+"deg)";
-    modalWindow.classList.remove("hidden");
+    rotate(modalWindows[0], deg);
+    modalWindows[0].classList.remove("hidden");
     modalBackground.classList.remove("hidden");
     lifeDisplay.innerHTML = player.life;
     // display background color of the appropriate player
     lifeDisplay.parentNode.style.background = player.color;
     // adding event listeners to buttons
-    plusMinusButtons.forEach(function(element) {
-      element.addEventListener("click", plusAndMinusLife);
+    lifePlusMinusButtons.forEach(function(element) {
+      element.addEventListener("click", plusMinusLife);
     });
-    document.getElementById("double").addEventListener("click", doubleAndHalveLife);
-    document.getElementById("halve").addEventListener("click", doubleAndHalveLife);
+    doubleHalveButtons.forEach(function(element) {
+      element.addEventListener("click", doubleHalveLife);
+    });
     // close modal event listeners
     document.getElementById("lifeExit").addEventListener("click", closeLifeModal);
   });
 });
 // commander damage modal window
-let commanderButtons = document.querySelectorAll("[id^=cmdBtn]");
-let commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + label");
+const commanderButtons = document.querySelectorAll("#playersContainer button:nth-child(3)");
+const commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + label");
+const cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus button");
 commanderButtons.forEach(function (element, i) {
   element.addEventListener("click", function(){
     // variables
@@ -181,16 +182,11 @@ commanderButtons.forEach(function (element, i) {
     let poison = document.querySelector("#poison + label");
     // opening and orienting modal window
     let deg = player.rotated ? 180 : 0;
-    modalWindow2.style.webkitTransform = "rotate("+deg+"deg)";
-    modalWindow2.style.mozTransform = "rotate("+deg+"deg)";
-    modalWindow2.style.msTransform = "rotate("+deg+"deg)";
-    modalWindow2.style.oTransform = "rotate("+deg+"deg)";
-    modalWindow2.style.transform = "rotate("+deg+"deg)";
-    modalWindow2.classList.remove("hidden");
+    rotate(modalWindows[1], deg);
+    modalWindows[1].classList.remove("hidden");
     modalBackground.classList.remove("hidden");
-    let playerNumber = i + 1;
     let currentPlayer = document.getElementById("currentPlayer");
-    currentPlayer.innerHTML = "Player Number: " + playerNumber;
+    currentPlayer.innerHTML = player.name();
     currentPlayer.style.background = player.color;
     castCount.innerHTML = player.castCount;
     // functions
@@ -210,8 +206,8 @@ commanderButtons.forEach(function (element, i) {
       }
     }
     let closeCmdModal = () => {
-      buttons.forEach(function(element) {
-        element.addEventListener("click", plusAndMinus);
+      cmdPlusMinusButtons.forEach(function(element) {
+        element.removeEventListener("click", plusAndMinus);
       });
       closeModal();
     };
@@ -220,26 +216,28 @@ commanderButtons.forEach(function (element, i) {
       element.style.background = players[i].color;
       element.innerHTML = player.commanderDamage[i];
     });
-    let buttons = document.querySelectorAll("#cmdPlusMinus button");
-    console.log(buttons);
-    buttons.forEach(function(element) {
+    cmdPlusMinusButtons.forEach(function(element) {
       element.addEventListener("click", plusAndMinus);
     });
-    // let plusBtn = document.getElementById("plus");
-    // let minusBtn = document.getElementById("minus");
-    // plusBtn.addEventListener("click", plusAndMinus);
-    // minusBtn.addEventListener("click", plusAndMinus);
     poison.innerHTML = player.poison;
     // close modal event listeners
     document.getElementById("cmdExit").addEventListener("click", closeCmdModal);
-  //  modalBackground.addEventListener("click", closeCmdModal);
   });
 });
+function preventZoom(e) {
+  e.preventDefault();
+};
+cmdPlusMinusButtons.forEach(function(element) {
+  element.addEventListener("dblclick", preventZoom);
+});
+lifePlusMinusButtons.forEach(function(element) {
+  element.addEventListener("dblclick", preventZoom);
+});
 // utilities modal
-let pBoxes = document.querySelectorAll("[id^=pBox]");
+let pBoxes = document.querySelectorAll(".choosePlayerButtons");
 document.getElementById("gearBtn").addEventListener("click", function() {
   modalBackground.classList.remove("hidden");
-  modalWindow3.classList.remove("hidden");
+  modalWindows[2].classList.remove("hidden");
   pBoxes.forEach(function(element,i) {
     element.style.background = players[i].color;
   });
@@ -247,7 +245,6 @@ document.getElementById("gearBtn").addEventListener("click", function() {
 document.getElementById("utiliExit").addEventListener("click", closeModal);
 // utilities modal functions and event listeners
 document.getElementById("addPlayer").addEventListener("click", addPlayer);
-let choosePlayerButtons = document.querySelectorAll(".playerBox");
 // move this up by colors and shit
 function addPlayer() {
     if (numPlayers === 6) {
@@ -281,40 +278,40 @@ function changeColor() {
   player.color = colors[colorI];
   playerDivs[this.value].style.background = player.color;
   pBoxes[this.value].style.background = player.color;
-}
-choosePlayerButtons.forEach(function(element) {
+};
+pBoxes.forEach(function(element) {
   element.addEventListener("click", changeColor);
 });
 document.getElementById("changeColors").addEventListener("click", function() {
-  modalWindow4.classList.remove("hidden");
+  modalWindows[3].classList.remove("hidden");
   document.getElementById("choosePlayerExit").addEventListener("click", function() {
-    modalWindow4.classList.add("hidden");
+    modalWindows[3].classList.add("hidden");
   });
 });
 // mozilla full screen function
-function toggleFullScreen() {
-  var doc = window.document;
-  var docEl = doc.documentElement;
-
-  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-    requestFullScreen.call(docEl);
-  }
-  else {
-    cancelFullScreen.call(doc);
-  }
-}
-
+// function toggleFullScreen() {
+//   var doc = window.document;
+//   var docEl = doc.documentElement;
+//
+//   var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+//   var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+//
+//   if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+//     requestFullScreen.call(docEl);
+//   }
+//   else {
+//     cancelFullScreen.call(doc);
+//   }
+// };
+displayBoard();
 
 // to do:
 
 // toggle column view?
 // better colors? only use magic colors?
-// rotate function should work on all rotations
-//  might need to use bind to accomplish this
-
+// prevent double click zoom
+// perhaps have rotate and commander buttons in same div, so only two divs per player
+// graph of player damage?
 // make styles work in desktop or mobile, maybe all percentages when possible?
 
 // i think i only need hidden on the modalBackground div. since i turn hidden on parent all children are hidden too?

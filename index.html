@@ -5,98 +5,95 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="styles.css">
-
   <title>EDH Life Counter</title>
 </head>
 <body>
-  <div id="root">
-    <div id="player0">
-      <button  id="rotate0" value="0"><img src="rotate.png" class="rotate"></button>
-      <button  id="life0">40</button>
-      <button  id="cmdBtn0"><img src="edh.png" class="cmdSymbol"></button>
+  <div id="playersContainer">
+    <div>
+      <button> <img src="rotate.png"> </button>
+      <button class="lifeButtons">40</button>
+      <button> <img src="edh.png"> </button>
     </div>
-    <div id="player1">
-      <button  id="rotate1" value="1"><img src="rotate.png" class="rotate"></button>
-      <button  id="life1">40</button>
-      <button  id="cmdBtn1"><img src="edh.png" class="cmdSymbol"></button>
+    <div>
+      <button> <img src="rotate.png"> </button>
+      <button class="lifeButtons">40</button>
+      <button> <img src="edh.png"> </button>
     </div>
-    <div id="player2">
-      <button  id="rotate2" value="2"><img src="rotate.png" class="rotate"></button>
-      <button  id="life2">40</button>
-      <button  id="cmdBtn2"><img src="edh.png" class="cmdSymbol"></button>
+    <div>
+      <button> <img src="rotate.png"> </button>
+      <button class="lifeButtons">40</button>
+      <button> <img src="edh.png"> </button>
     </div>
-    <div id="player3">
-      <button  id="rotate3" value="3"><img src="rotate.png" class="rotate"></button>
-      <button  id="life3">40</button>
-      <button  id="cmdBtn3"><img src="edh.png" class="cmdSymbol"></button>
+    <div>
+      <button> <img src="rotate.png"> </button>
+      <button class="lifeButtons">40</button>
+      <button> <img src="edh.png"> </button>
     </div>
-    <div id="player4" class="hidden">
-      <button  id="rotate4" value="4"><img src="rotate.png" class="rotate"></button>
-      <button  id="life4">40</button>
-      <button  id="cmdBtn4"><img src="edh.png" class="cmdSymbol"></button>
+    <div>
+      <button> <img src="rotate.png"> </button>
+      <button class="lifeButtons">40</button>
+      <button> <img src="edh.png"> </button>
     </div>
-    <div id="player5" class="hidden">
-      <button  id="rotate5" value="5"><img src="rotate.png" class="rotate"></button>
-      <button  id="life5">40</button>
-      <button  id="cmdBtn5"><img src="edh.png" class="cmdSymbol"></button>
+    <div>
+      <button> <img src="rotate.png"> </button>
+      <button class="lifeButtons">40</button>
+      <button> <img src="edh.png"> </button>
     </div>
   </div>
   <div id="modalBackground" class="hidden">
-    <div id="modalWindow" class="hidden">
-      <div id="plusButtons">
+    <div id="modalWindowLife" class="hidden">
+      <div>
         <button value="1" class="plusMinus">&#43; 1</button>
         <button value="5" class="plusMinus">&#43; 5</button>
-        <button value="2" id="double">double</button>
+        <button value="2" class="doubleHalve">double</button>
       </div>
-      <div id="modalLifeContainer">
-        <p id="modalLife"></p>
+      <div>
+        <p id="modalLifeDisplay"></p>
         <button id="lifeExit">EXIT</button>
       </div>
-      <div id="minusButtons">
+      <div>
         <button value="-1" class="plusMinus">&#8211; 1</button>
         <button value="-5" class="plusMinus">&#8211; 5</button>
-        <button value="0.5" id="halve">halve</button>
+        <button value="0.5" class="doubleHalve">halve</button>
       </div>
     </div>
-    <div>
-      <div id="modalWindow2" class="hidden">
-        <p id="currentPlayer"></p>
-        <div id="flexContainer">
-          <div id="cmdContainer">
-            <p class="headline">commanders</p>
-            <div id="cmdInnerContainer">
-              <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0"><label for="cmdButton0" class="commanderDamage"></label>
-              <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1"><label for="cmdButton1" class="commanderDamage"></label>
-              <input type="radio" name="cmdModalGroup" value="2" id="cmdButton2"><label for="cmdButton2" class="commanderDamage"></label>
-              <input type="radio" name="cmdModalGroup" value="3" id="cmdButton3"><label for="cmdButton3" class="commanderDamage"></label>
-              <input type="radio" name="cmdModalGroup" value="4" id="cmdButton4"><label for="cmdButton4" class="commanderDamage hidden"></label>
-              <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5"><label for="cmdButton5" class="commanderDamage hidden"></label>
-            </div>
+    <div id="modalWindowCmd" class="hidden">
+      <p id="currentPlayer"></p>
+      <div id="flexContainer">
+        <div id="cmdContainer">
+          <p class="headline">commanders</p>
+          <div id="cmdInnerContainer">
+            <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0"><label for="cmdButton0" class="commanderDamage"></label>
+            <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1"><label for="cmdButton1" class="commanderDamage"></label>
+            <input type="radio" name="cmdModalGroup" value="2" id="cmdButton2"><label for="cmdButton2" class="commanderDamage"></label>
+            <input type="radio" name="cmdModalGroup" value="3" id="cmdButton3"><label for="cmdButton3" class="commanderDamage"></label>
+            <input type="radio" name="cmdModalGroup" value="4" id="cmdButton4"><label for="cmdButton4" class="commanderDamage hidden"></label>
+            <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5"><label for="cmdButton5" class="commanderDamage hidden"></label>
           </div>
-          <div id="cmdPlusMinus">
-            <button value="5" id="plus5">&#43;5</button>
-            <button value="1" id="plus">&#43;1</button>
-            <button value="-1" id="minus">&#8211;1</button>
-            <button value="-5" id="minus5">&#8211;5</button>
-          </div>
-          <div id="cmdPoisonContainer">
-            <p class="headline">poison</p>
-             <input type="radio" value="poison" name="cmdModalGroup" id="poison"><label class="commanderDamage" for="poison"></label>
-             <p class="headline">commander <br />cast count</p>
-             <input type="radio" value="castCount" name="cmdModalGroup" id="castCount"><label for="castCount"></label>
-            <button id="cmdExit" class="exit">EXIT</button>
-          </div>
+        </div>
+        <div id="cmdPlusMinus">
+          <button value="5" id="plus5">&#43; 5</button>
+          <button value="1" id="plus">&#43; 1</button>
+          <button value="-1" id="minus">&#8211; 1</button>
+          <button value="-5" id="minus5">&#8211; 5</button>
+        </div>
+        <div id="cmdPoisonContainer">
+          <p class="headline">poison</p>
+           <input type="radio" value="poison" name="cmdModalGroup" id="poison"><label class="commanderDamage" for="poison"></label>
+           <p class="headline">commander <br />cast count</p>
+           <input type="radio" value="castCount" name="cmdModalGroup" id="castCount"><label for="castCount"></label>
+          <button id="cmdExit" class="exit">EXIT</button>
         </div>
       </div>
     </div>
-    <div id="modalWindow3" class="hidden">
+    <div id="modalWindowUtility" class="hidden">
       <button id="addPlayer" class="utiliBtns">Add Player</button>
       <button id="hidePlayer" class="utiliBtns">Remove Player</button>
       <button id="newGamePrompt" class="utiliBtns">Start New Game</button>
       <button id="changeColors" class="utiliBtns">Change Player Colors</button>
       <button id="utiliExit" class="exit">EXIT</button>
     </div>
-    <div id="modalWindow4" class="hidden">
+    <div id="modalWindowChangeColor" class="hidden">
       <p>select new color first, then select player below:</p>
       <div>
         <input type="radio" name="chooseColor" value="0" id="radio0"><label for="radio0" class="allColors"></label>
@@ -114,12 +111,12 @@
         <input type="radio" name="chooseColor" value="12" id="radio12"><label for="radio12" class="allColors"></label>
         <input type="radio" name="chooseColor" value="13" id="radio13"><label for="radio13" class="allColors"></label>
       </div>
-      <button value="0" id="pBox0" class="playerBox commanderDamage player0">1</button>
-      <button value="1" id="pBox1" class="playerBox commanderDamage player1">2</button>
-      <button value="2" id="pBox2" class="playerBox commanderDamage player2">3</button>
-      <button value="3" id="pBox3" class="playerBox commanderDamage player3">4</button>
-      <button value="4" id="pBox4" class="playerBox commanderDamage player4 hidden">5</button>
-      <button value="5" id="pBox5" class="playerBox commanderDamage player5 hidden">6</button>
+      <button value="0" class="choosePlayerButtons">1</button>
+      <button value="1" class="choosePlayerButtons">2</button>
+      <button value="2" class="choosePlayerButtons">3</button>
+      <button value="3" class="choosePlayerButtons">4</button>
+      <button value="4" class="choosePlayerButtons hidden">5</button>
+      <button value="5" class="choosePlayerButtons hidden">6</button>
       <button id="choosePlayerExit" class="exit">EXIT</button>
     </div>
   </div>

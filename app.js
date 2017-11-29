@@ -279,24 +279,16 @@ document.getElementById("changeColors").addEventListener("click", function() {
     modalWindows[3].classList.add("hidden");
   });
 });
-var lastTouchEnd = 0;
-document.addEventListener('touchend', function (event) {
-  var now = (new Date()).getTime();
-  if (now - lastTouchEnd <= 300) {
-    event.preventDefault();
-  }
-  lastTouchEnd = now;
-}, false);
 displayBoard();
 
 // to do:
 
 // toggle column view?
-// random number utility
+// random number utility page
 // better colors? only use 'magic' colors?
-// prevent double click zoom
+// prevent double click zoom on mobile Safari
+// full screen support
 // perhaps have rotate and commander buttons in same div, so only two divs per player
 // graph of player damage?
 // make styles work in desktop or mobile, maybe all percentages when possible?
-
-// i think i only need hidden on the modalBackground div. since i turn hidden on parent all children are hidden too?
+// have commander damage automatically

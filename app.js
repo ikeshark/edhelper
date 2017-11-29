@@ -279,12 +279,21 @@ document.getElementById("changeColors").addEventListener("click", function() {
     modalWindows[3].classList.add("hidden");
   });
 });
+var lastTouchEnd = 0;
+document.addEventListener('touchend', function (event) {
+  var now = (new Date()).getTime();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault();
+  }
+  lastTouchEnd = now;
+}, false);
 displayBoard();
 
 // to do:
 
 // toggle column view?
-// better colors? only use magic colors?
+// random number utility
+// better colors? only use 'magic' colors?
 // prevent double click zoom
 // perhaps have rotate and commander buttons in same div, so only two divs per player
 // graph of player damage?

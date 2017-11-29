@@ -190,8 +190,7 @@ commanderButtons.forEach(function (element, i) {
     currentPlayer.style.background = player.color;
     castCount.innerHTML = player.castCount;
     // functions
-    function plusAndMinus(e) {
-      e.preventDefault();
+    function plusAndMinus() {
       let checkedValue = document.querySelector("input[name=cmdModalGroup]:checked").value;
       let increment = parseInt(this.value);
       if (checkedValue === "poison") {
@@ -218,7 +217,7 @@ commanderButtons.forEach(function (element, i) {
       element.innerHTML = player.commanderDamage[i];
     });
     cmdPlusMinusButtons.forEach(function(element) {
-      element.addEventListener("touchend", plusAndMinus);
+      element.addEventListener("click", plusAndMinus);
     });
     poison.innerHTML = player.poison;
     // close modal event listeners

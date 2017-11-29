@@ -60,6 +60,7 @@ label {
   border-left: 0;
   border-right: 0;
   width: 50%;
+  max-width: 1000px;
   height: 100%;
 }
 #playersContainer button:not(.lifeButtons){

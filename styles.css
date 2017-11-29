@@ -40,8 +40,6 @@ label {
 #playersContainer {
   height: 100vh;
   width: 100vw;
-  /*unlikely hack to get mobile centering*/
-  max-width: 1000px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -54,8 +52,8 @@ label {
   transition: all 0.5s ease-in-out;
 }
 .lifeButtons {
+  display: flex;
   font-size: 8em;
-  margin: auto;
   justify-content: center;
   border-left: 0;
   border-right: 0;

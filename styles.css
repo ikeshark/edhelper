@@ -30,7 +30,7 @@ label {
 .exit {
   width: 60%;
   height: 15%;
-  font-size: 3em;
+  font-size: 2em;
   background-color: black;
   color: white;
 }
@@ -58,7 +58,6 @@ label {
   border-left: 0;
   border-right: 0;
   width: 50%;
-  max-width: 1000px;
   height: 100%;
 }
 #playersContainer button:not(.lifeButtons){
@@ -164,7 +163,7 @@ img {
   margin: 5% 0 5% 0;
   color: white;
   background: black;
-  font-size: 4em;
+  font-size: 43m;
   font-weight: bold;
 }
 #cmdPoisonContainer {

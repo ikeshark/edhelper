@@ -2,17 +2,14 @@
 
 button {
   cursor: pointer;
+  border-color: white;
   padding: 0;
+  border-radius: 0px;
 }
 button:focus {
   outline: none;
 }
-body {
-  margin: 0px;
-  /*this is for mobile testing*/
-  font-size: 8px;
-}
-p {
+body, p {
   margin: 0px;
 }
 .outline {
@@ -28,7 +25,7 @@ p {
       1px 1px 0 #000;
 }
 label {
-  border: .1em solid black;
+  border: 0.05em solid black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,7 +64,7 @@ label {
 .lifeButtons {
   background-color: inherit;
   display: flex;
-  font-size: 8em;
+  font-size: 5em;
   justify-content: center;
   width: 50%;
   height: 100%;
@@ -124,11 +121,11 @@ label {
 }
 #modalWindowLife button {
   width: 100%;
-  font-size: 3em;
+  font-size: 2em;
   height: 33.33%;
 }
 #modalLifeDisplay {
-  font-size: 12em;
+  font-size: 9em;
   height: 70%;
   display: flex;
   justify-content: center;
@@ -149,18 +146,20 @@ img {
   font-family: fantasy;
 }
 
-#castCount + label {
+#castCount  + label {
+  background: white;
+}
+#castCount + label, #poison + label {
   width: 60%;
-  height: 20%;
+  height: 33%;
   margin: 2%;
+  font-size: 2em;
   margin-bottom: 10%;
-  background-color: white;
-  font-size: 3em;
 }
 #currentPlayer {
   font-size: 1.5em;
-  margin: 2.5%;
-  height: 5%;
+  margin: 1%;
+  height: 10%;
 }
 #cmdContainer {
   width: 50%;
@@ -168,7 +167,7 @@ img {
 }
 #cmdInnerContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
   height: 80%;
   justify-content: space-around;
@@ -186,7 +185,7 @@ img {
   margin: 5% 0 5% 0;
   color: white;
   background: black;
-  font-size: 3em;
+  font-size: 2em;
   font-weight: bold;
 }
 #cmdPoisonContainer {
@@ -198,9 +197,6 @@ img {
 }
 #poison + label {
   background: lightgreen;
-  width: 60%;
-  height: 20%;
-  margin: 2%;
 }
 #cmdCastCount + label {
   width: 60%;
@@ -209,18 +205,18 @@ img {
   background: white;
 }
 .commanderDamage {
+  flex-grow: 1;
    width: 30%;
-   height: 30%;
-   margin: 1%;
-   font-size: 3.5em;
+   margin: 1.5%;
+   font-size: 2.5em;
+}
+#cmdExit {
+  height: 30%;
 }
 
-
 .headline {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: bold;
-  /*margin-top: 9%;
-  margin-bottom: 0.5%;*/
 }
 #flexContainer {
   display: flex;
@@ -242,12 +238,12 @@ img {
   font-size: 2em;
   width: 10%;
   height: 20%;
-  margin: 2% 1.5% 2% 1.5%;
+  margin: 2% 0.5% 2% 0.5%;
 }
 .utiliBtns {
   height: 60%;
   width: 18%;
-  font-size: 1.8em;
+  font-size: 1.2em;
   margin: 2% 1% 1% 1%;
   background-color: white;
   display: block;
@@ -255,8 +251,9 @@ img {
 .colorMenu {
   background-color: white;
   padding: 1%;
+  font-size: 1.1em;
   margin: 1%;
-  height: 10%;
+  height: 15%;
 }
 .menuSelected {
   background-color: black;
@@ -272,8 +269,8 @@ img {
 .allColors {
   /*display: inline-block;*/
   border: 0.1em solid black;
-  width: 5em;
-  height: 5em;
+  width: 15%;
+  height: 35%;
   margin: 0.5% 1% 0.5% 1%;
   font-size: 2em;
   cursor: pointer;
@@ -288,9 +285,10 @@ input[type=radio]:checked + label {
 #choosePlayerExit {
   background-color: black;
   color: white;
-  width: 10%;
+  font-size: 2em;
+  width: 15%;
   height: 20%;
-  margin: 2% 1.5% 2% 1.5%;
+  margin: 2% 0.5% 2% 0.5%;
 }
 
 /*dice modal*/
@@ -328,8 +326,8 @@ modalWindowDice {
    top: 50%;
    left: 50%;
    transform: translate(-50%, -50%);
-   width: 10vh;
-   height: 10vh;
+   width: 15vh;
+   height: 15vh;
    border: 0;
    background-size: contain;
    background-image: url("https://upload.wikimedia.org/wikipedia/commons/4/4b/Gear_icon-72a7cf.svg");

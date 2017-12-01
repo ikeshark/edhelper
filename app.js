@@ -387,3 +387,4 @@ displayBoard();
 // graph of player damage?
   // turn button or gesture
 // make styles work in desktop or mobile, media queries
+// make portrait layout

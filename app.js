@@ -1,20 +1,48 @@
 // Colors
-let gold = "#ffd700";
-let blue = "#00B1E1";
-let grey = "#7D7D7D";
-let red = "#ff0000";
-let green = "#008000";
-let tan = "#d2b48c";
-let purple = "#9932CC";
-let brown = "#a8a565";
-let teal = "#07beb8";
-let pink = "#ff69b4";
-let yellow = "#ffff00";
-let orange = "#ff8c00";
-let blueGreenGrad = "radial-gradient(" + blue + ", " + green + ")";
-let peach = "linear-gradient(" + gold + ", " + pink + ")";
-let newGrad = "linear-gradient(" + red + ", " + gold + "," + green + ")";
-const colors = [red, orange, gold, yellow, green, teal, blue, purple, pink, tan, newGrad, grey, blueGreenGrad, peach];
+const artifact = "linear-gradient(45deg, lightgrey, #bfbfbf, lightgrey)";
+const w = "#fffafa";
+const u = "#2283D7";
+const b = "#555f61";
+const r = "#ff0000";
+const g = "#12c700";
+const wubr = colorCombinator(w, u, b, r);
+const wubg = colorCombinator(w, u, b, g);
+const wurg = colorCombinator(w, u, r, g);
+const ubrg = colorCombinator(u, b, r, g);
+const wubrg = colorCombinator(w, u, b, r, g);
+const mini = "linear-gradient(45deg, #30e8bf, #ff8235)";
+const coal = "linear-gradient(to left, #eb5757, black)";
+const rasta = "linear-gradient(to bottom, red, yellow, green)";
+const rainbow = "linear-gradient(to bottom, red, orange, yellow, green, blue, indigo, violet)";
+const blackWhite = "radial-gradient(circle, black, white)";
+const whiteBlack = "radial-gradient(circle, white, black)";
+const whiteBlackWhite = "radial-gradient(circle, white, black, white)";
+const blackWhiteBlack = "radial-gradient(circle, black, white, black)";
+const blueSky = "linear-gradient(to left, #56ccf2, #2f80ed)";
+function colorCombinator() {
+  let result = "repeating-linear-gradient(45deg ";
+  for (let i = 0; i < arguments.length; i++) {
+    result += ", " + arguments[i] + " " + (i * 15) + "%";
+    result += ", " + arguments[i] + " " + ((i + 1) * 15) + "%";
+  }
+  result += ")";
+  return result;
+}
+let threecolors = [];
+let colors = [artifact, w, u, b, r, g];
+for (let i = 1; i < 5; i++) {
+  for (let j = i + 1; j < 6; j  ++) {
+    let temp = colorCombinator(colors[i], colors[j]);
+    colors.push(temp);
+    for (let k = j + 1; k < 6; k++) {
+      let temp = colorCombinator(colors[i], colors[j], colors[k]);
+      threecolors.push(temp);
+    }
+  }
+}
+colors = colors.concat(threecolors);
+let othercolors = [wubr, wubg, wurg, ubrg, wubrg, rasta, rainbow, blackWhite, whiteBlack, whiteBlackWhite, blackWhiteBlack, mini, coal, blueSky];
+colors = colors.concat(othercolors);
 
 // player object and prototype
 function Player(i) {
@@ -48,11 +76,11 @@ player3.commanderDamage = Array(6).fill(0);
 player4.commanderDamage = Array(6).fill(0);
 player5.commanderDamage = Array(6).fill(0);
 // default color assignment
-player0.color = colors[0];
-player1.color = colors[7];
+player0.color = colors[1];
+player1.color = colors[2];
 player2.color = colors[3];
-player3.color = colors[5];
-player4.color = colors[1];
+player3.color = colors[4];
+player4.color = colors[5];
 player5.color = colors[6];
 // setting up the colors and setting starting number of players
 const playerDivs = document.querySelectorAll("#playersContainer > div");
@@ -158,7 +186,7 @@ lifeButtons.forEach(function (element, i) {
     modalBackground.classList.remove("hidden");
     lifeDisplay.innerHTML = player.life;
     // display background color of the appropriate player
-    lifeDisplay.parentNode.style.background = player.color;
+    lifeDisplay.style.background = player.color;
     // adding event listeners to buttons
     lifePlusMinusButtons.forEach(function(element) {
       element.addEventListener("click", plusMinusLife);
@@ -202,6 +230,8 @@ commanderButtons.forEach(function (element, i) {
       } else {
         let i = parseInt(checkedValue);
         player.commanderDamage[i] += increment;
+        player.life -= increment;
+        player.displayLife();
         commanderDamageButtons[i].innerHTML = player.commanderDamage[i];
       }
     }
@@ -225,13 +255,9 @@ commanderButtons.forEach(function (element, i) {
   });
 });
 // utilities modal
-let pBoxes = document.querySelectorAll(".choosePlayerButtons");
 document.getElementById("gearBtn").addEventListener("click", function() {
   modalBackground.classList.remove("hidden");
   modalWindows[2].classList.remove("hidden");
-  pBoxes.forEach(function(element,i) {
-    element.style.background = players[i].color;
-  });
 });
 document.getElementById("utiliExit").addEventListener("click", closeModal);
 // utilities modal functions and event listeners
@@ -261,8 +287,55 @@ let colorBoxes = document.querySelectorAll(".allColors");
 colorBoxes.forEach(function(element, i) {
   element.style.background = colors[i];
 });
-
 // change colors sub modal
+let pBoxes = document.querySelectorAll(".choosePlayerButtons");
+pBoxes.forEach(function(element,i) {
+  element.style.background = players[i].color;
+});
+const colorMenuButtons = document.querySelectorAll(".colorMenu");
+function clearSelected() {
+  colorMenuButtons.forEach(function(element) {
+    element.classList.remove("menuSelected");
+  });
+  colorBoxes.forEach(function(element){
+    element.classList.add("hidden");
+  });
+};
+document.getElementById("singleColors").addEventListener("click", function() {
+  clearSelected();
+  this.classList.add("menuSelected");
+  for (i = 0; i < 6; i++) {
+    colorBoxes[i].classList.remove("hidden");
+  }
+});
+document.getElementById("twoColors").addEventListener("click", function() {
+  clearSelected();
+  this.classList.add("menuSelected");
+  for (i = 6; i < 16; i++) {
+    colorBoxes[i].classList.remove("hidden");
+  }
+});
+document.getElementById("threeColors").addEventListener("click", function() {
+  clearSelected();
+  this.classList.add("menuSelected");
+  for (i = 16; i < 26; i++) {
+    colorBoxes[i].classList.remove("hidden");
+  }
+});
+document.getElementById("fourFiveColors").addEventListener("click", function() {
+  clearSelected();
+  this.classList.add("menuSelected");
+  for (i = 26; i < 31; i++) {
+    colorBoxes[i].classList.remove("hidden");
+  }
+});
+document.getElementById("otherColors").addEventListener("click", function() {
+  clearSelected();
+  this.classList.add("menuSelected");
+  for (i = 31; i < colorBoxes.length; i++) {
+    colorBoxes[i].classList.remove("hidden");
+  }
+});
 function changeColor() {
   let player = players[this.value];
   let colorI = document.querySelector("input[name=chooseColor]:checked").value;
@@ -275,20 +348,42 @@ pBoxes.forEach(function(element) {
 });
 document.getElementById("changeColors").addEventListener("click", function() {
   modalWindows[3].classList.remove("hidden");
-  document.getElementById("choosePlayerExit").addEventListener("click", function() {
-    modalWindows[3].classList.add("hidden");
-  });
+  document.getElementById("choosePlayerExit").addEventListener("click", closeModal);
 });
+
+// dice modal
+
+document.getElementById("dice").addEventListener("click", function(){
+  document.getElementById("modalWindowDice").classList.remove("hidden");
+});
+const dice = document.querySelectorAll(".dice");
+function getRandom() {
+  dice.forEach(function(element) {
+    element.classList.remove("selectedDice");
+    element.innerHTML = element.value;
+  });
+  let d = this.value - 1;
+  let r = Math.floor(Math.random() * d + 1);
+  // r += 1;
+  this.classList.add("selectedDice");
+  this.innerHTML = r;
+}
+dice.forEach(function(element) {
+  element.addEventListener("click", getRandom);
+});
+document.getElementById("exitDice").addEventListener("click", closeModal);
 displayBoard();
 
 // to do:
 
-// toggle column view?
-// random number utility page
-// better colors? only use 'magic' colors?
+// in life modal the button seems to be on top of life div, they should be two stacked divs
+// options window
+  // toggle column view
+  // toggle cmd damage / life total bind
+  // radial vs linear gradients??
 // prevent double click zoom on mobile Safari
-// full screen support
+// full screen support for Chrome
 // perhaps have rotate and commander buttons in same div, so only two divs per player
 // graph of player damage?
-// make styles work in desktop or mobile, maybe all percentages when possible?
-// have commander damage automatically
+  // turn button or gesture
+// make styles work in desktop or mobile, media queries

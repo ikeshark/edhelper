@@ -43,20 +43,19 @@ for (let i = 1; i < 5; i++) {
 colors = colors.concat(threecolors);
 let othercolors = [wubr, wubg, wurg, ubrg, wubrg, rasta, rainbow, blackWhite, whiteBlack, whiteBlackWhite, blackWhiteBlack, mini, coal, blueSky];
 colors = colors.concat(othercolors);
-
 // player object and prototype
 function Player(i) {
   this.i = i;
+  this.poison = 0;
+  this.life = 40;
+  this.rotated = false;
+  this.castCount = 0;
+  this.commanderDamage = Array(6).fill(0);
 }
 Player.prototype.name = function() {
     return "Player " + (1 + this.i);
 }
-Player.prototype.poison = 0;
-Player.prototype.rotated = false;
-Player.prototype.parentRotated = false;
-Player.prototype.life = 40;
 Player.prototype.color = "";
-Player.prototype.castCount = 0;
 Player.prototype.displayLife = function() {
   lifeButtons[this.i].innerHTML = this.life;
   lifeDisplay.innerHTML = this.life;
@@ -68,26 +67,43 @@ let player3 = new Player(3);
 let player4 = new Player(4);
 let player5 = new Player(5);
 let players = [player0, player1, player2, player3, player4, player5];
-// I have to separately assign the commander damage arrays to keep them separated
-player0.commanderDamage = Array(6).fill(0);
-player1.commanderDamage = Array(6).fill(0);
-player2.commanderDamage = Array(6).fill(0);
-player3.commanderDamage = Array(6).fill(0);
-player4.commanderDamage = Array(6).fill(0);
-player5.commanderDamage = Array(6).fill(0);
 // default color assignment
+  // should probably do this in a loop
 player0.color = colors[1];
 player1.color = colors[2];
 player2.color = colors[3];
 player3.color = colors[4];
 player4.color = colors[5];
 player5.color = colors[6];
-// setting up the colors and setting starting number of players
 const playerDivs = document.querySelectorAll("#playersContainer > div");
-playerDivs.forEach(function(element, i) {
-  element.style.background = players[i].color;
-});
 let numPlayers = 4;
+// load and save state functions
+function loadState() {
+  temp2 = localStorage.getItem("numPlayers");
+  numPlayers = Number(temp2);
+  for (let i = 0; i < numPlayers; i++) {
+    let player = "player" + i;
+    let temp = JSON.parse(localStorage.getItem(player));
+    players[i].life = temp.life;
+    players[i].poison = temp.poison;
+    players[i].color = temp.color;
+    players[i].commanderDamage = temp.commanderDamage;
+    players[i].rotated = temp.rotated;
+    players[i].castCount = temp.castCount;
+  }
+}
+function saveState() {
+  for (let i = 0; i < numPlayers; i++) {
+    let player = "player" + i;
+    localStorage.setItem(player, JSON.stringify(players[i]));
+  }
+  localStorage.setItem("numPlayers", numPlayers);
+  localStorage.setItem("bool", "true");
+}
+if (localStorage.bool) {
+  loadState();
+}
+window.addEventListener("unload", saveState);
 // display board is primarily used for changing number of players
 function displayBoard() {
   if (numPlayers === 6) {
@@ -113,12 +129,16 @@ function displayBoard() {
     playerDivs[0].style.width = "100vw";
     playerDivs[1].style.width = "100vw";
   }
-  for (i = 0; i < numPlayers; i++) {
+  for (let i = 0; i < numPlayers; i++) {
     playerDivs[i].classList.remove("hidden");
+    playerDivs[i].style.background = players[i].color;
     commanderDamageButtons[i].classList.remove("hidden");
     pBoxes[i].classList.remove("hidden");
+    players[i].displayLife();
+    let deg = players[i].rotated ? 180 : 0;
+    rotate(playerDivs[i], deg);
   }
-  for (i = numPlayers; i < 6; i++) {
+  for (let i = numPlayers; i < 6; i++) {
     playerDivs[i].classList.add("hidden");
     commanderDamageButtons[i].classList.add("hidden");
     pBoxes[i].classList.add("hidden");
@@ -143,7 +163,7 @@ const closeModal = () => {
   modalBackground.classList.add("hidden");
 };
 // rotate buttons
-let rotateButtons = document.querySelectorAll("#playersContainer button:nth-child(1)");
+const rotateButtons = document.querySelectorAll("#playersContainer button:nth-child(1)");
 rotateButtons.forEach(function(element, i) {
   element.addEventListener("click", function() {
     let deg = players[i].rotated ? 0 : 180;
@@ -272,6 +292,8 @@ function addPlayer() {
     }
 };
 document.getElementById("newGamePrompt").addEventListener("click", function() {
+  localStorage.clear();
+  window.removeEventListener("unload", saveState);
   location.reload();
 });
 function hidePlayer() {
@@ -372,18 +394,6 @@ dice.forEach(function(element) {
   element.addEventListener("click", getRandom);
 });
 document.getElementById("exitDice").addEventListener("click", closeModal);
-// to prevent ios mobile app from auto-refreshing
-function visibilityHandler() {
-  var hash = "#bg";
-  if (document.hidden && !window.location.hash) {
-    window.history.replaceState(null, null, window.location + hash);
-  } else if (!document.hidden && window.location.hash == hash) {
-    var l = "" + window.location;
-    window.history.replaceState(null, null, l.substr(0, l.length - hash.length));
-  }
-};
-document.addEventListener("visibilitychange", visibilityHandler, false);
-visibilityHandler();
 
 displayBoard();
 

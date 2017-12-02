@@ -272,7 +272,7 @@ function addPlayer() {
     }
 };
 document.getElementById("newGamePrompt").addEventListener("click", function() {
-  alert("Please refresh your browser to start a new game");
+  location.reload();
 });
 function hidePlayer() {
   if (numPlayers === 2) {
@@ -372,19 +372,45 @@ dice.forEach(function(element) {
   element.addEventListener("click", getRandom);
 });
 document.getElementById("exitDice").addEventListener("click", closeModal);
+// to prevent ios mobile app from auto-refreshing
+function visibilityHandler() {
+  var hash = "#bg";
+  if (document.hidden && !window.location.hash) {
+    window.history.replaceState(null, null, window.location + hash);
+  } else if (!document.hidden && window.location.hash == hash) {
+    var l = "" + window.location;
+    window.history.replaceState(null, null, l.substr(0, l.length - hash.length));
+  }
+};
+document.addEventListener("visibilitychange", visibilityHandler, false);
+visibilityHandler();
+
 displayBoard();
 
 // to do:
 
-// in life modal the button seems to be on top of life div, they should be two stacked divs
 // options window
   // toggle column view
   // toggle cmd damage / life total bind
   // radial vs linear gradients??
-// prevent double click zoom on mobile Safari
-// full screen support for Chrome
+  // turn life tracking on
+      // reveals a turn button, center left
+        // record after EVERY turn (y-axis)
+          // could even highlight active player
+      // records each time life / cmd modals are closed
+        // x-axis
+      // dynamic graph gradually generates when you turn off life tracking
+// full screen support for Chrome (ask jim to test)
 // perhaps have rotate and commander buttons in same div, so only two divs per player
-// graph of player damage?
-  // turn button or gesture
-// make styles work in desktop or mobile, media queries
-// make portrait layout
+// make styles work in desktop, tablet, or mobile, media queries
+// make portrait layout?
+
+// other potential features
+
+// edit player name
+// support for commander leagues
+  // customizable buttons that add and subtract meta-points
+    // first blood, etc can only be activated once per game
+    // records things like most life lost in one turn...
+      // overall life points gained or lost
+      // how many times you've cast your commander

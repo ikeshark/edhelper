@@ -5,6 +5,7 @@ button {
   border-color: white;
   padding: 0;
   border-radius: 0px;
+  border-width: 0px;
 }
 button:focus {
   outline: none;
@@ -58,7 +59,7 @@ label {
   height: 50vh;
   display: flex;
   transition: all 0.5s ease-in-out;
-  border: 0.3em white solid;
+  border: 0.2em white solid;
   box-sizing: border-box;
 }
 .lifeButtons {
@@ -272,7 +273,7 @@ img {
   width: 15%;
   height: 35%;
   margin: 0.5% 1% 0.5% 1%;
-  font-size: 2em;
+  font-size: 3em;
   cursor: pointer;
 }
 input[type=radio] {
@@ -328,10 +329,9 @@ modalWindowDice {
    transform: translate(-50%, -50%);
    width: 15vh;
    height: 15vh;
-   border: 0;
-   background-size: contain;
-   background-image: url("https://upload.wikimedia.org/wikipedia/commons/4/4b/Gear_icon-72a7cf.svg");
-   background-repeat: no-repeat;
-   background-color: white;
-   background-blend-mode: difference;
+   background:rgba(255,255,255,0.8);
+}
+#gearIcon {
+  width: 15vh;
+  opacity: 1;
 }

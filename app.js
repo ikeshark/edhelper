@@ -9,6 +9,7 @@ const wubr = colorCombinator(w, u, b, r);
 const wubg = colorCombinator(w, u, b, g);
 const wurg = colorCombinator(w, u, r, g);
 const ubrg = colorCombinator(u, b, r, g);
+const wbrg = colorCombinator(w, b, r, g);
 const wubrg = colorCombinator(w, u, b, r, g);
 const mini = "linear-gradient(45deg, #30e8bf, #ff8235)";
 const coal = "linear-gradient(to left, #eb5757, black)";
@@ -41,7 +42,7 @@ for (let i = 1; i < 5; i++) {
   }
 }
 colors = colors.concat(threecolors);
-let othercolors = [wubr, wubg, wurg, ubrg, wubrg, rasta, rainbow, blackWhite, whiteBlack, whiteBlackWhite, blackWhiteBlack, mini, coal, blueSky];
+let othercolors = [wubr, wubg, wurg, wbrg, ubrg, wubrg, rasta, rainbow, blackWhite, whiteBlack, whiteBlackWhite, blackWhiteBlack, mini, coal, blueSky];
 colors = colors.concat(othercolors);
 // player object and prototype
 function Player(i) {
@@ -69,12 +70,12 @@ let player5 = new Player(5);
 let players = [player0, player1, player2, player3, player4, player5];
 // default color assignment
   // should probably do this in a loop
-player0.color = colors[1];
+player0.color = colors[5];
 player1.color = colors[2];
 player2.color = colors[3];
 player3.color = colors[4];
-player4.color = colors[5];
-player5.color = colors[6];
+player4.color = colors[6];
+player5.color = colors[7];
 const playerDivs = document.querySelectorAll("#playersContainer > div");
 let numPlayers = 4;
 // load and save state functions
@@ -105,11 +106,20 @@ if (localStorage.bool) {
 }
 window.addEventListener("unload", saveState);
 // display board is primarily used for changing number of players
+// border stuff here is sloppy and not the right approach. hack fix for now
 function displayBoard() {
   if (numPlayers === 6) {
-    for (let i = 3; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {
       playerDivs[i].style.width = "33.33vw";
     }
+    playerDivs[0].style.borderRight = "0px";
+    playerDivs[1].style.borderRight = "0px";
+    playerDivs[3].style.borderRight = "0px";
+    playerDivs[4].style.borderRight = "0px";
+    playerDivs[1].style.borderLeft = "0px";
+    playerDivs[2].style.borderLeft = "0px";
+    playerDivs[4].style.borderLeft = "0px";
+    playerDivs[5].style.borderLeft = "0px";
   } else if (numPlayers === 5) {
     for (let i = 0; i < 3; i++) {
       playerDivs[i].style.width = "33.33vw";
@@ -117,14 +127,26 @@ function displayBoard() {
     for (let i = 3; i < 5; i++) {
       playerDivs[i].style.width = "50vw";
     }
+    playerDivs[0].style.borderRight = "0px";
+    playerDivs[1].style.borderRight = "0px";
+    playerDivs[1].style.borderLeft = "0px";
+    playerDivs[2].style.borderLeft = "0px";
+    playerDivs[3].style.borderRight = "0px";
+    playerDivs[4].style.borderLeft = "0px";
   } else if (numPlayers === 4) {
     for (let i = 0; i < 4; i++) {
       playerDivs[i].style.width = "50vw";
     }
+    playerDivs[0].style.borderRight = "0px";
+    playerDivs[2].style.borderRight = "0px";
+    playerDivs[1].style.borderLeft = "0px";
+    playerDivs[3].style.borderLeft = "0px";
   } else if (numPlayers === 3) {
     playerDivs[0].style.width = "50vw";
     playerDivs[1].style.width = "50vw";
     playerDivs[2].style.width = "100vw";
+    playerDivs[0].style.borderRight = "0px";
+    playerDivs[1].style.borderLeft = "0px";
   } else {
     playerDivs[0].style.width = "100vw";
     playerDivs[1].style.width = "100vw";
@@ -347,14 +369,14 @@ document.getElementById("threeColors").addEventListener("click", function() {
 document.getElementById("fourFiveColors").addEventListener("click", function() {
   clearSelected();
   this.classList.add("menuSelected");
-  for (i = 26; i < 31; i++) {
+  for (i = 26; i < 32; i++) {
     colorBoxes[i].classList.remove("hidden");
   }
 });
 document.getElementById("otherColors").addEventListener("click", function() {
   clearSelected();
   this.classList.add("menuSelected");
-  for (i = 31; i < colorBoxes.length; i++) {
+  for (i = 32; i < colorBoxes.length; i++) {
     colorBoxes[i].classList.remove("hidden");
   }
 });
@@ -384,8 +406,8 @@ function getRandom() {
     element.classList.remove("selectedDice");
     element.innerHTML = element.value;
   });
-  let d = this.value - 1;
-  let r = Math.floor(Math.random() * d + 1);
+//  let d = this.value - 1;
+  let r = Math.floor(Math.random() * this.value) + 1;
   // r += 1;
   this.classList.add("selectedDice");
   this.innerHTML = r;

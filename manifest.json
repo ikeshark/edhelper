@@ -1,5 +1,19 @@
 {
+  "name": "EDH App",
   "start_url": "index.html",
   "display": "fullscreen",
-  "orientation": "landscape"
+  "orientation": "landscape",
+  "icons": [{
+  "src": "Icon-App-40x40@3x.png",
+  "sizes": "40x40",
+  "type": "image/png"
+}, {
+  "src": "Icon-App-72x72@2x.png",
+  "sizes": "72x72",
+  "type": "image/png"
+}, {
+  "src": "ic_launcher.png",
+  "sizes": "144x144",
+  "type": "image/png"
+}]
 }

@@ -105,57 +105,78 @@ if (localStorage.bool) {
   loadState();
 }
 window.addEventListener("unload", saveState);
+
+let icons = document.querySelectorAll(".mainIcons");
 // display board is primarily used for changing number of players
 // border stuff here is sloppy and not the right approach. hack fix for now
+// can I switch styles using CSS here, like adding and subtracting classes?
+// then I can reduce code and hide styling
+// use switch / case here
 function displayBoard() {
-  if (numPlayers === 6) {
-    for (let i = 0; i < 6; i++) {
-      playerDivs[i].style.width = "33.33vw";
-    }
-    playerDivs[0].style.borderRight = "0px";
-    playerDivs[1].style.borderRight = "0px";
-    playerDivs[3].style.borderRight = "0px";
-    playerDivs[4].style.borderRight = "0px";
-    playerDivs[1].style.borderLeft = "0px";
-    playerDivs[2].style.borderLeft = "0px";
-    playerDivs[4].style.borderLeft = "0px";
-    playerDivs[5].style.borderLeft = "0px";
-  } else if (numPlayers === 5) {
-    for (let i = 0; i < 3; i++) {
-      playerDivs[i].style.width = "33.33vw";
-    }
-    for (let i = 3; i < 5; i++) {
-      playerDivs[i].style.width = "50vw";
-    }
-    playerDivs[0].style.borderRight = "0px";
-    playerDivs[1].style.borderRight = "0px";
-    playerDivs[1].style.borderLeft = "0px";
-    playerDivs[2].style.borderLeft = "0px";
-    playerDivs[3].style.borderRight = "0px";
-    playerDivs[4].style.borderLeft = "0px";
-  } else if (numPlayers === 4) {
-    for (let i = 0; i < 4; i++) {
-      playerDivs[i].style.width = "50vw";
-    }
-    playerDivs[0].style.borderRight = "0px";
-    playerDivs[2].style.borderRight = "0px";
-    playerDivs[1].style.borderLeft = "0px";
-    playerDivs[3].style.borderLeft = "0px";
-  } else if (numPlayers === 3) {
-    playerDivs[0].style.width = "50vw";
-    playerDivs[1].style.width = "50vw";
-    playerDivs[2].style.width = "100vw";
-    playerDivs[0].style.borderRight = "0px";
-    playerDivs[1].style.borderLeft = "0px";
-  } else {
-    playerDivs[0].style.width = "100vw";
-    playerDivs[1].style.width = "100vw";
+  switch (numPlayers) {
+    case 6:
+      for (let i = 0; i < 6; i++) {
+        playerDivs[i].style.width = "33.33vw";
+      }
+      for (let i = 0; i < 3; i++) {
+        playerDivs[i].style.borderBottom = "0";
+      }
+      playerDivs[0].style.borderRight = "0px";
+      playerDivs[1].style.borderRight = "0px";
+      playerDivs[1].style.borderLeft = "0px";
+      playerDivs[2].style.borderLeft = "0px";
+      playerDivs[3].style.borderRight = "0px";
+      playerDivs[4].style.borderRight = "0px";
+      playerDivs[4].style.borderLeft = "0px";
+      playerDivs[5].style.borderLeft = "0px";
+      break;
+    case 5:
+      for (let i = 0; i < 3; i++) {
+        playerDivs[i].style.width = "33.33vw";
+        playerDivs[i].style.borderBottom = "0";
+      }
+      for (let i = 3; i < 5; i++) {
+        playerDivs[i].style.width = "50vw";
+      }
+      playerDivs[0].style.borderRight = "0px";
+      playerDivs[1].style.borderRight = "0px";
+      playerDivs[1].style.borderLeft = "0px";
+      playerDivs[2].style.borderLeft = "0px";
+      playerDivs[3].style.borderRight = "0px";
+      playerDivs[4].style.borderLeft = "0px";
+      break;
+    case 4:
+      for (let i = 0; i < 4; i++) {
+        if (i === 0 || i === 1) {
+          playerDivs[i].style.borderBottom = "0";
+        }
+        playerDivs[i].style.width = "50vw";
+      }
+      playerDivs[0].style.borderRight = "0px";
+      playerDivs[2].style.borderRight = "0px";
+      playerDivs[1].style.borderLeft = "0px";
+      playerDivs[3].style.borderLeft = "0px";
+      break;
+    case 3:
+      playerDivs[0].style.width = "50vw";
+      playerDivs[1].style.width = "50vw";
+      playerDivs[2].style.width = "100vw";
+      playerDivs[0].style.borderRight = "0px";
+      playerDivs[1].style.borderLeft = "0px";
+      icons[4].style.width = "35%";
+      icons[5].style.width = "35%";
+      break;
+    case 2:
+      for (let i = 0; i < 2; i++) {
+        playerDivs[i].style.width = "100vw";
+        icons[i].style.width = "35%";
+        icons[i + 2].style.width = "35%";
+      }
   }
   for (let i = 0; i < numPlayers; i++) {
     playerDivs[i].classList.remove("hidden");
     playerDivs[i].style.background = players[i].color;
     commanderDamageButtons[i].classList.remove("hidden");
-    pBoxes[i].classList.remove("hidden");
     players[i].displayLife();
     let deg = players[i].rotated ? 180 : 0;
     rotate(playerDivs[i], deg);
@@ -163,7 +184,6 @@ function displayBoard() {
   for (let i = numPlayers; i < 6; i++) {
     playerDivs[i].classList.add("hidden");
     commanderDamageButtons[i].classList.add("hidden");
-    pBoxes[i].classList.add("hidden");
   }
 }
 // rotate function
@@ -185,7 +205,7 @@ const closeModal = () => {
   modalBackground.classList.add("hidden");
 };
 // rotate buttons
-const rotateButtons = document.querySelectorAll("#playersContainer button:nth-child(1)");
+const rotateButtons = document.querySelectorAll(".buttonContainer button:nth-child(2)");
 rotateButtons.forEach(function(element, i) {
   element.addEventListener("click", function() {
     let deg = players[i].rotated ? 0 : 180;
@@ -194,7 +214,7 @@ rotateButtons.forEach(function(element, i) {
   });
 });
 // life change modal window
-const lifeButtons = document.querySelectorAll("#playersContainer button:nth-child(2)");
+const lifeButtons = document.querySelectorAll(".lifeButtons");
 const lifeDisplay = document.getElementById("modalLifeDisplay");
 const lifePlusMinusButtons = document.querySelectorAll(".plusMinus");
 const doubleHalveButtons = document.querySelectorAll(".doubleHalve");
@@ -241,9 +261,23 @@ lifeButtons.forEach(function (element, i) {
   });
 });
 // commander damage modal window
-const commanderButtons = document.querySelectorAll("#playersContainer button:nth-child(3)");
+const commanderButtons = document.querySelectorAll(".buttonContainer button:nth-child(1)");
 const commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + label");
 const cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus button");
+commanderDamageButtons.forEach((elem) => {
+  elem.addEventListener('click', () => {
+    cmdPlusMinusButtons[0].classList.remove("hidden");
+    cmdPlusMinusButtons[1].classList.remove("hidden");
+  });
+});
+cmdPlusMinusButtons[0].addEventListener('click', () => {
+  cmdPlusMinusButtons[2].classList.remove("hidden");
+  cmdPlusMinusButtons[3].classList.remove("hidden");
+});
+cmdPlusMinusButtons[1].addEventListener('click', () => {
+  cmdPlusMinusButtons[2].classList.remove("hidden");
+  cmdPlusMinusButtons[3].classList.remove("hidden");
+});
 commanderButtons.forEach(function (element, i) {
   element.addEventListener("click", function(){
     // variables
@@ -280,6 +314,7 @@ commanderButtons.forEach(function (element, i) {
     let closeCmdModal = () => {
       cmdPlusMinusButtons.forEach(function(element) {
         element.removeEventListener("click", plusAndMinus);
+        element.classList.add("hidden");
       });
       closeModal();
     };
@@ -330,6 +365,11 @@ document.getElementById("hidePlayer").addEventListener("click", hidePlayer);
 let colorBoxes = document.querySelectorAll(".allColors");
 colorBoxes.forEach(function(element, i) {
   element.style.background = colors[i];
+  element.addEventListener("click", () => {
+    for (let i = 0; i < numPlayers; i++) {
+      pBoxes[i].classList.remove("hidden");
+    }
+  });
 });
 // change colors sub modal
 let pBoxes = document.querySelectorAll(".choosePlayerButtons");
@@ -392,7 +432,12 @@ pBoxes.forEach(function(element) {
 });
 document.getElementById("changeColors").addEventListener("click", function() {
   modalWindows[3].classList.remove("hidden");
-  document.getElementById("choosePlayerExit").addEventListener("click", closeModal);
+  document.getElementById("choosePlayerExit").addEventListener("click", () => {
+    closeModal();
+    pBoxes.forEach(elem => {
+      elem.classList.add("hidden");
+    });
+  });
 });
 
 // dice modal
@@ -406,9 +451,7 @@ function getRandom() {
     element.classList.remove("selectedDice");
     element.innerHTML = element.value;
   });
-//  let d = this.value - 1;
   let r = Math.floor(Math.random() * this.value) + 1;
-  // r += 1;
   this.classList.add("selectedDice");
   this.innerHTML = r;
 }
@@ -416,6 +459,12 @@ dice.forEach(function(element) {
   element.addEventListener("click", getRandom);
 });
 document.getElementById("exitDice").addEventListener("click", closeModal);
+
+// stopping 'rubberband' scrolling
+// document.body.addEventListener('touchmove', function(e) {
+//   console.log(e);
+//   e.preventDefault();
+// });
 
 displayBoard();
 

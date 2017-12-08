@@ -1,5 +1,13 @@
-/*Style Reset*/
-
+/*meida queries */
+@media screen and (min-width : 900px) {
+  body {
+    font-size: 1.7em;
+  }
+}
+/*Style Resets and General Rules*/
+body {
+  overflow: hidden;
+}
 button {
   cursor: pointer;
   border-color: white;
@@ -59,27 +67,39 @@ label {
   height: 50vh;
   display: flex;
   transition: all 0.5s ease-in-out;
-  border: 0.2em white solid;
+  border: 0.1em white solid;
   box-sizing: border-box;
 }
 .lifeButtons {
   background-color: inherit;
   display: flex;
-  font-size: 5em;
+  font-size: 7em;
   justify-content: center;
-  width: 50%;
+  width: 75%;
   height: 100%;
 }
-#playersContainer button:not(.lifeButtons){
+.buttonContainer {
   width: 25%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.buttonContainer button {
   background-color: inherit;
+  width: 100%;
+  height: 50%;
   border-color: white;
-  border-width: 0.4em;
-  border-top: 0px;
-  border-bottom: 0px;
+  border-width: 0.2em;
   box-sizing: border-box;
 }
+.buttonContainer button:nth-child(1) {
+  border-top: 0;
+  border-bottom: 0;
+}
+.buttonContainer button:nth-child(2) {
+  border-bottom: 0;
+}
+
 
 /*modals*/
 
@@ -95,10 +115,13 @@ label {
 [id^=modalWindow] {
    text-align: center;
    position: absolute;
-   width: 85vw;
+   height: 100%;
+   width: 100%;
+   /* if i want the modal look */
+   /*width: 85vw;
    height: 85vh;
    margin-top: 7.5vh;
-   margin-left: 7.5vw;
+   margin-left: 7.5vw;*/
    z-index: 9999;
    background: darkgrey;
 }
@@ -107,23 +130,30 @@ label {
 
 #lifeExit {
   width: 100%;
-  height: 20%;
+  height: 33.33%;
   font-size: 3em;
   background-color: black;
   color: white;
 }
 #modalWindowLife {
   display: flex;
+  width: 85vw;
+  height: 85vh;
+  margin-top: 7.5vh;
+  margin-left: 7.5vw;
 }
 #modalWindowLife > div {
   display: flex;
   flex-direction: column;
   width: 33.33%;
 }
-#modalWindowLife button {
+#modalWindowLife button:not(#lifeExit) {
   width: 100%;
   font-size: 2em;
   height: 33.33%;
+  border: 0.06em darkgrey solid;
+  border-left: 0;
+  border-right: 0;
 }
 #modalLifeDisplay {
   font-size: 9em;
@@ -213,6 +243,7 @@ img {
 }
 #cmdExit {
   height: 30%;
+  font-size: 1.5em;
 }
 
 .headline {
@@ -224,9 +255,12 @@ img {
   height: 80%;
 }
 
-
 /* utilities modal */
 #modalWindowUtility {
+  width: 85vw;
+  height: 85vh;
+  margin-top: 7.5vh;
+  margin-left: 7.5vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

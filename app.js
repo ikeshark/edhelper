@@ -157,6 +157,8 @@ function displayBoard() {
           players[i].number = "Player " + (i + 1);
         }
         playerDivs[i].style.width = "50vw";
+        icons[i].style.width = "55%";
+        icons[i + 2].style.width = "55%";
       }
       player2.number = 4;
       player3.number = 3;
@@ -169,6 +171,7 @@ function displayBoard() {
       for (let i = 0; i < 3; i++) {
         playerDivs[i].style.width = "50vw";
         players[i].number = i + 1;
+        icons[i].style.width = "55%";
       }
 
       playerDivs[2].style.width = "100vw";
@@ -479,8 +482,6 @@ document.getElementById("exitDice").addEventListener("click", closeModal);
 document.addEventListener("touchmove", function(e) {
   e.preventDefault();
 }, false);
-
-
 
 displayBoard();
 

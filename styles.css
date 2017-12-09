@@ -151,9 +151,10 @@ label {
   width: 100%;
   font-size: 2em;
   height: 33.33%;
-  border: 0.06em darkgrey solid;
+  border: 0.07em #65737e solid;
   border-left: 0;
   border-right: 0;
+  background-color: #c0c5ce;
 }
 #modalLifeDisplay {
   font-size: 9em;

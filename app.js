@@ -49,12 +49,10 @@ function Player(i) {
   this.i = i;
   this.poison = 0;
   this.life = 40;
+  this.number = 0;
   this.rotated = false;
   this.castCount = 0;
   this.commanderDamage = Array(6).fill(0);
-}
-Player.prototype.name = function() {
-    return "Player " + (1 + this.i);
 }
 Player.prototype.color = "";
 Player.prototype.displayLife = function() {
@@ -120,24 +118,31 @@ function displayBoard() {
       }
       for (let i = 0; i < 3; i++) {
         playerDivs[i].style.borderBottom = "0";
+        players[i].number = i + 1;
       }
+      player3.number = 6;
+      player4.number = 5;
+      player5.number = 4;
       playerDivs[0].style.borderRight = "0px";
-      playerDivs[1].style.borderRight = "0px";
-      playerDivs[1].style.borderLeft = "0px";
       playerDivs[2].style.borderLeft = "0px";
-      playerDivs[3].style.borderRight = "0px";
       playerDivs[4].style.borderRight = "0px";
       playerDivs[4].style.borderLeft = "0px";
+      playerDivs[1].style.borderRight = "0px";
+      playerDivs[1].style.borderLeft = "0px";
+      playerDivs[3].style.borderRight = "0px";
       playerDivs[5].style.borderLeft = "0px";
       break;
     case 5:
       for (let i = 0; i < 3; i++) {
         playerDivs[i].style.width = "33.33vw";
         playerDivs[i].style.borderBottom = "0";
+        players[i].number = i + 1;
       }
       for (let i = 3; i < 5; i++) {
         playerDivs[i].style.width = "50vw";
       }
+      player3.number = 5;
+      player4.number = 4;
       playerDivs[0].style.borderRight = "0px";
       playerDivs[1].style.borderRight = "0px";
       playerDivs[1].style.borderLeft = "0px";
@@ -149,17 +154,23 @@ function displayBoard() {
       for (let i = 0; i < 4; i++) {
         if (i === 0 || i === 1) {
           playerDivs[i].style.borderBottom = "0";
+          players[i].number = "Player " + (i + 1);
         }
         playerDivs[i].style.width = "50vw";
       }
+      player2.number = 4;
+      player3.number = 3;
       playerDivs[0].style.borderRight = "0px";
       playerDivs[2].style.borderRight = "0px";
       playerDivs[1].style.borderLeft = "0px";
       playerDivs[3].style.borderLeft = "0px";
       break;
     case 3:
-      playerDivs[0].style.width = "50vw";
-      playerDivs[1].style.width = "50vw";
+      for (let i = 0; i < 3; i++) {
+        playerDivs[i].style.width = "50vw";
+        players[i].number = i + 1;
+      }
+
       playerDivs[2].style.width = "100vw";
       playerDivs[0].style.borderRight = "0px";
       playerDivs[1].style.borderLeft = "0px";
@@ -171,6 +182,7 @@ function displayBoard() {
         playerDivs[i].style.width = "100vw";
         icons[i].style.width = "35%";
         icons[i + 2].style.width = "35%";
+        players[i].number = i + 1;
       }
   }
   for (let i = 0; i < numPlayers; i++) {
@@ -290,7 +302,8 @@ commanderButtons.forEach(function (element, i) {
     modalWindows[1].classList.remove("hidden");
     modalBackground.classList.remove("hidden");
     let currentPlayer = document.getElementById("currentPlayer");
-    currentPlayer.innerHTML = player.name();
+    let playerName = "Player " + player.number;
+    currentPlayer.innerHTML = playerName;
     currentPlayer.style.background = player.color;
     castCount.innerHTML = player.castCount;
     // functions
@@ -373,9 +386,7 @@ colorBoxes.forEach(function(element, i) {
 });
 // change colors sub modal
 let pBoxes = document.querySelectorAll(".choosePlayerButtons");
-pBoxes.forEach(function(element,i) {
-  element.style.background = players[i].color;
-});
+
 const colorMenuButtons = document.querySelectorAll(".colorMenu");
 function clearSelected() {
   colorMenuButtons.forEach(function(element) {
@@ -432,6 +443,10 @@ pBoxes.forEach(function(element) {
 });
 document.getElementById("changeColors").addEventListener("click", function() {
   modalWindows[3].classList.remove("hidden");
+  pBoxes.forEach(function(element,i) {
+    element.style.background = players[i].color;
+    element.innerHTML = players[i].number;
+  });
   document.getElementById("choosePlayerExit").addEventListener("click", () => {
     closeModal();
     pBoxes.forEach(elem => {
@@ -461,19 +476,20 @@ dice.forEach(function(element) {
 document.getElementById("exitDice").addEventListener("click", closeModal);
 
 // stopping 'rubberband' scrolling
-// document.body.addEventListener('touchmove', function(e) {
-//   console.log(e);
-//   e.preventDefault();
-// });
+document.addEventListener("touchmove", function(e) {
+  e.preventDefault();
+}, false);
+
+
 
 displayBoard();
 
 // to do:
 
+// icons need to be resized when going from two to three or three to four players
+// clockwise player order
 // options window
-  // toggle column view
   // toggle cmd damage / life total bind
-  // radial vs linear gradients??
   // turn life tracking on
       // reveals a turn button, center left
         // record after EVERY turn (y-axis)
@@ -481,14 +497,13 @@ displayBoard();
       // records each time life / cmd modals are closed
         // x-axis
       // dynamic graph gradually generates when you turn off life tracking
-// full screen support for Chrome (ask jim to test)
-// perhaps have rotate and commander buttons in same div, so only two divs per player
-// make styles work in desktop, tablet, or mobile, media queries
-// make portrait layout?
+// full screen support for Chrome on Android (ask jim to test)
 
 // other potential features
 
 // edit player name
+  // player name presets
+    // computer could learn and create presets
 // support for commander leagues
   // customizable buttons that add and subtract meta-points
     // first blood, etc can only be activated once per game

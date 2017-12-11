@@ -11,15 +11,19 @@ const wurg = colorCombinator(w, u, r, g);
 const ubrg = colorCombinator(u, b, r, g);
 const wbrg = colorCombinator(w, b, r, g);
 const wubrg = colorCombinator(w, u, b, r, g);
-const mini = "linear-gradient(45deg, #30e8bf, #ff8235)";
+const greenRed = "linear-gradient(45deg, #30e8bf, red)";
 const coal = "linear-gradient(to left, #eb5757, black)";
 const rasta = "linear-gradient(to bottom, red, yellow, green)";
 const rainbow = "linear-gradient(to bottom, red, orange, yellow, green, blue, indigo, violet)";
-const blackWhite = "radial-gradient(circle, black, white)";
+// const blackWhite = "radial-gradient(circle, black, white)";
 const whiteBlack = "radial-gradient(circle, white, black)";
 const whiteBlackWhite = "radial-gradient(circle, white, black, white)";
 const blackWhiteBlack = "radial-gradient(circle, black, white, black)";
 const blueSky = "linear-gradient(to left, #56ccf2, #2f80ed)";
+const greenWhite = "linear-gradient(to left, white, green)";
+const redWhite = "linear-gradient(to left, #ffcccc, red)";
+const greenBlue = "linear-gradient(to left, green, blue)";
+const blackWhite = "linear-gradient(to left, white, black)";
 function colorCombinator() {
   let result = "repeating-linear-gradient(45deg ";
   for (let i = 0; i < arguments.length; i++) {
@@ -42,22 +46,35 @@ for (let i = 1; i < 5; i++) {
   }
 }
 colors = colors.concat(threecolors);
-let othercolors = [wubr, wubg, wurg, wbrg, ubrg, wubrg, rasta, rainbow, blackWhite, whiteBlack, whiteBlackWhite, blackWhiteBlack, mini, coal, blueSky];
+let othercolors = [wubr, wubg, wurg, wbrg, ubrg, wubrg, rasta, rainbow, greenWhite, redWhite, greenBlue, blackWhite, greenRed, coal, blueSky];
 colors = colors.concat(othercolors);
 // player object and prototype
 function Player(i) {
   this.i = i;
   this.poison = 0;
   this.life = 40;
-  this.number = 0;
+  this.number = this.i + 1;
   this.rotated = false;
   this.castCount = 0;
   this.commanderDamage = Array(6).fill(0);
 }
 Player.prototype.color = "";
+
 Player.prototype.displayLife = function() {
   lifeButtons[this.i].innerHTML = this.life;
   lifeDisplay.innerHTML = this.life;
+  function isOverflown(element) {
+    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+  }
+  for (let i = 9; i > 0; i -= 0.25) {
+    lifeButtons[this.i].style.fontSize = i + "em";
+    let overflow = isOverflown(lifeButtons[this.i]);
+    if (!overflow) {
+      let fontSize = i - 0.5;
+      lifeButtons[this.i].style.fontSize = fontSize + "em";
+      break;
+    }
+  }
 };
 let player0 = new Player(0);
 let player1 = new Player(1);
@@ -67,7 +84,6 @@ let player4 = new Player(4);
 let player5 = new Player(5);
 let players = [player0, player1, player2, player3, player4, player5];
 // default color assignment
-  // should probably do this in a loop
 player0.color = colors[5];
 player1.color = colors[2];
 player2.color = colors[3];
@@ -105,67 +121,40 @@ if (localStorage.bool) {
 window.addEventListener("unload", saveState);
 
 let icons = document.querySelectorAll(".mainIcons");
-// display board is primarily used for changing number of players
-// border stuff here is sloppy and not the right approach. hack fix for now
-// can I switch styles using CSS here, like adding and subtracting classes?
-// then I can reduce code and hide styling
-// use switch / case here
+// display board function
 function displayBoard() {
+  let container = document.getElementById("playersContainer");
   switch (numPlayers) {
     case 6:
       for (let i = 0; i < 6; i++) {
         playerDivs[i].style.width = "33.33vw";
       }
-      for (let i = 0; i < 3; i++) {
-        playerDivs[i].style.borderBottom = "0";
-        players[i].number = i + 1;
-      }
-      player3.number = 6;
-      player4.number = 5;
-      player5.number = 4;
-      playerDivs[0].style.borderRight = "0px";
-      playerDivs[2].style.borderLeft = "0px";
-      playerDivs[4].style.borderRight = "0px";
-      playerDivs[4].style.borderLeft = "0px";
-      playerDivs[1].style.borderRight = "0px";
-      playerDivs[1].style.borderLeft = "0px";
-      playerDivs[3].style.borderRight = "0px";
-      playerDivs[5].style.borderLeft = "0px";
+      let layout6 = '"one one two two three three""six six five five four four"';
+      container.style.gridTemplateAreas = layout6;
       break;
     case 5:
       for (let i = 0; i < 3; i++) {
         playerDivs[i].style.width = "33.33vw";
-        playerDivs[i].style.borderBottom = "0";
-        players[i].number = i + 1;
       }
+
       for (let i = 3; i < 5; i++) {
         playerDivs[i].style.width = "50vw";
       }
-      player3.number = 5;
-      player4.number = 4;
-      playerDivs[0].style.borderRight = "0px";
-      playerDivs[1].style.borderRight = "0px";
-      playerDivs[1].style.borderLeft = "0px";
-      playerDivs[2].style.borderLeft = "0px";
-      playerDivs[3].style.borderRight = "0px";
-      playerDivs[4].style.borderLeft = "0px";
+      let layout5 = '"one one two two three three""five five five four four four"';
+      container.style.gridTemplateAreas = layout5;
       break;
     case 4:
       for (let i = 0; i < 4; i++) {
         if (i === 0 || i === 1) {
           playerDivs[i].style.borderBottom = "0";
-          players[i].number = "Player " + (i + 1);
+          players[i].number = i + 1;
         }
         playerDivs[i].style.width = "50vw";
         icons[i].style.width = "55%";
         icons[i + 2].style.width = "55%";
       }
-      player2.number = 4;
-      player3.number = 3;
-      playerDivs[0].style.borderRight = "0px";
-      playerDivs[2].style.borderRight = "0px";
-      playerDivs[1].style.borderLeft = "0px";
-      playerDivs[3].style.borderLeft = "0px";
+      let layout4 = '"one one two two" "four four three three"';
+      container.style.gridTemplateAreas = layout4;
       break;
     case 3:
       for (let i = 0; i < 3; i++) {
@@ -173,10 +162,9 @@ function displayBoard() {
         players[i].number = i + 1;
         icons[i].style.width = "55%";
       }
-
       playerDivs[2].style.width = "100vw";
-      playerDivs[0].style.borderRight = "0px";
-      playerDivs[1].style.borderLeft = "0px";
+      let layout3 = '"one one two two" "three three three three"';
+      container.style.gridTemplateAreas = layout3;
       icons[4].style.width = "35%";
       icons[5].style.width = "35%";
       break;
@@ -187,18 +175,18 @@ function displayBoard() {
         icons[i + 2].style.width = "35%";
         players[i].number = i + 1;
       }
+      let layout2 = '"one" "two"';
+      container.style.gridTemplateAreas = layout2;
   }
   for (let i = 0; i < numPlayers; i++) {
     playerDivs[i].classList.remove("hidden");
     playerDivs[i].style.background = players[i].color;
-    commanderDamageButtons[i].classList.remove("hidden");
-    players[i].displayLife();
     let deg = players[i].rotated ? 180 : 0;
     rotate(playerDivs[i], deg);
+    setTimeout(players[i].displayLife.bind(players[i]), 400);
   }
   for (let i = numPlayers; i < 6; i++) {
     playerDivs[i].classList.add("hidden");
-    commanderDamageButtons[i].classList.add("hidden");
   }
 }
 // rotate function
@@ -487,8 +475,8 @@ displayBoard();
 
 // to do:
 
-// icons need to be resized when going from two to three or three to four players
-// clockwise player order
+// implement grid for clockwise player order
+  // and cleaner 'displayBoard' function
 // options window
   // toggle cmd damage / life total bind
   // turn life tracking on

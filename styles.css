@@ -57,12 +57,31 @@ label {
 #playersContainer {
   height: 100vh;
   width: 100vw;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-gap: .01em;
+  grid-template-areas: "one one two two" "four four three three";
+  /*flex-wrap: wrap;*/
+}
+#playersContainer div:nth-child(1) {
+  grid-area: one;
+}
+#playersContainer div:nth-child(2) {
+  grid-area: two;
+}
+#playersContainer div:nth-child(3) {
+  grid-area: three;
+}
+#playersContainer div:nth-child(4) {
+  grid-area: four;
+}
+#playersContainer div:nth-child(5) {
+  grid-area: five;
+}
+#playersContainer div:nth-child(6) {
+  grid-area: six;
 }
 
 /*Player*/
-
 #playersContainer > div {
   height: 50vh;
   display: flex;
@@ -94,10 +113,12 @@ label {
 }
 .buttonContainer button:nth-child(1) {
   border-top: 0;
+  border-right: 0;
   border-bottom: 0;
 }
 .buttonContainer button:nth-child(2) {
   border-bottom: 0;
+  border-right: 0;
 }
 
 
@@ -117,11 +138,6 @@ label {
    position: absolute;
    height: 100%;
    width: 100%;
-   /* if i want the modal look */
-   /*width: 85vw;
-   height: 85vh;
-   margin-top: 7.5vh;
-   margin-left: 7.5vw;*/
    z-index: 9999;
    background: darkgrey;
 }
@@ -145,7 +161,15 @@ label {
 #modalWindowLife > div {
   display: flex;
   flex-direction: column;
-  width: 33.33%;
+}
+#modalWindowLife div:nth-child(1) {
+  width: 25%;
+}
+#modalWindowLife div:nth-child(2) {
+  width: 50%;
+}
+#modalWindowLife div:nth-child(3) {
+  width: 25%;
 }
 #modalWindowLife button:not(#lifeExit) {
   width: 100%;
@@ -157,7 +181,7 @@ label {
   background-color: #c0c5ce;
 }
 #modalLifeDisplay {
-  font-size: 9em;
+  font-size: 7em;
   height: 70%;
   display: flex;
   justify-content: center;

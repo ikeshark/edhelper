@@ -300,6 +300,16 @@ lifeButtons.forEach(function (element, i) {
 const commanderButtons = document.querySelectorAll(".buttonContainer button:nth-child(1)");
 const commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + label");
 const cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus button");
+const castCount = document.querySelector("#castCount + label");
+const poison = document.querySelector("#poison + label");
+poison.addEventListener("click", () => {
+  cmdPlusMinusButtons[0].classList.remove("invisible");
+  cmdPlusMinusButtons[1].classList.remove("invisible");
+});
+castCount.addEventListener("click", () => {
+  cmdPlusMinusButtons[0].classList.remove("invisible");
+  cmdPlusMinusButtons[1].classList.remove("invisible");
+});
 commanderDamageButtons.forEach((elem) => {
   elem.addEventListener('click', () => {
     cmdPlusMinusButtons[0].classList.remove("invisible");
@@ -318,8 +328,6 @@ commanderButtons.forEach(function (element, i) {
   element.addEventListener("click", function(){
     // variables
     let player = players[i];
-    let castCount = document.querySelector("#castCount + label");
-    let poison = document.querySelector("#poison + label");
     // opening and orienting modal window
     let deg = player.rotated ? 180 : 0;
     rotate(modalWindows[1], deg);
@@ -350,7 +358,7 @@ commanderButtons.forEach(function (element, i) {
     let closeCmdModal = () => {
       cmdPlusMinusButtons.forEach(function(element) {
         element.removeEventListener("click", plusAndMinus);
-        element.classList.add("hidden");
+        element.classList.add("invisible");
       });
       closeModal();
     };

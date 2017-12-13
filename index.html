@@ -14,42 +14,60 @@
 <body>
   <div id="playersContainer">
     <div>
-      <button class="lifeButtons outline"></button>
+      <div class="lifeAndNameContainer">
+        <button class="lifeButtons outline"></button>
+        <p class="playerName outline">Mr. Poopy Butthole</p>
+      </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="edh.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
       </div>
     </div>
     <div>
-      <button class="lifeButtons outline"></button>
+      <div class="lifeAndNameContainer">
+        <button class="lifeButtons outline"></button>
+        <p class="playerName outline">Abradolf Lincler</p>
+      </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="edh.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
       </div>
     </div>
     <div>
-      <button class="lifeButtons outline"></button>
+      <div class="lifeAndNameContainer">
+        <button class="lifeButtons outline"></button>
+        <p class="playerName outline">Rovolio Clockberg, Jr.</p>
+      </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="edh.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
       </div>
     </div>
     <div>
-      <button class="lifeButtons outline"></button>
+      <div class="lifeAndNameContainer">
+        <button class="lifeButtons outline"></button>
+        <p class="playerName outline">Phoenix Person</p>
+      </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="edh.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
       </div>
     </div>
     <div>
-      <button class="lifeButtons outline"></button>
+      <div class="lifeAndNameContainer">
+        <button class="lifeButtons outline"></button>
+        <p class="playerName outline">Krombopulos Michael</p>
+      </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="edh.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
       </div>
     </div>
     <div>
-      <button class="lifeButtons outline"></button>
+      <div class="lifeAndNameContainer">
+        <button class="lifeButtons outline"></button>
+        <p class="playerName outline">Mr. Meeseeks</p>
+      </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="edh.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
@@ -79,19 +97,19 @@
         <div id="cmdContainer">
           <p class="headline">commanders</p>
           <div id="cmdInnerContainer">
-            <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0"><label for="cmdButton0" class="commanderDamage outline"></label>
-            <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1"><label for="cmdButton1" class="commanderDamage outline"></label>
-            <input type="radio" name="cmdModalGroup" value="2" id="cmdButton2"><label for="cmdButton2" class="commanderDamage outline"></label>
-            <input type="radio" name="cmdModalGroup" value="3" id="cmdButton3"><label for="cmdButton3" class="commanderDamage outline"></label>
-            <input type="radio" name="cmdModalGroup" value="4" id="cmdButton4"><label for="cmdButton4" class="commanderDamage outline hidden"></label>
-            <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5"><label for="cmdButton5" class="commanderDamage outline hidden"></label>
+            <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0"><label for="cmdButton0" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1"><label for="cmdButton1" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="2" id="cmdButton2"><label for="cmdButton2" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="3" id="cmdButton3"><label for="cmdButton3" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="4" id="cmdButton4"><label for="cmdButton4" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5"><label for="cmdButton5" class="outline"></label>
           </div>
         </div>
         <div id="cmdPlusMinus">
-          <button value="5" id="plus5" class="hidden">&#43; 5</button>
-          <button value="1" id="plus" class="hidden">&#43; 1</button>
-          <button value="-1" id="minus" class="hidden">&#8211; 1</button>
-          <button value="-5" id="minus5" class="hidden">&#8211; 5</button>
+          <button value="5" id="plus5" class="invisible">&#43; 5</button>
+          <button value="1" id="plus" class="invisible">&#43; 1</button>
+          <button value="-1" id="minus" class="invisible">&#8211; 1</button>
+          <button value="-5" id="minus5" class="invisible">&#8211; 5</button>
         </div>
         <div id="cmdPoisonContainer">
           <p class="headline">poison</p>
@@ -111,7 +129,6 @@
       <button id="utiliExit" class="exit">EXIT</button>
     </div>
     <div id="modalWindowChangeColor" class="hidden">
-      <!-- <p>select new color first, then select player below:</p> -->
       <button id="singleColors" class="colorMenu menuSelected">1 color</button>
       <button id="twoColors" class="colorMenu">2 colors</button>
       <button id="threeColors" class="colorMenu">3 colors</button>

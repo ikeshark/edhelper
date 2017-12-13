@@ -22,7 +22,7 @@ const blackWhiteBlack = "radial-gradient(circle, black, white, black)";
 const blueSky = "linear-gradient(to left, #56ccf2, #2f80ed)";
 const greenWhite = "linear-gradient(to left, white, green)";
 const redWhite = "linear-gradient(to left, #ffcccc, red)";
-const greenBlue = "linear-gradient(to left, green, blue)";
+const greenBlue = "linear-gradient(to left, #45a247, #283c86)";
 const blackWhite = "linear-gradient(to left, white, black)";
 function colorCombinator() {
   let result = "repeating-linear-gradient(45deg ";
@@ -54,18 +54,18 @@ function Player(i) {
   this.poison = 0;
   this.life = 40;
   this.number = this.i + 1;
+  this.name = "Player " + this.number;
   this.rotated = false;
   this.castCount = 0;
   this.commanderDamage = Array(6).fill(0);
 }
 Player.prototype.color = "";
-
+function isOverflown(element) {
+  return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+}
 Player.prototype.displayLife = function() {
   lifeButtons[this.i].innerHTML = this.life;
   lifeDisplay.innerHTML = this.life;
-  function isOverflown(element) {
-    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
-  }
   for (let i = 9; i > 0; i -= 0.25) {
     lifeButtons[this.i].style.fontSize = i + "em";
     let overflow = isOverflown(lifeButtons[this.i]);
@@ -73,6 +73,34 @@ Player.prototype.displayLife = function() {
       let fontSize = i - 0.5;
       lifeButtons[this.i].style.fontSize = fontSize + "em";
       break;
+    }
+  }
+  for (let i = 9; i > 0; i -= 0.25) {
+    lifeDisplay.style.fontSize = i + "em";
+    let overflow = isOverflown(lifeDisplay);
+    if (!overflow) {
+      let fontSize = i - 0.5;
+      lifeDisplay.style.fontSize = fontSize + "em";
+      break;
+    }
+  }
+};
+
+Player.prototype.changeName = function() {
+  let newName = prompt("Please enter new name");
+  if (newName != null) {
+    this.name = newName;
+    nameButtons[this.i].innerHTML = newName;
+    // this is good and all but, but if you go from 4 to 5 players, player name will not auto-adjust
+    // should build displayName() have changeName call displayName()
+    for (let i = 1; i > 0; i -= 0.05) {
+      nameButtons[this.i].style.fontSize = i + "em";
+      let overflow = isOverflown(nameButtons[this.i]);
+      if (!overflow) {
+        let fontSize = i - 0.10;
+        nameButtons[this.i].style.fontSize = fontSize + "em";
+        break;
+      }
     }
   }
 };
@@ -99,6 +127,7 @@ function loadState() {
   for (let i = 0; i < numPlayers; i++) {
     let player = "player" + i;
     let temp = JSON.parse(localStorage.getItem(player));
+    players[i].name = temp.name;
     players[i].life = temp.life;
     players[i].poison = temp.poison;
     players[i].color = temp.color;
@@ -136,19 +165,15 @@ function displayBoard() {
       for (let i = 0; i < 3; i++) {
         playerDivs[i].style.width = "33.33vw";
       }
-
       for (let i = 3; i < 5; i++) {
         playerDivs[i].style.width = "50vw";
       }
+      let flipContainers = document.querySelectorAll(".lifeAndNameContainer");
       let layout5 = '"one one two two three three""five five five four four four"';
       container.style.gridTemplateAreas = layout5;
       break;
     case 4:
       for (let i = 0; i < 4; i++) {
-        if (i === 0 || i === 1) {
-          playerDivs[i].style.borderBottom = "0";
-          players[i].number = i + 1;
-        }
         playerDivs[i].style.width = "50vw";
         icons[i].style.width = "55%";
         icons[i + 2].style.width = "55%";
@@ -182,13 +207,21 @@ function displayBoard() {
     playerDivs[i].classList.remove("hidden");
     playerDivs[i].style.background = players[i].color;
     let deg = players[i].rotated ? 180 : 0;
+    commanderDamageButtons[i].classList.remove("hidden");
     rotate(playerDivs[i], deg);
-    setTimeout(players[i].displayLife.bind(players[i]), 400);
+    players[i].displayLife();
   }
   for (let i = numPlayers; i < 6; i++) {
     playerDivs[i].classList.add("hidden");
+    commanderDamageButtons[i].classList.add("hidden");
+
   }
 }
+// new name buttons and event listeners
+const nameButtons = document.querySelectorAll(".playerName");
+nameButtons.forEach((elem, i) => {
+  elem.addEventListener("click", players[i].changeName.bind(players[i]));
+});
 // rotate function
 function rotate(element, deg) {
   element.style.webkitTransform = "rotate("+deg+"deg)";
@@ -249,7 +282,7 @@ lifeButtons.forEach(function (element, i) {
     rotate(modalWindows[0], deg);
     modalWindows[0].classList.remove("hidden");
     modalBackground.classList.remove("hidden");
-    lifeDisplay.innerHTML = player.life;
+    player.displayLife();
     // display background color of the appropriate player
     lifeDisplay.style.background = player.color;
     // adding event listeners to buttons
@@ -269,17 +302,17 @@ const commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + labe
 const cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus button");
 commanderDamageButtons.forEach((elem) => {
   elem.addEventListener('click', () => {
-    cmdPlusMinusButtons[0].classList.remove("hidden");
-    cmdPlusMinusButtons[1].classList.remove("hidden");
+    cmdPlusMinusButtons[0].classList.remove("invisible");
+    cmdPlusMinusButtons[1].classList.remove("invisible");
   });
 });
 cmdPlusMinusButtons[0].addEventListener('click', () => {
-  cmdPlusMinusButtons[2].classList.remove("hidden");
-  cmdPlusMinusButtons[3].classList.remove("hidden");
+  cmdPlusMinusButtons[2].classList.remove("invisible");
+  cmdPlusMinusButtons[3].classList.remove("invisible");
 });
 cmdPlusMinusButtons[1].addEventListener('click', () => {
-  cmdPlusMinusButtons[2].classList.remove("hidden");
-  cmdPlusMinusButtons[3].classList.remove("hidden");
+  cmdPlusMinusButtons[2].classList.remove("invisible");
+  cmdPlusMinusButtons[3].classList.remove("invisible");
 });
 commanderButtons.forEach(function (element, i) {
   element.addEventListener("click", function(){
@@ -293,8 +326,7 @@ commanderButtons.forEach(function (element, i) {
     modalWindows[1].classList.remove("hidden");
     modalBackground.classList.remove("hidden");
     let currentPlayer = document.getElementById("currentPlayer");
-    let playerName = "Player " + player.number;
-    currentPlayer.innerHTML = playerName;
+    currentPlayer.innerHTML = player.name;
     currentPlayer.style.background = player.color;
     castCount.innerHTML = player.castCount;
     // functions
@@ -350,6 +382,9 @@ function addPlayer() {
     } else {
       numPlayers += 1;
       displayBoard();
+      for (let i = 0; i < numPlayers; i++) {
+        setTimeout(players[i].displayLife.bind(players[i]), 400);
+      }
     }
 };
 document.getElementById("newGamePrompt").addEventListener("click", function() {
@@ -363,6 +398,9 @@ function hidePlayer() {
   } else {
     numPlayers -= 1;
     displayBoard();
+    for (let i = 0; i < numPlayers; i++) {
+      setTimeout(players[i].displayLife.bind(players[i]), 400);
+    }
   }
 };
 document.getElementById("hidePlayer").addEventListener("click", hidePlayer);
@@ -445,9 +483,7 @@ document.getElementById("changeColors").addEventListener("click", function() {
     });
   });
 });
-
 // dice modal
-
 document.getElementById("dice").addEventListener("click", function(){
   document.getElementById("modalWindowDice").classList.remove("hidden");
 });
@@ -465,7 +501,6 @@ dice.forEach(function(element) {
   element.addEventListener("click", getRandom);
 });
 document.getElementById("exitDice").addEventListener("click", closeModal);
-
 // stopping 'rubberband' scrolling
 document.addEventListener("touchmove", function(e) {
   e.preventDefault();
@@ -475,10 +510,8 @@ displayBoard();
 
 // to do:
 
-// implement grid for clockwise player order
-  // and cleaner 'displayBoard' function
 // options window
-  // toggle cmd damage / life total bind
+  // toggle cmd damage-life total bind?
   // turn life tracking on
       // reveals a turn button, center left
         // record after EVERY turn (y-axis)
@@ -490,9 +523,11 @@ displayBoard();
 
 // other potential features
 
-// edit player name
+// name thing at line 95
   // player name presets
     // computer could learn and create presets
+  // player name or commander name?
+    // could have popular commanders in presets, would change name and color
 // support for commander leagues
   // customizable buttons that add and subtract meta-points
     // first blood, etc can only be activated once per game

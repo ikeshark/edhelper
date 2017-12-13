@@ -44,6 +44,9 @@ label {
 .hidden {
   display: none !important;
 }
+.invisible {
+  visibility: hidden;
+}
 .exit {
   width: 60%;
   height: 21%;
@@ -89,13 +92,24 @@ label {
   border: 0.1em white solid;
   box-sizing: border-box;
 }
-.lifeButtons {
-  background-color: inherit;
-  display: flex;
-  font-size: 7em;
-  justify-content: center;
+.lifeAndNameContainer {
   width: 75%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+.playerName {
+  font-size: 0.9em;
+  height: 15%;
+}
+.lifeButtons {
+  background-color: inherit;
+  justify-content: center;
+  width: 100%;
+  height: 85%;
 }
 .buttonContainer {
   width: 25%;
@@ -260,7 +274,7 @@ img {
   margin: 2%;
   background: white;
 }
-.commanderDamage {
+[id^=cmdButton] + label {
   flex-grow: 1;
    width: 30%;
    margin: 1.5%;

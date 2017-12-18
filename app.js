@@ -11,19 +11,16 @@ const wurg = colorCombinator(w, u, r, g);
 const ubrg = colorCombinator(u, b, r, g);
 const wbrg = colorCombinator(w, b, r, g);
 const wubrg = colorCombinator(w, u, b, r, g);
-const greenRed = "linear-gradient(45deg, #30e8bf, red)";
-const coal = "linear-gradient(to left, #eb5757, black)";
 const rasta = "linear-gradient(to bottom, red, yellow, green)";
 const rainbow = "linear-gradient(to bottom, red, orange, yellow, green, blue, indigo, violet)";
-// const blackWhite = "radial-gradient(circle, black, white)";
-const whiteBlack = "radial-gradient(circle, white, black)";
-const whiteBlackWhite = "radial-gradient(circle, white, black, white)";
-const blackWhiteBlack = "radial-gradient(circle, black, white, black)";
 const blueSky = "linear-gradient(to left, #56ccf2, #2f80ed)";
-const greenWhite = "linear-gradient(to left, white, green)";
-const redWhite = "linear-gradient(to left, #ffcccc, red)";
-const greenBlue = "linear-gradient(to left, #45a247, #283c86)";
-const blackWhite = "linear-gradient(to left, white, black)";
+const blackWhite = `linear-gradient(to left, ${w}, ${b})`;
+const redWhite = `linear-gradient(to left, ${w}, ${r})`;
+const greenWhite = `linear-gradient(to left, ${w}, ${g})`;
+const greenRed = `linear-gradient(to left, ${g}, ${r})`;
+const coal = "linear-gradient(to left, #eb5757, black)";
+const greenBlue = `linear-gradient(to left, ${r}, ${u}, ${g})`;
+const blueBlack = `linear-gradient(to left, ${b}, ${u}, ${w})`;
 function colorCombinator() {
   let result = "repeating-linear-gradient(45deg ";
   for (let i = 0; i < arguments.length; i++) {
@@ -46,7 +43,7 @@ for (let i = 1; i < 5; i++) {
   }
 }
 colors = colors.concat(threecolors);
-let othercolors = [wubr, wubg, wurg, wbrg, ubrg, wubrg, rasta, rainbow, greenWhite, redWhite, greenBlue, blackWhite, greenRed, coal, blueSky];
+let othercolors = [wubr, wubg, wurg, wbrg, ubrg, wubrg, rasta, blueBlack, greenWhite, redWhite, greenBlue, blackWhite, greenRed, coal, blueSky];
 colors = colors.concat(othercolors);
 // player object and prototype
 function Player(i) {
@@ -85,25 +82,26 @@ Player.prototype.displayLife = function() {
     }
   }
 };
-
+Player.prototype.displayName = function() {
+  nameButtons[this.i].innerHTML = this.name;
+  for (let i = 1; i > 0; i -= 0.05) {
+    nameButtons[this.i].style.fontSize = i + "em";
+    let overflow = isOverflown(nameButtons[this.i]);
+    if (!overflow) {
+      let fontSize = i - 0.10;
+      nameButtons[this.i].style.fontSize = fontSize + "em";
+      break;
+    }
+  }
+};
 Player.prototype.changeName = function() {
   let newName = prompt("Please enter new name");
   if (newName != null) {
     this.name = newName;
-    nameButtons[this.i].innerHTML = newName;
-    // this is good and all but, but if you go from 4 to 5 players, player name will not auto-adjust
-    // should build displayName() have changeName call displayName()
-    for (let i = 1; i > 0; i -= 0.05) {
-      nameButtons[this.i].style.fontSize = i + "em";
-      let overflow = isOverflown(nameButtons[this.i]);
-      if (!overflow) {
-        let fontSize = i - 0.10;
-        nameButtons[this.i].style.fontSize = fontSize + "em";
-        break;
-      }
-    }
   }
+  this.displayName();
 };
+
 let player0 = new Player(0);
 let player1 = new Player(1);
 let player2 = new Player(2);
@@ -210,6 +208,7 @@ function displayBoard() {
     commanderDamageButtons[i].classList.remove("hidden");
     rotate(playerDivs[i], deg);
     players[i].displayLife();
+    players[i].displayName();
   }
   for (let i = numPlayers; i < 6; i++) {
     playerDivs[i].classList.add("hidden");
@@ -531,7 +530,6 @@ displayBoard();
 
 // other potential features
 
-// name thing at line 95
   // player name presets
     // computer could learn and create presets
   // player name or commander name?

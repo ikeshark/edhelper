@@ -1,9 +1,4 @@
-/*meida queries */
-@media screen and (min-width : 900px) {
-  body {
-    font-size: 1.7em;
-  }
-}
+
 /*Style Resets and General Rules*/
 body {
   overflow: hidden;
@@ -61,7 +56,7 @@ label {
   height: 100vh;
   width: 100vw;
   display: grid;
-  grid-gap: .01em;
+  grid-gap: 4px;
   grid-template-areas: "one one two two" "four four three three";
   /*flex-wrap: wrap;*/
 }
@@ -89,7 +84,6 @@ label {
   height: 50vh;
   display: flex;
   transition: all 0.5s ease-in-out;
-  border: 0.1em white solid;
   box-sizing: border-box;
 }
 .lifeAndNameContainer {
@@ -122,7 +116,7 @@ label {
   width: 100%;
   height: 50%;
   border-color: white;
-  border-width: 0.2em;
+  border-width: 4px;
   box-sizing: border-box;
 }
 .buttonContainer button:nth-child(1) {
@@ -215,25 +209,23 @@ img {
   font-weight: bold;
   font-family: fantasy;
 }
-
-#castCount  + label {
-  background: white;
-}
-#castCount + label, #poison + label {
-  width: 60%;
-  height: 33%;
-  margin: 2%;
-  font-size: 2em;
-  margin-bottom: 10%;
-}
 #currentPlayer {
   font-size: 1.5em;
   margin: 1%;
   height: 10%;
 }
+#flexContainer {
+  display: flex;
+  width: 100%;
+  height: 70%;
+}
 #cmdContainer {
   width: 50%;
-  margin-left: 5%;
+  height: 100%;
+}
+.headline {
+  font-size: 1.2em;
+  font-weight: bold;
 }
 #cmdInnerContainer {
   display: flex;
@@ -242,8 +234,19 @@ img {
   height: 80%;
   justify-content: space-around;
 }
+[id^=cmdButton] + label {
+  flex-grow: 1;
+   width: 30%;
+   margin: 1.5%;
+   font-size: 2.5em;
+}
+
+#cmdRightContainer {
+  display: flex;
+  width: 50%;
+}
 #cmdPlusMinus {
-  width: 25%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -259,40 +262,32 @@ img {
   font-weight: bold;
 }
 #cmdPoisonContainer {
-  width: 25%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
 }
+#castCount  + label {
+  background: white;
+}
+#castCount + label, #poison + label {
+  width: 60%;
+  height: 33%;
+  margin: 2%;
+  font-size: 2em;
+  margin-bottom: 10%;
+}
 #poison + label {
   background: lightgreen;
 }
-#cmdCastCount + label {
-  width: 60%;
-  height: 20%;
-  margin: 2%;
-  background: white;
-}
-[id^=cmdButton] + label {
-  flex-grow: 1;
-   width: 30%;
-   margin: 1.5%;
-   font-size: 2.5em;
-}
 #cmdExit {
-  height: 30%;
+  height: 12%;
+  width: 50%;
   font-size: 1.5em;
 }
 
-.headline {
-  font-size: 1.2em;
-  font-weight: bold;
-}
-#flexContainer {
-  display: flex;
-  height: 80%;
-}
+
 
 /* utilities modal */
 #modalWindowUtility {
@@ -402,9 +397,15 @@ modalWindowDice {
    transform: translate(-50%, -50%);
    width: 15vh;
    height: 15vh;
-   background:rgba(255,255,255,0.8);
+   background: white;
 }
 #gearIcon {
   width: 15vh;
-  opacity: 1;
+}
+
+/*meida queries */
+@media screen and (min-width : 900px) {
+  body {
+    font-size: 1.7em;
+  }
 }

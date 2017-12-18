@@ -105,20 +105,22 @@
             <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5"><label for="cmdButton5" class="outline"></label>
           </div>
         </div>
-        <div id="cmdPlusMinus">
-          <button value="5" id="plus5" class="invisible">&#43; 5</button>
-          <button value="1" id="plus" class="invisible">&#43; 1</button>
-          <button value="-1" id="minus" class="invisible">&#8211; 1</button>
-          <button value="-5" id="minus5" class="invisible">&#8211; 5</button>
+        <div id="cmdRightContainer">
+          <div id="cmdPlusMinus">
+            <button value="5" id="plus5" class="invisible">&#43; 5</button>
+            <button value="1" id="plus" class="invisible">&#43; 1</button>
+            <button value="-1" id="minus" class="invisible">&#8211; 1</button>
+          </div>
+          <div id="cmdPoisonContainer">
+            <p class="headline">poison</p>
+             <input type="radio" value="poison" name="cmdModalGroup" id="poison"><label class="outline" for="poison"></label>
+             <p class="headline">commander <br />cast count</p>
+             <input type="radio" value="castCount" name="cmdModalGroup" id="castCount"><label class="outline" for="castCount"></label>
+          </div>
         </div>
-        <div id="cmdPoisonContainer">
-          <p class="headline">poison</p>
-           <input type="radio" value="poison" name="cmdModalGroup" id="poison"><label class="outline" for="poison"></label>
-           <p class="headline">commander <br />cast count</p>
-           <input type="radio" value="castCount" name="cmdModalGroup" id="castCount"><label class="outline" for="castCount"></label>
-          <button id="cmdExit" class="exit">EXIT</button>
-        </div>
+
       </div>
+        <button id="cmdExit" class="exit">EXIT</button>
     </div>
     <div id="modalWindowUtility" class="hidden">
       <button id="addPlayer" class="utiliBtns">Add Player</button>

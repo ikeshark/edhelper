@@ -1,50 +1,3 @@
-// Colors
-const artifact = "linear-gradient(45deg, lightgrey, #bfbfbf, lightgrey)";
-const w = "#fffafa";
-const u = "#2283D7";
-const b = "#555f61";
-const r = "#ff0000";
-const g = "#12c700";
-const wubr = colorCombinator(w, u, b, r);
-const wubg = colorCombinator(w, u, b, g);
-const wurg = colorCombinator(w, u, r, g);
-const ubrg = colorCombinator(u, b, r, g);
-const wbrg = colorCombinator(w, b, r, g);
-const wubrg = colorCombinator(w, u, b, r, g);
-const rasta = "linear-gradient(to bottom, red, yellow, green)";
-const rainbow = "linear-gradient(to bottom, red, orange, yellow, green, blue, indigo, violet)";
-const blueSky = "linear-gradient(to left, #56ccf2, #2f80ed)";
-const blackWhite = `linear-gradient(to left, ${w}, ${b})`;
-const redWhite = `linear-gradient(to left, ${w}, ${r})`;
-const greenWhite = `linear-gradient(to left, ${w}, ${g})`;
-const greenRed = `linear-gradient(to left, ${g}, ${r})`;
-const coal = "linear-gradient(to left, #eb5757, black)";
-const greenBlue = `linear-gradient(to left, ${r}, ${u}, ${g})`;
-const blueBlack = `linear-gradient(to left, ${b}, ${u}, ${w})`;
-function colorCombinator() {
-  let result = "repeating-linear-gradient(45deg ";
-  for (let i = 0; i < arguments.length; i++) {
-    result += ", " + arguments[i] + " " + (i * 15) + "%";
-    result += ", " + arguments[i] + " " + ((i + 1) * 15) + "%";
-  }
-  result += ")";
-  return result;
-}
-let threecolors = [];
-let colors = [artifact, w, u, b, r, g];
-for (let i = 1; i < 5; i++) {
-  for (let j = i + 1; j < 6; j  ++) {
-    let temp = colorCombinator(colors[i], colors[j]);
-    colors.push(temp);
-    for (let k = j + 1; k < 6; k++) {
-      let temp = colorCombinator(colors[i], colors[j], colors[k]);
-      threecolors.push(temp);
-    }
-  }
-}
-colors = colors.concat(threecolors);
-let othercolors = [wubr, wubg, wurg, wbrg, ubrg, wubrg, rasta, blueBlack, greenWhite, redWhite, greenBlue, blackWhite, greenRed, coal, blueSky];
-colors = colors.concat(othercolors);
 // player object and prototype
 function Player(i) {
   this.i = i;
@@ -83,8 +36,9 @@ Player.prototype.displayLife = function() {
   }
 };
 Player.prototype.displayName = function() {
-  nameButtons[this.i].innerHTML = this.name;
-  for (let i = 1; i > 0; i -= 0.05) {
+  let upperName =
+  nameButtons[this.i].innerHTML = this.name.toUpperCase();
+  for (let i = 1.1; i > 0; i -= 0.05) {
     nameButtons[this.i].style.fontSize = i + "em";
     let overflow = isOverflown(nameButtons[this.i]);
     if (!overflow) {
@@ -96,10 +50,10 @@ Player.prototype.displayName = function() {
 };
 Player.prototype.changeName = function() {
   let newName = prompt("Please enter new name");
-  if (newName != null) {
+  if (newName.length > 0) {
     this.name = newName;
+    this.displayName();
   }
-  this.displayName();
 };
 
 let player0 = new Player(0);
@@ -109,13 +63,23 @@ let player3 = new Player(3);
 let player4 = new Player(4);
 let player5 = new Player(5);
 let players = [player0, player1, player2, player3, player4, player5];
+
+// Colors
+const artifact = "linear-gradient(45deg, lightgrey, #bfbfbf, lightgrey)";
+const w = "#fffafa";
+const u = "#2283D7";
+const b = "#555f61";
+const r = "#ff0000";
+const g = "#12c700";
+const colors = [artifact, w, u, b, r, g];
 // default color assignment
 player0.color = colors[5];
 player1.color = colors[2];
 player2.color = colors[3];
 player3.color = colors[4];
-player4.color = colors[6];
-player5.color = colors[7];
+player4.color = colors[1];
+player5.color = colors[0];
+
 const playerDivs = document.querySelectorAll("#playersContainer > div");
 let numPlayers = 4;
 // load and save state functions
@@ -411,7 +375,41 @@ function hidePlayer() {
   }
 };
 document.getElementById("hidePlayer").addEventListener("click", hidePlayer);
-let colorBoxes = document.querySelectorAll(".allColors");
+// change colors sub modal
+const pBoxes = document.querySelectorAll(".choosePlayerButtons");
+const colorRadios = document.querySelectorAll("[id^=radio]");
+const rasta = "linear-gradient(to bottom, red, yellow, green)";
+const rainbow = "linear-gradient(to bottom, red, orange, yellow, green, blue, indigo, violet)";
+const coal = "linear-gradient(to left, #eb5757, black)";
+function colorCombinator() {
+  let result = "repeating-linear-gradient(45deg ";
+  for (let i = 0; i < arguments.length; i++) {
+    result += ", " + arguments[i] + " " + (i * 15) + "%";
+    result += ", " + arguments[i] + " " + ((i + 1) * 15) + "%";
+  }
+  result += ")";
+  return result;
+}
+function gradientMaker() {
+  let result = "linear-gradient(to right ";
+  for (let i = 0; i < arguments.length; i++) {
+    result += ", " + arguments[i];
+  }
+  result += ")";
+  return result;
+}
+let gradientBool = false;
+const gradientCheckbox = document.getElementById("gradientCheckbox")
+gradientCheckbox.addEventListener("click", function() {
+  if (this.checked) {
+    gradientBool = true;
+  } else {
+    gradientBool = false;
+  }
+
+});
+const colorMenuButtons = document.querySelectorAll(".colorMenu");
+const colorBoxes = document.querySelectorAll(".allColors");
 colorBoxes.forEach(function(element, i) {
   element.style.background = colors[i];
   element.addEventListener("click", () => {
@@ -420,10 +418,6 @@ colorBoxes.forEach(function(element, i) {
     }
   });
 });
-// change colors sub modal
-let pBoxes = document.querySelectorAll(".choosePlayerButtons");
-
-const colorMenuButtons = document.querySelectorAll(".colorMenu");
 function clearSelected() {
   colorMenuButtons.forEach(function(element) {
     element.classList.remove("menuSelected");
@@ -434,31 +428,109 @@ function clearSelected() {
 };
 document.getElementById("singleColors").addEventListener("click", function() {
   clearSelected();
+  colorBoxes.forEach((element, i) => {
+    element.style.background = colors[i];
+  });
   this.classList.add("menuSelected");
   for (i = 0; i < 6; i++) {
     colorBoxes[i].classList.remove("hidden");
   }
+  colorRadios.forEach((element, i) => {
+    element.value = i;
+  })
 });
 document.getElementById("twoColors").addEventListener("click", function() {
   clearSelected();
+  let twoColorArray = [];
+  if (gradientBool) {
+    for (let i = 1; i < 5; i++) {
+      for (let j = i + 1; j < 6; j++) {
+        let temp = gradientMaker(colors[i], colors[j]);
+        twoColorArray.push(temp);
+        }
+      }
+    } else {
+    for (let i = 1; i < 5; i++) {
+      for (let j = i + 1; j < 6; j++) {
+        let temp = colorCombinator(colors[i], colors[j]);
+        twoColorArray.push(temp);
+        }
+      }
+    }
+  colorBoxes.forEach((element, i) => {
+    element.style.background = twoColorArray[i];
+  });
+  colorRadios.forEach((element, i) => {
+    element.value = twoColorArray[i];
+  });
   this.classList.add("menuSelected");
-  for (i = 6; i < 16; i++) {
+  for (i = 0; i < 10; i++) {
     colorBoxes[i].classList.remove("hidden");
   }
 });
 document.getElementById("threeColors").addEventListener("click", function() {
   clearSelected();
+  let colorArray = [];
+  if (gradientBool) {
+    for (let i = 1; i < 5; i++) {
+      for (let j = i + 1; j < 6; j++) {
+        for (let k = j + 1; k < 6; k++) {
+           let temp = gradientMaker(colors[i], colors[j], colors[k]);
+           colorArray.push(temp);
+        }
+      }
+    }
+  } else {
+      for (let i = 1; i < 5; i++) {
+        for (let j = i + 1; j < 6; j++) {
+          for (let k = j + 1; k < 6; k++) {
+             let temp = colorCombinator(colors[i], colors[j], colors[k]);
+             colorArray.push(temp);
+          }
+        }
+      }
+    }
+  colorBoxes.forEach((element, i) => {
+    element.style.background = colorArray[i];
+  });
+  colorRadios.forEach((element, i) => {
+    element.value = colorArray[i];
+  });
   this.classList.add("menuSelected");
-  for (i = 16; i < 26; i++) {
+  for (i = 0; i < 10; i++) {
     colorBoxes[i].classList.remove("hidden");
   }
 });
 document.getElementById("fourFiveColors").addEventListener("click", function() {
   clearSelected();
+  let wubr, wubg, wurg, ubrg, wbrg, wubrg;
+  if (gradientBool) {
+    wubr = gradientMaker(w, u, b, r);
+    wubg = gradientMaker(w, u, b, g);
+    wurg = gradientMaker(w, u, r, g);
+    ubrg = gradientMaker(u, b, r, g);
+    wbrg = gradientMaker(w, b, r, g);
+    wubrg = gradientMaker(w, u, b, r, g);
+  } else {
+    wubr = colorCombinator(w, u, b, r);
+    wubg = colorCombinator(w, u, b, g);
+    wurg = colorCombinator(w, u, r, g);
+    ubrg = colorCombinator(u, b, r, g);
+    wbrg = colorCombinator(w, b, r, g);
+    wubrg = colorCombinator(w, u, b, r, g);
+  }
+  let colorArray = [wubr, wubg, wurg, ubrg, wbrg, wubrg];
+  colorBoxes.forEach((element, i) => {
+    element.style.background = colorArray[i];
+  });
+  colorRadios.forEach((element, i) => {
+    element.value = colorArray[i];
+  });
   this.classList.add("menuSelected");
-  for (i = 26; i < 32; i++) {
+  for (i = 0; i < 6; i++) {
     colorBoxes[i].classList.remove("hidden");
   }
+
 });
 document.getElementById("otherColors").addEventListener("click", function() {
   clearSelected();
@@ -469,8 +541,12 @@ document.getElementById("otherColors").addEventListener("click", function() {
 });
 function changeColor() {
   let player = players[this.value];
-  let colorI = document.querySelector("input[name=chooseColor]:checked").value;
-  player.color = colors[colorI];
+  let checkedRadio = document.querySelector("input[name=chooseColor]:checked").value;
+  if (checkedRadio.length === 1) {
+    player.color = colors[checkedRadio];
+  } else {
+    player.color = checkedRadio;
+  }
   playerDivs[this.value].style.background = player.color;
   pBoxes[this.value].style.background = player.color;
 };

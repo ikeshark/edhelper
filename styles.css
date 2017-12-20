@@ -1,4 +1,3 @@
-
 /*Style Resets and General Rules*/
 body {
   overflow: hidden;
@@ -53,12 +52,12 @@ label {
 /*Player Container*/
 
 #playersContainer {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   display: grid;
   grid-gap: 4px;
-  grid-template-areas: "one one two two" "four four three three";
-  /*flex-wrap: wrap;*/
 }
 #playersContainer div:nth-child(1) {
   grid-area: one;
@@ -98,16 +97,19 @@ label {
 .playerName {
   font-size: 0.9em;
   height: 15%;
+  -webkit-text-stroke: 0.07em #000000;
+  text-shadow: 2px 2px black;
 }
 .lifeButtons {
   background-color: inherit;
   justify-content: center;
+  margin-top: 3%;
   width: 100%;
   height: 85%;
 }
 .buttonContainer {
   width: 25%;
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   flex-direction: column;
 }
@@ -317,6 +319,11 @@ img {
   background-color: white;
   display: block;
 }
+#modalWindowChangeColor {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 .colorMenu {
   background-color: white;
   padding: 1%;
@@ -324,11 +331,22 @@ img {
   margin: 1%;
   height: 15%;
 }
+#gradientCheckbox + label {
+  font-size: 0.8em;
+  padding: 1%;
+  margin: 1%;
+  height: 12%;
+}
+#gradientCheckbox {
+  visibility: hidden;
+  position: absolute;
+}
 .menuSelected {
   background-color: black;
   color: white;
 }
 #allColorContainer {
+  width: 100%;
   height: 55%;
   display: flex;
   flex-wrap: wrap;
@@ -336,7 +354,6 @@ img {
   justify-content: center;
 }
 .allColors {
-  /*display: inline-block;*/
   border: 0.1em solid black;
   width: 15%;
   height: 35%;
@@ -350,6 +367,9 @@ input[type=radio] {
 }
 input[type=radio]:checked + label {
   border-color: white;
+}
+input[type=checkbox]:checked + label {
+  background: white;
 }
 #choosePlayerExit {
   background-color: black;

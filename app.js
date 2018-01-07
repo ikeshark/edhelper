@@ -68,9 +68,9 @@ let players = [player0, player1, player2, player3, player4, player5];
 const artifact = "linear-gradient(45deg, lightgrey, #bfbfbf, lightgrey)";
 const w = "#fffafa";
 const u = "#2283D7";
-const b = "#555f61";
-const r = "#ff0000";
-const g = "#12c700";
+const b = "#000000";
+const r = "#bf0000";
+const g = "#228b22";
 const colors = [artifact, w, u, b, r, g];
 // default color assignment
 player0.color = colors[5];
@@ -378,9 +378,6 @@ document.getElementById("hidePlayer").addEventListener("click", hidePlayer);
 // change colors sub modal
 const pBoxes = document.querySelectorAll(".choosePlayerButtons");
 const colorRadios = document.querySelectorAll("[id^=radio]");
-const rasta = "linear-gradient(to bottom, red, yellow, green)";
-const rainbow = "linear-gradient(to bottom, red, orange, yellow, green, blue, indigo, violet)";
-const coal = "linear-gradient(to left, #eb5757, black)";
 function colorCombinator() {
   let result = "repeating-linear-gradient(45deg ";
   for (let i = 0; i < arguments.length; i++) {
@@ -399,14 +396,24 @@ function gradientMaker() {
   return result;
 }
 let gradientBool = false;
-const gradientCheckbox = document.getElementById("gradientCheckbox")
+const gradientCheckbox = document.getElementById("gradientCheckbox");
+const gradientCheckboxLabel = document.querySelector("#gradientCheckbox + label");
 gradientCheckbox.addEventListener("click", function() {
   if (this.checked) {
     gradientBool = true;
   } else {
     gradientBool = false;
   }
-
+  let currentPage = document.querySelector(".menuSelected");
+  if (currentPage === colorMenuButtons[1]) {
+    displayTwoColors();
+  }
+  if (currentPage === colorMenuButtons[2]) {
+    displayThreeColors();
+  }
+  if (currentPage === colorMenuButtons[3]) {
+    displayFourColors();
+  }
 });
 const colorMenuButtons = document.querySelectorAll(".colorMenu");
 const colorBoxes = document.querySelectorAll(".allColors");
@@ -428,6 +435,7 @@ function clearSelected() {
 };
 document.getElementById("singleColors").addEventListener("click", function() {
   clearSelected();
+  gradientCheckboxLabel.classList.add("hidden");
   colorBoxes.forEach((element, i) => {
     element.style.background = colors[i];
   });
@@ -439,8 +447,9 @@ document.getElementById("singleColors").addEventListener("click", function() {
     element.value = i;
   })
 });
-document.getElementById("twoColors").addEventListener("click", function() {
+function displayTwoColors() {
   clearSelected();
+  gradientCheckboxLabel.classList.remove("hidden");
   let twoColorArray = [];
   if (gradientBool) {
     for (let i = 1; i < 5; i++) {
@@ -463,13 +472,15 @@ document.getElementById("twoColors").addEventListener("click", function() {
   colorRadios.forEach((element, i) => {
     element.value = twoColorArray[i];
   });
-  this.classList.add("menuSelected");
+  colorMenuButtons[1].classList.add("menuSelected");
   for (i = 0; i < 10; i++) {
     colorBoxes[i].classList.remove("hidden");
   }
-});
-document.getElementById("threeColors").addEventListener("click", function() {
+};
+document.getElementById("twoColors").addEventListener("click", displayTwoColors);
+function displayThreeColors() {
   clearSelected();
+  gradientCheckboxLabel.classList.remove("hidden");
   let colorArray = [];
   if (gradientBool) {
     for (let i = 1; i < 5; i++) {
@@ -496,13 +507,15 @@ document.getElementById("threeColors").addEventListener("click", function() {
   colorRadios.forEach((element, i) => {
     element.value = colorArray[i];
   });
-  this.classList.add("menuSelected");
+  colorMenuButtons[2].classList.add("menuSelected");
   for (i = 0; i < 10; i++) {
     colorBoxes[i].classList.remove("hidden");
   }
-});
-document.getElementById("fourFiveColors").addEventListener("click", function() {
+};
+document.getElementById("threeColors").addEventListener("click", displayThreeColors);
+function displayFourColors() {
   clearSelected();
+  gradientCheckboxLabel.classList.remove("hidden");
   let wubr, wubg, wurg, ubrg, wbrg, wubrg;
   if (gradientBool) {
     wubr = gradientMaker(w, u, b, r);
@@ -526,19 +539,12 @@ document.getElementById("fourFiveColors").addEventListener("click", function() {
   colorRadios.forEach((element, i) => {
     element.value = colorArray[i];
   });
-  this.classList.add("menuSelected");
+  colorMenuButtons[3].classList.add("menuSelected");
   for (i = 0; i < 6; i++) {
     colorBoxes[i].classList.remove("hidden");
   }
-
-});
-document.getElementById("otherColors").addEventListener("click", function() {
-  clearSelected();
-  this.classList.add("menuSelected");
-  for (i = 32; i < colorBoxes.length; i++) {
-    colorBoxes[i].classList.remove("hidden");
-  }
-});
+};
+document.getElementById("fourFiveColors").addEventListener("click", displayFourColors);
 function changeColor() {
   let player = players[this.value];
   let checkedRadio = document.querySelector("input[name=chooseColor]:checked").value;

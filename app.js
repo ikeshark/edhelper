@@ -600,7 +600,19 @@ function enableNoSleep() {
   noSleep.enable();
   document.removeEventListener("click", enableNoSleep, fasle);
 }
-document.addEventListener("click", enableNoSleep, false);
+document.addEventListener("touchstart", enableNoSleep, false);
+// full screen attempt 68, courtesy Mozilla
+function enableFullScreen() {
+  var doc = window.document;
+  var docEl = doc.documentElement;
+
+  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+
+  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    requestFullScreen.call(docEl);
+  }
+}
+document.addEventListener("touchstart", toggleFullScreen);
 displayBoard();
 
 // to do:

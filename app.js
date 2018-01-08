@@ -612,7 +612,7 @@ function enableFullScreen() {
     requestFullScreen.call(docEl);
   }
 }
-document.addEventListener("touchstart", toggleFullScreen);
+document.addEventListener("touchstart", enableFullScreen);
 displayBoard();
 
 // to do:

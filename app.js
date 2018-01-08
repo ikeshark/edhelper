@@ -594,7 +594,13 @@ document.getElementById("exitDice").addEventListener("click", closeModal);
 document.addEventListener("touchmove", function(e) {
   e.preventDefault();
 }, false);
-
+// stop auto-sleep
+var noSleep = new NoSleep();
+function enableNoSleep() {
+  noSleep.enable();
+  document.removeEventListener("click", enableNoSleep, fasle);
+}
+document.addEventListener("click", enableNoSleep, false);
 displayBoard();
 
 // to do:

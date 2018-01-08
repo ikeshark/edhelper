@@ -595,12 +595,20 @@ document.addEventListener("touchmove", function(e) {
   e.preventDefault();
 }, false);
 // stop auto-sleep
+function isMobileDevice() {
+  return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+}
 var noSleep = new NoSleep();
 function enableNoSleep() {
-  noSleep.enable();
-  document.removeEventListener("click", enableNoSleep, fasle);
+  if (isMobileDevice()) {
+    noSleep.enable();
+  }
+  document.removeEventListener("click", enableNoSleep, false);
 }
-document.addEventListener("touchstart", enableNoSleep, false);
+document.addEventListener("click", enableNoSleep, false);
+window.addEventListener("unload", function() {
+  noSleep.disable();
+});
 // full screen attempt 68, courtesy Mozilla
 function enableFullScreen() {
   var doc = window.document;
@@ -611,8 +619,13 @@ function enableFullScreen() {
   if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
     requestFullScreen.call(docEl);
   }
+  document.getElementById("gearBtn").removeEventListener("click", enableFullScreen);
 }
-document.addEventListener("touchstart", enableFullScreen);
+document.addEventListener("click", function() {
+  if (isMobileDevice()) {
+    enableFullScreen();
+  }
+});
 displayBoard();
 
 // to do:

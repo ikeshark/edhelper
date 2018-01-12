@@ -7,9 +7,10 @@ function Player(i) {
   this.name = "Player " + this.number;
   this.rotated = false;
   this.castCount = 0;
+  this.color = "";
   this.commanderDamage = Array(6).fill(0);
 }
-Player.prototype.color = "";
+// boolean helper function to enable auto sizing
 function isOverflown(element) {
   return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
 }
@@ -79,10 +80,10 @@ player2.color = colors[3];
 player3.color = colors[4];
 player4.color = colors[1];
 player5.color = colors[0];
-
-const playerDivs = document.querySelectorAll("#playersContainer > div");
+// default number of players
 let numPlayers = 4;
-// load and save state functions
+
+// load and save state functions on localStorage
 function loadState() {
   temp2 = localStorage.getItem("numPlayers");
   numPlayers = Number(temp2);
@@ -111,8 +112,9 @@ if (localStorage.bool) {
 }
 window.addEventListener("unload", saveState);
 
-let icons = document.querySelectorAll(".mainIcons");
 // display board function
+const playerDivs = document.querySelectorAll("#playersContainer > div");
+const icons = document.querySelectorAll(".mainIcons");
 function displayBoard() {
   let container = document.getElementById("playersContainer");
   switch (numPlayers) {
@@ -177,7 +179,6 @@ function displayBoard() {
   for (let i = numPlayers; i < 6; i++) {
     playerDivs[i].classList.add("hidden");
     commanderDamageButtons[i].classList.add("hidden");
-
   }
 }
 // new name buttons and event listeners
@@ -200,7 +201,7 @@ const modalBackground = document.getElementById("modalBackground");
 const closeModal = () => {
   modalWindows.forEach(function(element) {
     element.classList.add("hidden");
-  })
+  });
   modalBackground.classList.add("hidden");
 };
 // rotate buttons
@@ -274,16 +275,16 @@ castCount.addEventListener("click", () => {
   cmdPlusMinusButtons[1].classList.remove("invisible");
 });
 commanderDamageButtons.forEach((elem) => {
-  elem.addEventListener('click', () => {
+  elem.addEventListener("click", () => {
     cmdPlusMinusButtons[0].classList.remove("invisible");
     cmdPlusMinusButtons[1].classList.remove("invisible");
   });
 });
-cmdPlusMinusButtons[0].addEventListener('click', () => {
+cmdPlusMinusButtons[0].addEventListener("click", () => {
   cmdPlusMinusButtons[2].classList.remove("invisible");
   cmdPlusMinusButtons[3].classList.remove("invisible");
 });
-cmdPlusMinusButtons[1].addEventListener('click', () => {
+cmdPlusMinusButtons[1].addEventListener("click", () => {
   cmdPlusMinusButtons[2].classList.remove("invisible");
   cmdPlusMinusButtons[3].classList.remove("invisible");
 });
@@ -339,14 +340,25 @@ commanderButtons.forEach(function (element, i) {
   });
 });
 // utilities modal
+let utiliRotateBool = false;
+document.getElementById("utiliRotate").addEventListener("click", function() {
+  utiliRotateBool = !utiliRotateBool;
+  let deg = utiliRotateBool ? 180 : 0;
+  rotate(modalWindows[2], deg);
+});
 document.getElementById("gearBtn").addEventListener("click", function() {
+  utiliRotateBool = false;
+  rotate(modalWindows[2], 0);
   modalBackground.classList.remove("hidden");
   modalWindows[2].classList.remove("hidden");
+  function closeUtiliModal() {
+    closeModal();
+    document.getElementById("utiliExit").removeEventListener("click", closeUtiliModal);
+  }
+  document.getElementById("utiliExit").addEventListener("click", closeUtiliModal);
 });
-document.getElementById("utiliExit").addEventListener("click", closeModal);
 // utilities modal functions and event listeners
 document.getElementById("addPlayer").addEventListener("click", addPlayer);
-// move this up by colors and shit
 function addPlayer() {
     if (numPlayers === 6) {
       alert("6 is maximum number of players");
@@ -561,6 +573,8 @@ pBoxes.forEach(function(element) {
 });
 document.getElementById("changeColors").addEventListener("click", function() {
   modalWindows[3].classList.remove("hidden");
+  let deg = utiliRotateBool ? 180 : 0;
+  rotate(modalWindows[3], deg);
   pBoxes.forEach(function(element,i) {
     element.style.background = players[i].color;
     element.innerHTML = players[i].number;
@@ -572,9 +586,16 @@ document.getElementById("changeColors").addEventListener("click", function() {
     });
   });
 });
+document.getElementById("choosePlayerRotate").addEventListener("click", function() {
+  utiliRotateBool = !utiliRotateBool;
+  let deg = utiliRotateBool ? 180 : 0;
+  rotate(modalWindows[3], deg);
+});
 // dice modal
 document.getElementById("dice").addEventListener("click", function(){
   document.getElementById("modalWindowDice").classList.remove("hidden");
+  let deg = utiliRotateBool ? 180 : 0;
+  rotate(modalWindows[4], deg);
 });
 const dice = document.querySelectorAll(".dice");
 function getRandom() {
@@ -588,6 +609,11 @@ function getRandom() {
 }
 dice.forEach(function(element) {
   element.addEventListener("click", getRandom);
+});
+document.getElementById("diceRotate").addEventListener("click", function() {
+  utiliRotateBool = !utiliRotateBool;
+  let deg = utiliRotateBool ? 180 : 0;
+  rotate(modalWindows[4], deg);
 });
 document.getElementById("exitDice").addEventListener("click", closeModal);
 // stopping 'rubberband' scrolling
@@ -609,7 +635,7 @@ document.addEventListener("click", enableNoSleep, false);
 window.addEventListener("unload", function() {
   noSleep.disable();
 });
-// full screen attempt 68, courtesy Mozilla
+// full screen attempt no. 68, courtesy Mozilla
 function enableFullScreen() {
   var doc = window.document;
   var docEl = doc.documentElement;
@@ -626,30 +652,17 @@ document.addEventListener("click", function() {
     enableFullScreen();
   }
 });
+// attempt to prevent iOS web app from forcing reloads
+// credit: samthor
+function visibilityHandler() {
+  var hash = "#bg";
+  if (document.hidden && !window.location.hash) {
+    window.history.replaceState(null, null, window.location + hash);
+  } else if (!document.hidden && window.location.hash == hash) {
+    var l = "" + window.location;
+    window.history.replaceState(null, l.substr(0, l.length - hash.length));
+  }
+};
+document.addEventListener("visibilitychange", visibilityHandler, false);
+visibilityHandler();
 displayBoard();
-
-// to do:
-
-// options window
-  // toggle cmd damage-life total bind?
-  // turn life tracking on
-      // reveals a turn button, center left
-        // record after EVERY turn (y-axis)
-          // could even highlight active player
-      // records each time life / cmd modals are closed
-        // x-axis
-      // dynamic graph gradually generates when you turn off life tracking
-// full screen support for Chrome on Android (ask jim to test)
-
-// other potential features
-
-  // player name presets
-    // computer could learn and create presets
-  // player name or commander name?
-    // could have popular commanders in presets, would change name and color
-// support for commander leagues
-  // customizable buttons that add and subtract meta-points
-    // first blood, etc can only be activated once per game
-    // records things like most life lost in one turn...
-      // overall life points gained or lost
-      // how many times you've cast your commander

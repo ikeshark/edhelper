@@ -239,10 +239,44 @@ img {
   justify-content: space-around;
 }
 [id^=cmdButton] + label {
+  position: relative;
   flex-grow: 1;
-   width: 30%;
-   margin: 1.5%;
-   font-size: 2.5em;
+  width: 30%;
+  margin: 1.5%;
+  font-size: 2.5em;
+}
+#cmdButton0 + label::before {
+  content: "1";
+}
+#cmdButton1 + label::before {
+  content: "2";
+}
+#cmdButton2 + label::before {
+  content: "3";
+}
+#cmdButton3 + label::before {
+  content: "4";
+}
+#cmdButton4 + label::before {
+  content: "5";
+}
+#cmdButton5 + label::before {
+  content: "6";
+}
+[id^=cmdButton] + label::before {
+  position: absolute;
+  font-size: 0.4em;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  left: 0%;
+  top: 0%;
+  padding: 0.12em;
+  width: 3vw;
+  height: 3vw;
+  font-weight: normal;
+  -webkit-text-stroke: none;
+  text-shadow: none;
 }
 
 #cmdRightContainer {
@@ -299,6 +333,17 @@ img {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+#utiliRotate {
+  background-image: url(rotate.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  left: 10%;
+  top: 1%;
+  width: 14vh;
+  height: 16vh;
+  border: 1px grey solid;
 }
 #modalWindowChangeColor > p {
   font-size: 1.2em;
@@ -377,10 +422,20 @@ input[type=checkbox]:checked + label {
   height: 20%;
   margin: 2% 0.5% 2% 0.5%;
 }
+#choosePlayerRotate {
+  background-image: url(rotate.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 14vh;
+  height: 16vh;
+  border: 1px grey solid;
+  margin-top: 3%;
+  margin-left: 3%;
+}
 
 /*dice modal*/
 
-modalWindowDice {
+#modalWindowDice {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -401,10 +456,20 @@ modalWindowDice {
 #exitDice {
   background-color: white;
   color: black;
-  width: 20%;
+  width: 11.5%;
   height: 20%;
   margin: 1%;
   font-size: 2em;
+}
+#diceRotate {
+  background-image: url(rotate.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 14vh;
+  height: 16vh;
+  border: 1px grey solid;
+  position: relative;
+  left: 1%;
 }
 /* gear button */
 

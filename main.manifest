@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-#v13
+#v14
 
 styles.css
 app.js
@@ -9,3 +9,4 @@ rotate.png
 sword.png
 manifest.json
 NoSleep.js
+ring.png

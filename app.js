@@ -677,7 +677,7 @@ function massLifeChange() {
     }
     players[i].life += amount;
     players[i].displayLife();
-    excludedPlayerBoxes[i].innerHTML = players[i].life;
+    excludePlayerBoxes[i].innerHTML = players[i].life;
   }
   netChange += amount;
   document.getElementById("netChange").innerHTML = netChange;

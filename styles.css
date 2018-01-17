@@ -207,10 +207,6 @@ img {
 
 /* commander damage modal */
 
-#modalWindowCmd {
-  font-weight: bold;
-  font-family: fantasy;
-}
 #currentPlayer {
   font-size: 1.5em;
   margin: 1%;
@@ -223,13 +219,14 @@ img {
   height: 70%;
 }
 #cmdContainer {
-  padding-left: 3%;
-  width: 50%;
+  padding-left: 2%;
+  width: 40%;
   height: 100%;
 }
 .headline {
   font-size: 1.2em;
   font-weight: bold;
+  font-family: fantasy;
 }
 #cmdInnerContainer {
   display: flex;
@@ -279,12 +276,8 @@ img {
   text-shadow: none;
 }
 
-#cmdRightContainer {
-  display: flex;
-  width: 50%;
-}
 #cmdPlusMinus {
-  width: 50%;
+  width: 20%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -299,22 +292,24 @@ img {
   font-size: 2em;
   font-weight: bold;
 }
-#cmdPoisonContainer {
-  width: 50%;
+#cmdRightContainer {
+  width: 35%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  flex-wrap: wrap;
   align-items: center;
 }
 #castCount  + label {
   background: white;
 }
-#castCount + label, #poison + label {
-  width: 60%;
-  height: 33%;
+#cmdRightContainer label {
+  width: 46%;
+  height: 30%;
   margin: 2%;
   font-size: 2em;
-  margin-bottom: 10%;
+}
+#experience + label {
+  background: yellow;
 }
 #poison + label {
   background: lightgreen;
@@ -362,6 +357,13 @@ img {
   margin: 2% 1% 1% 1%;
   background-color: white;
   display: block;
+}
+.utiliHalfBtns {
+  height: 48%;
+  margin: 1%;
+  width: 90%;
+  border: 1px grey solid;
+  background: inherit;
 }
 #modalWindowChangeColor {
   display: flex;
@@ -471,6 +473,120 @@ input[type=checkbox]:checked + label {
   position: relative;
   left: 1%;
 }
+
+/* mass life change */
+#modalWindowMassLife {
+  display: flex;
+  width: 85vw;
+  height: 85vh;
+  margin-top: 7.5vh;
+  margin-left: 7.5vw;
+}
+#excludeContainer {
+  width: 40%;
+  height: 80%;
+}
+#excludeContainer p, #netChangeContainer p {
+  margin-top: 2%;
+}
+#excludeInnerContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  height: 100%;
+}
+[id^=excludeP] + label {
+  position: relative;
+  font-size: 1.5em;
+  width: 30%;
+  margin: 1.5%;
+  flex-grow: 1;
+  height: 20vh;
+}
+#excludeP0 + label::before {
+  content: "1";
+}
+#excludeP1 + label::before {
+  content: "2";
+}
+#excludeP2 + label::before {
+  content: "3";
+}
+#excludeP3 + label::before {
+  content: "4";
+}
+#excludeP4 + label::before {
+  content: "5";
+}
+#excludeP5 + label::before {
+  content: "6";
+}
+[id^=excludeP] + label::before {
+  position: absolute;
+  font-size: 0.4em;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  left: 0%;
+  top: 0%;
+  padding: 0.12em;
+  width: 3vw;
+  height: 3vw;
+  font-weight: normal;
+  -webkit-text-stroke: none;
+  text-shadow: none;
+}
+#clearExcluded {
+  width: 70%;
+  height: 8vh;
+}
+#massChangeContainer {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+#massChangeContainer button {
+  font-size: 1.5em;
+  background-color: black;
+  color: white;
+  height: 20%;
+  width: 90%;
+}
+#netChangeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 30%;
+}
+#netChange {
+  font-size: 7em;
+}
+#exitRotateContainer {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+#massChangeExit {
+  background-color: black;
+  color: white;
+  font-size: 2em;
+  width: 45%;
+  margin-bottom: 6%;
+}
+#massChangeRotate {
+  background-image: url(rotate.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 23%;
+  margin-top: 3.8%;
+  height: 11vh;
+}
+
 /* gear button */
 
 #gearBtn {

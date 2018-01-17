@@ -98,36 +98,50 @@
         <div id="cmdContainer">
           <p class="headline">commanders</p>
           <div id="cmdInnerContainer">
-            <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0"><label for="cmdButton0" class="outline"></label>
-            <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1"><label for="cmdButton1" class="outline"></label>
-            <input type="radio" name="cmdModalGroup" value="2" id="cmdButton2"><label for="cmdButton2" class="outline"></label>
-            <input type="radio" name="cmdModalGroup" value="3" id="cmdButton3"><label for="cmdButton3" class="outline"></label>
-            <input type="radio" name="cmdModalGroup" value="4" id="cmdButton4"><label for="cmdButton4" class="outline"></label>
-            <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5"><label for="cmdButton5" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0">
+            <label for="cmdButton0" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1">
+            <label for="cmdButton1" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="2" id="cmdButton2">
+            <label for="cmdButton2" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="3" id="cmdButton3">
+            <label for="cmdButton3" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="4" id="cmdButton4">
+            <label for="cmdButton4" class="outline"></label>
+            <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5">
+            <label for="cmdButton5" class="outline"></label>
           </div>
+        </div>
+        <div id="cmdPlusMinus">
+          <button value="5" id="plus5" class="invisible">&#43; 5</button>
+          <button value="1" id="plus" class="invisible">&#43; 1</button>
+          <button value="-1" id="minus" class="invisible">&#8211; 1</button>
         </div>
         <div id="cmdRightContainer">
-          <div id="cmdPlusMinus">
-            <button value="5" id="plus5" class="invisible">&#43; 5</button>
-            <button value="1" id="plus" class="invisible">&#43; 1</button>
-            <button value="-1" id="minus" class="invisible">&#8211; 1</button>
-          </div>
-          <div id="cmdPoisonContainer">
-            <p class="headline">poison</p>
-             <input type="radio" value="poison" name="cmdModalGroup" id="poison"><label class="outline" for="poison"></label>
-             <p class="headline">commander <br />cast count</p>
-             <input type="radio" value="castCount" name="cmdModalGroup" id="castCount"><label class="outline" for="castCount"></label>
-          </div>
+           <p class="headline">poison</p>
+           <input type="radio" value="poison" name="cmdModalGroup" id="poison">
+           <label class="outline" for="poison"></label>
+           <p class="headline">cast count</p>
+           <input type="radio" value="castCount" name="cmdModalGroup" id="castCount">
+           <label class="outline" for="castCount"></label>
+           <p class="headline">experience</p>
+           <input type="radio" value="experience" name="cmdModalGroup" id="experience">
+           <label class="outline" for="experience"></label>
+           <p class="headline hidden">cast count b</p>
+           <input type="radio" value="castCountB" name="cmdModalGroup" id="castCountB">
+           <label class="outline hidden" for="castCountB"></label>
         </div>
-
       </div>
         <button id="cmdExit" class="exit">EXIT</button>
     </div>
     <div id="modalWindowUtility" class="hidden">
-      <button id="addPlayer" class="utiliBtns">Add Player</button>
-      <button id="hidePlayer" class="utiliBtns">Remove Player</button>
+      <div class="utiliBtns">
+        <button id="addPlayer" class="utiliHalfBtns">Add Player</button>
+        <button id="hidePlayer" class="utiliHalfBtns">Remove Player</button>
+      </div>
       <button id="newGamePrompt" class="utiliBtns">Start New Game</button>
       <button id="changeColors" class="utiliBtns">Change Player Colors</button>
+      <button id="massLife" class="utiliBtns">Mass Life Change</button>
       <button id="dice" class="utiliBtns">Random Numbers</button>
       <button id="utiliExit" class="exit">EXIT</button>
       <button id="utiliRotate"></button>
@@ -179,6 +193,41 @@
       <button id="exitDice">EXIT</button>
       <button id="diceRotate"></button>
     </div>
+    <div id="modalWindowMassLife" class="hidden">
+      <div id="excludeContainer">
+        <p class="headline">Exclude</p>
+        <div id="excludeInnerContainer">
+          <input type="radio" name="excludeGroup" value="0" id="excludeP0">
+          <label for="excludeP0" class="hidden outline"></label>
+          <input type="radio" name="excludeGroup" value="1" id="excludeP1">
+          <label for="excludeP1" class="hidden outline"></label>
+          <input type="radio" name="excludeGroup" value="2" id="excludeP2">
+          <label for="excludeP2" class="hidden outline"></label>
+          <input type="radio" name="excludeGroup" value="3" id="excludeP3">
+          <label for="excludeP3" class="hidden outline"></label>
+          <input type="radio" name="excludeGroup" value="4" id="excludeP4">
+          <label for="excludeP4" class="hidden outline"></label>
+          <input type="radio" name="excludeGroup" value="5" id="excludeP5">
+          <label for="excludeP5" class="hidden outline"></label>
+          <button id="clearExcluded">Clear</button>
+        </div>
+      </div>
+      <div id="massChangeContainer">
+        <button value="5" id="massPlus5">&#43; 5</button>
+        <button value="1" id="massPlus">&#43; 1</button>
+        <button value="-1" id="massMinus">&#8211; 1</button>
+        <button value="-5" id="massMinus5">&#8211; 5</button>
+      </div>
+      <div id="netChangeContainer">
+        <p class="headline">Net Change</p>
+        <div id="netChange" class="outline">0</div>
+        <div id="exitRotateContainer">
+          <button id="massChangeExit">EXIT</button>
+          <button id="massChangeRotate"></button>
+        </div>
+      </div>
+    </div>
+
   </div>
   <button id="gearBtn"><img id="gearIcon" src="gear.svg"/></button>
   <script src="NoSleep.js"></script>

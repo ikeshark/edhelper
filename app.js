@@ -8,6 +8,7 @@ function Player(i) {
   this.rotated = false;
   this.castCount = 0;
   this.color = "";
+  this.experience = 0;
   this.commanderDamage = Array(6).fill(0);
 }
 // boolean helper function to enable auto sizing
@@ -97,6 +98,7 @@ function loadState() {
     players[i].commanderDamage = temp.commanderDamage;
     players[i].rotated = temp.rotated;
     players[i].castCount = temp.castCount;
+    players[i].experience = temp.experience;
   }
 }
 function saveState() {
@@ -265,12 +267,17 @@ const commanderButtons = document.querySelectorAll(".buttonContainer button:nth-
 const commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + label");
 const cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus button");
 const castCount = document.querySelector("#castCount + label");
+const experience = document.querySelector("#experience + label");
 const poison = document.querySelector("#poison + label");
 poison.addEventListener("click", () => {
   cmdPlusMinusButtons[0].classList.remove("invisible");
   cmdPlusMinusButtons[1].classList.remove("invisible");
 });
 castCount.addEventListener("click", () => {
+  cmdPlusMinusButtons[0].classList.remove("invisible");
+  cmdPlusMinusButtons[1].classList.remove("invisible");
+});
+experience.addEventListener("click", () => {
   cmdPlusMinusButtons[0].classList.remove("invisible");
   cmdPlusMinusButtons[1].classList.remove("invisible");
 });
@@ -301,6 +308,7 @@ commanderButtons.forEach(function (element, i) {
     currentPlayer.innerHTML = player.name;
     currentPlayer.style.background = player.color;
     castCount.innerHTML = player.castCount;
+    experience.innerHTML = player.experience;
     // functions
     function plusAndMinus() {
       let checkedValue = document.querySelector("input[name=cmdModalGroup]:checked").value;
@@ -311,6 +319,9 @@ commanderButtons.forEach(function (element, i) {
       } else if (checkedValue === "castCount") {
         player.castCount += increment;
         castCount.innerHTML = player.castCount;
+      } else if (checkedValue === "experience") {
+        player.experience += increment;
+        experience.innerHTML = player.experience;
       } else {
         let i = parseInt(checkedValue);
         player.commanderDamage[i] += increment;
@@ -616,6 +627,57 @@ document.getElementById("diceRotate").addEventListener("click", function() {
   rotate(modalWindows[4], deg);
 });
 document.getElementById("exitDice").addEventListener("click", closeModal);
+
+// mass Life change modal
+const excludePlayerBoxes = document.querySelectorAll("[id^=excludeP] + label");
+document.getElementById("massLife").addEventListener("click", function(){
+  modalWindows[5].classList.remove("hidden");
+  let deg = utiliRotateBool ? 180 : 0;
+  rotate(modalWindows[5], deg);
+  for (let i = 0; i < numPlayers; i++) {
+    excludePlayerBoxes[i].classList.remove("hidden");
+    excludePlayerBoxes[i].style.background = players[i].color;
+    excludePlayerBoxes[i].innerHTML = players[i].life;
+  }
+  let exit = document.getElementById("massChangeExit");
+  exit.addEventListener("click", function() {
+    document.getElementById("netChange").innerHTML = 0;
+    closeModal();
+    excludePlayerBoxes.forEach(elem => {
+      elem.classList.add("hidden");
+    });
+  });
+});
+function massLifeChange() {
+  let netChange = parseInt(document.getElementById("netChange").innerHTML);
+  let amount = parseInt(this.value);
+  let excluded = document.querySelector("input[name=excludeGroup]:checked");
+  for (let i = 0; i < numPlayers; i++) {
+    if (excluded && excluded.value == i) {
+      continue;
+    }
+    players[i].life += amount;
+    players[i].displayLife();
+    excludedPlayerBoxes[i].innerHTML = players[i].life;
+  }
+  netChange += amount;
+  document.getElementById("netChange").innerHTML = netChange;
+};
+document.getElementById("massPlus5").addEventListener("click", massLifeChange);
+document.getElementById("massPlus").addEventListener("click", massLifeChange);
+document.getElementById("massMinus").addEventListener("click", massLifeChange);
+document.getElementById("massMinus5").addEventListener("click", massLifeChange);
+document.getElementById("clearExcluded").addEventListener("click", function() {
+  let radios = document.querySelectorAll("input[name=excludeGroup]");
+  radios.forEach(function(elem) {
+    elem.checked = false;
+  });
+});
+document.getElementById("massChangeRotate").addEventListener("click", function() {
+  utiliRotateBool = !utiliRotateBool;
+  let deg = utiliRotateBool ? 180 : 0;
+  rotate(modalWindows[5], deg);
+});
 // stopping 'rubberband' scrolling
 document.addEventListener("touchmove", function(e) {
   e.preventDefault();
@@ -652,17 +714,4 @@ document.addEventListener("click", function() {
     enableFullScreen();
   }
 });
-// attempt to prevent iOS web app from forcing reloads
-// credit: samthor
-function visibilityHandler() {
-  var hash = "#bg";
-  if (document.hidden && !window.location.hash) {
-    window.history.replaceState(null, null, window.location + hash);
-  } else if (!document.hidden && window.location.hash == hash) {
-    var l = "" + window.location;
-    window.history.replaceState(null, l.substr(0, l.length - hash.length));
-  }
-};
-document.addEventListener("visibilitychange", visibilityHandler, false);
-visibilityHandler();
 displayBoard();

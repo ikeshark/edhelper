@@ -7,9 +7,11 @@ function Player(i) {
   this.name = "Player " + this.number;
   this.rotated = false;
   this.castCount = 0;
+  this.castCountB = 0;
   this.color = "";
   this.experience = 0;
-  this.commanderDamage = Array(6).fill(0);
+  this.commanderDamage = Array(12).fill(0);
+  this.hasPartners = false;
 }
 // boolean helper function to enable auto sizing
 function isOverflown(element) {
@@ -267,38 +269,31 @@ const commanderButtons = document.querySelectorAll(".buttonContainer button:nth-
 const commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + label");
 const cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus button");
 const castCount = document.querySelector("#castCount + label");
+const castCountB = document.querySelector("#castCountB + label");
 const experience = document.querySelector("#experience + label");
 const poison = document.querySelector("#poison + label");
-poison.addEventListener("click", () => {
+function showPlusMinus() {
   cmdPlusMinusButtons[0].classList.remove("invisible");
   cmdPlusMinusButtons[1].classList.remove("invisible");
-});
-castCount.addEventListener("click", () => {
-  cmdPlusMinusButtons[0].classList.remove("invisible");
-  cmdPlusMinusButtons[1].classList.remove("invisible");
-});
-experience.addEventListener("click", () => {
-  cmdPlusMinusButtons[0].classList.remove("invisible");
-  cmdPlusMinusButtons[1].classList.remove("invisible");
-});
+}
+poison.addEventListener("click", showPlusMinus);
+castCount.addEventListener("click", showPlusMinus);
+castCountB.addEventListener("click", showPlusMinus);
+experience.addEventListener("click", showPlusMinus);
 commanderDamageButtons.forEach((elem) => {
-  elem.addEventListener("click", () => {
-    cmdPlusMinusButtons[0].classList.remove("invisible");
-    cmdPlusMinusButtons[1].classList.remove("invisible");
-  });
+  elem.addEventListener("click", showPlusMinus);
 });
 cmdPlusMinusButtons[0].addEventListener("click", () => {
   cmdPlusMinusButtons[2].classList.remove("invisible");
-  cmdPlusMinusButtons[3].classList.remove("invisible");
 });
 cmdPlusMinusButtons[1].addEventListener("click", () => {
   cmdPlusMinusButtons[2].classList.remove("invisible");
-  cmdPlusMinusButtons[3].classList.remove("invisible");
 });
 commanderButtons.forEach(function (element, i) {
   element.addEventListener("click", function(){
     // variables
     let player = players[i];
+    let partnerCheckbox = document.getElementById("partnerCheckbox");
     // opening and orienting modal window
     let deg = player.rotated ? 180 : 0;
     rotate(modalWindows[1], deg);
@@ -308,8 +303,24 @@ commanderButtons.forEach(function (element, i) {
     currentPlayer.innerHTML = player.name;
     currentPlayer.style.background = player.color;
     castCount.innerHTML = player.castCount;
+    if (player.hasPartners) {
+      castCountB.classList.remove("hidden");
+      castCountB.innerHTML = player.castCountB;
+      document.getElementById("ccbLabel").classList.remove("hidden");
+      partnerCheckbox.checked = true;
+    }
     experience.innerHTML = player.experience;
     // functions
+    function togglePartners() {
+      player.hasPartners = !player.hasPartners;
+      castCountB.classList.toggle("hidden");
+      castCountB.innerHTML = player.castCountB;
+      if (player.hasPartners) {
+        document.getElementById("ccbLabel").classList.remove("hidden");
+      } else {
+        document.getElementById("ccbLabel").classList.add("hidden");
+      }
+    }
     function plusAndMinus() {
       let checkedValue = document.querySelector("input[name=cmdModalGroup]:checked").value;
       let increment = parseInt(this.value);
@@ -319,6 +330,9 @@ commanderButtons.forEach(function (element, i) {
       } else if (checkedValue === "castCount") {
         player.castCount += increment;
         castCount.innerHTML = player.castCount;
+      } else if (checkedValue === "castCountB") {
+        player.castCountB += increment;
+        castCountB.innerHTML = player.castCountB;
       } else if (checkedValue === "experience") {
         player.experience += increment;
         experience.innerHTML = player.experience;
@@ -335,9 +349,14 @@ commanderButtons.forEach(function (element, i) {
         element.removeEventListener("click", plusAndMinus);
         element.classList.add("invisible");
       });
+      castCountB.classList.add("hidden");
+      document.getElementById("ccbLabel").classList.add("hidden");
+      partnerCheckbox.checked = false;
+      partnerCheckbox.removeEventListener("click", togglePartners);
       closeModal();
     };
     // button event listeners and displays
+    partnerCheckbox.addEventListener("click", togglePartners);
     commanderDamageButtons.forEach(function (element, i) {
       element.style.background = players[i].color;
       element.innerHTML = player.commanderDamage[i];

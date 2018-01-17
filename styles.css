@@ -213,6 +213,14 @@ img {
   padding-top: 1%;
   padding-bottom: 1%;
 }
+#partnerCheckbox + label {
+  font-size: 0.9em;
+  position: absolute;
+  top: 1.2%;
+  left: 1%;
+  padding: 1%;
+  margin: 1%;
+}
 #flexContainer {
   display: flex;
   width: 100%;
@@ -299,7 +307,7 @@ img {
   flex-wrap: wrap;
   align-items: center;
 }
-#castCount  + label {
+#castCount  + label, #castCountB + label {
   background: white;
 }
 #cmdRightContainer label {
@@ -359,6 +367,7 @@ img {
   display: block;
 }
 .utiliHalfBtns {
+  font-size: 0.75em;
   height: 48%;
   margin: 1%;
   width: 90%;
@@ -382,7 +391,7 @@ img {
   padding: 1%;
   margin: 1%;
 }
-#gradientCheckbox {
+#gradientCheckbox, #partnerCheckbox {
   visibility: hidden;
   position: absolute;
 }
@@ -415,6 +424,7 @@ input[type=radio]:checked + label {
 }
 input[type=checkbox]:checked + label {
   background: white;
+  font-weight: bold;
 }
 #choosePlayerExit {
   background-color: black;

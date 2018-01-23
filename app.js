@@ -12,6 +12,7 @@ function Player(i) {
   this.experience = 0;
   this.commanderDamage = Array(12).fill(0);
   this.hasPartners = false;
+  this.energy = 0;
 }
 // boolean helper function to enable auto sizing
 function isOverflown(element) {
@@ -101,6 +102,8 @@ function loadState() {
     players[i].rotated = temp.rotated;
     players[i].castCount = temp.castCount;
     players[i].experience = temp.experience;
+    players[i].energy = temp.energy;
+    players[i].hasPartners = temp.hasPartners;
   }
 }
 function saveState() {
@@ -175,14 +178,12 @@ function displayBoard() {
     playerDivs[i].classList.remove("hidden");
     playerDivs[i].style.background = players[i].color;
     let deg = players[i].rotated ? 180 : 0;
-    commanderDamageButtons[i].classList.remove("hidden");
     rotate(playerDivs[i], deg);
     players[i].displayLife();
     players[i].displayName();
   }
   for (let i = numPlayers; i < 6; i++) {
     playerDivs[i].classList.add("hidden");
-    commanderDamageButtons[i].classList.add("hidden");
   }
 }
 // new name buttons and event listeners
@@ -266,60 +267,130 @@ lifeButtons.forEach(function (element, i) {
 });
 // commander damage modal window
 const commanderButtons = document.querySelectorAll(".buttonContainer button:nth-child(1)");
-const commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + label");
-const cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus button");
-const castCount = document.querySelector("#castCount + label");
-const castCountB = document.querySelector("#castCountB + label");
-const experience = document.querySelector("#experience + label");
-const poison = document.querySelector("#poison + label");
-function showPlusMinus() {
-  cmdPlusMinusButtons[0].classList.remove("invisible");
-  cmdPlusMinusButtons[1].classList.remove("invisible");
-}
-poison.addEventListener("click", showPlusMinus);
-castCount.addEventListener("click", showPlusMinus);
-castCountB.addEventListener("click", showPlusMinus);
-experience.addEventListener("click", showPlusMinus);
-commanderDamageButtons.forEach((elem) => {
-  elem.addEventListener("click", showPlusMinus);
-});
-cmdPlusMinusButtons[0].addEventListener("click", () => {
-  cmdPlusMinusButtons[2].classList.remove("invisible");
-});
-cmdPlusMinusButtons[1].addEventListener("click", () => {
-  cmdPlusMinusButtons[2].classList.remove("invisible");
-});
+
+// function togglePartnerBox() {
+//   let i = parseInt(this.getAttribute("data-attr")) - 1;
+//   let getFor = this.getAttribute("for");
+//   let inpt = document.getElementById("getFor");
+//   console.log(getFor);
+//   partnerButtons[i].classList.toggle("behind");
+//   commanderDamageButtons[i].classList.toggle("behind");
+// }
 commanderButtons.forEach(function (element, i) {
-  element.addEventListener("click", function(){
+  element.addEventListener("click", function() {
+
     // variables
     let player = players[i];
     let partnerCheckbox = document.getElementById("partnerCheckbox");
+    // all radios in modal
+    let cmdModalGroup = document.querySelectorAll("input[name=cmdModalGroup]");
+    // non commander radios. do i need?
+    let otherCounters = document.querySelectorAll(".otherCounters");
+    const commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + label");
+    const partnerButtons = document.querySelectorAll("[id^=partnerButton] + label");
+    const castCount = document.querySelector("#castCount + label");
+    const castCountB = document.querySelector("#castCountB + label");
+    const energy = document.querySelector("#energy + label");
+    const experience = document.querySelector("#experience + label");
+    const poison = document.querySelector("#poison + label");
+    const cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus button");
+
     // opening and orienting modal window
     let deg = player.rotated ? 180 : 0;
     rotate(modalWindows[1], deg);
+
     modalWindows[1].classList.remove("hidden");
     modalBackground.classList.remove("hidden");
+
+    // current player banner
     let currentPlayer = document.getElementById("currentPlayer");
     currentPlayer.innerHTML = player.name;
     currentPlayer.style.background = player.color;
-    castCount.innerHTML = player.castCount;
+
     if (player.hasPartners) {
-      castCountB.classList.remove("hidden");
-      castCountB.innerHTML = player.castCountB;
-      document.getElementById("ccbLabel").classList.remove("hidden");
       partnerCheckbox.checked = true;
     }
+    for (let i = 0; i < numPlayers; i++) {
+      commanderDamageButtons[i].classList.remove("hidden");
+    }
+    partnerButtons.forEach((elem, i) => {
+      if (i < numPlayers) {
+        elem.classList.add("invisible");
+        elem.classList.remove("hidden");
+        if (players[i].hasPartners) {
+          elem.classList.remove("invisible");
+        }
+      }
+      elem.style.background = players[i].color;
+      elem.innerHTML = player.commanderDamage[i + 6];
+    });
+    for (let i = 5; i >= numPlayers; i--) {
+      partnerButtons[i].classList.add("hidden");
+      commanderDamageButtons[i].classList.add("hidden");
+    }
+    commanderDamageButtons.forEach(function(element, i) {
+      element.style.background = players[i].color;
+      element.innerHTML = player.commanderDamage[i];
+    });
+    if (player.poison > 0) {
+      poison.classList.remove("hidden");
+    }
+    if (player.experience > 0) {
+      experience.classList.remove("hidden");
+    }
+    if (player.castCount > 0) {
+      castCount.classList.remove("hidden");
+    }
+    if (player.castCountB > 0) {
+      castCountB.classList.remove("hidden");
+    }
+    if (player.energy > 0) {
+      energy.classList.remove("hidden");
+    }
+
     experience.innerHTML = player.experience;
+    castCount.innerHTML = player.castCount;
+    energy.innerHTML = player.energy;
+    poison.innerHTML = player.poison;
+    energy.innerHTML = player.energy;
+    castCountB.innerHTML = player.castCountB;
+
     // functions
     function togglePartners() {
-      player.hasPartners = !player.hasPartners;
-      castCountB.classList.toggle("hidden");
-      castCountB.innerHTML = player.castCountB;
-      if (player.hasPartners) {
-        document.getElementById("ccbLabel").classList.remove("hidden");
-      } else {
-        document.getElementById("ccbLabel").classList.add("hidden");
+      let oldId = this.getAttribute("for");
+      let oldElem = document.getElementById(oldId);
+      let newElem;
+      if (oldElem.checked) {
+        let i = parseInt(this.getAttribute("data-attr")) - 1;
+        partnerButtons[i].classList.toggle("behind");
+        commanderDamageButtons[i].classList.toggle("behind");
+        if (parseInt(oldElem.value) > 5) {
+          let newId = commanderDamageButtons[i].getAttribute("for");
+          newElem = document.getElementById(newId);
+          checkPartner(newElem);
+        } else {
+          let newId = partnerButtons[i].getAttribute("for");
+          newElem = document.getElementById(newId);
+          newElem.checked = true;
+        }
+        function checkPartner() {
+          newElem.checked = true;
+        }
+        setTimeout(checkPartner, 10);
       }
+    }
+    function showPlusMinus() {
+      cmdPlusMinusButtons[0].classList.remove("invisible");
+      cmdPlusMinusButtons[1].classList.remove("invisible");
+      cmdModalGroup.forEach(function(elem) {
+        elem.removeEventListener("click", showPlusMinus);
+      });
+    }
+    function toggleHasPartners() {
+      player.hasPartners = !player.hasPartners;
+      partnerButtons[i].classList.toggle("invisible");
+      let attr = player.hasPartners ? player.number + "A" : player.number;
+      commanderDamageButtons[i].setAttribute("data-attr", attr)
     }
     function plusAndMinus() {
       let checkedValue = document.querySelector("input[name=cmdModalGroup]:checked").value;
@@ -336,36 +407,81 @@ commanderButtons.forEach(function (element, i) {
       } else if (checkedValue === "experience") {
         player.experience += increment;
         experience.innerHTML = player.experience;
+      } else if (checkedValue === "energy"){
+        player.energy += increment;
+        energy.innerHTML = player.energy;
       } else {
         let i = parseInt(checkedValue);
         player.commanderDamage[i] += increment;
         player.life -= increment;
         player.displayLife();
-        commanderDamageButtons[i].innerHTML = player.commanderDamage[i];
+        if (i > 5) {
+          partnerButtons[i - 6].innerHTML = player.commanderDamage[i];
+        } else {
+          commanderDamageButtons[i].innerHTML = player.commanderDamage[i];
+        }
       }
     }
-    let closeCmdModal = () => {
-      cmdPlusMinusButtons.forEach(function(element) {
-        element.removeEventListener("click", plusAndMinus);
-        element.classList.add("invisible");
+    function showMinusButtons() {
+      cmdPlusMinusButtons[2].classList.remove("invisible");
+      cmdPlusMinusButtons[0].removeEventListener("click", showMinusButtons);
+      cmdPlusMinusButtons[1].removeEventListener("click", showMinusButtons);
+    }
+    function closeCmdModal() {
+      cmdPlusMinusButtons.forEach(elem => {
+        elem.removeEventListener("click", plusAndMinus);
+        elem.classList.add("invisible");
       });
-      castCountB.classList.add("hidden");
-      document.getElementById("ccbLabel").classList.add("hidden");
+      cmdModalGroup.forEach((elem, i) => {
+        elem.removeEventListener("click", showPlusMinus);
+      });
+      poison.classList.add("hidden");
+      commanderDamageButtons.forEach(elem => {
+        elem.removeEventListener("click", togglePartners);
+        elem.classList.add("hidden");
+      });
+      partnerButtons.forEach(elem => {
+        elem.removeEventListener("click", togglePartners);
+      })
+      otherCounters.forEach(elem => {
+        elem.childNodes[5].classList.add("hidden");
+        elem.removeEventListener("click", toggleOtherCounters);
+      });
+      cmdPlusMinusButtons[0].removeEventListener("click", showMinusButtons);
+      cmdPlusMinusButtons[1].removeEventListener("click", showMinusButtons);
       partnerCheckbox.checked = false;
-      partnerCheckbox.removeEventListener("click", togglePartners);
+      partnerCheckbox.removeEventListener("click", toggleHasPartners);
+      let checks = document.querySelector("input[name=cmdModalGroup]:checked");
+      if (checks) {
+        checks.checked = false;
+      }
+      document.getElementById("cmdExit").removeEventListener("click", closeCmdModal);
+
       closeModal();
     };
+    function toggleOtherCounters() {
+      this.childNodes[5].classList.toggle("hidden");
+    }
+
     // button event listeners and displays
-    partnerCheckbox.addEventListener("click", togglePartners);
-    commanderDamageButtons.forEach(function (element, i) {
-      element.style.background = players[i].color;
-      element.innerHTML = player.commanderDamage[i];
+    partnerCheckbox.addEventListener("click", toggleHasPartners);
+    cmdModalGroup.forEach(function(elem) {
+      elem.addEventListener("click", showPlusMinus);
     });
-    cmdPlusMinusButtons.forEach(function(element) {
-      element.addEventListener("click", plusAndMinus);
+    otherCounters.forEach(elem => {
+      elem.addEventListener("click", toggleOtherCounters);
     });
-    poison.innerHTML = player.poison;
-    // close modal event listeners
+    cmdPlusMinusButtons.forEach(elem => {
+      elem.addEventListener("click", plusAndMinus);
+    });
+    commanderDamageButtons.forEach(elem => {
+      elem.addEventListener("click", togglePartners);
+    });
+    partnerButtons.forEach(elem => {
+      elem.addEventListener("click", togglePartners);
+    });
+    cmdPlusMinusButtons[0].addEventListener("click", showMinusButtons);
+    cmdPlusMinusButtons[1].addEventListener("click", showMinusButtons);
     document.getElementById("cmdExit").addEventListener("click", closeCmdModal);
   });
 });
@@ -717,20 +833,20 @@ window.addEventListener("unload", function() {
   noSleep.disable();
 });
 // full screen attempt no. 68, courtesy Mozilla
-function enableFullScreen() {
-  var doc = window.document;
-  var docEl = doc.documentElement;
-
-  var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-
-  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-    requestFullScreen.call(docEl);
-  }
-  document.getElementById("gearBtn").removeEventListener("click", enableFullScreen);
-}
-document.addEventListener("click", function() {
-  if (isMobileDevice()) {
-    enableFullScreen();
-  }
-});
+// function enableFullScreen() {
+//   var doc = window.document;
+//   var docEl = doc.documentElement;
+//
+//   var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+//
+//   if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+//     requestFullScreen.call(docEl);
+//   }
+//   document.getElementById("gearBtn").removeEventListener("click", enableFullScreen);
+// }
+// document.addEventListener("click", function() {
+//   if (isMobileDevice()) {
+//     enableFullScreen();
+//   }
+// });
 displayBoard();

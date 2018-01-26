@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="ring.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Berkshire+Swash">
   <link rel="apple-touch-icon" href="ring.png">
   <title>E.D.H.elper</title>
 </head>
@@ -80,25 +81,26 @@
       <div>
         <button value="1" class="plusMinus">&#43; 1</button>
         <button value="5" class="plusMinus">&#43; 5</button>
-        <button value="2" class="doubleHalve">double</button>
+        <button value="2" class="doubleHalve headline">Double</button>
       </div>
       <div>
         <p id="modalLifeDisplay" class="outline"></p>
+        <p id="lifeHistoryDisplay" class="hidden"></p>
         <button id="lifeExit">EXIT</button>
       </div>
       <div>
         <button value="-1" class="plusMinus">&#8211; 1</button>
         <button value="-5" class="plusMinus">&#8211; 5</button>
-        <button value="0.5" class="doubleHalve">halve</button>
+        <button value="0.5" class="doubleHalve headline">Halve</button>
       </div>
     </div>
     <div id="modalWindowCmd" class="hidden">
       <p id="currentPlayer" class="outline"></p>
       <input type="checkbox" id="partnerCheckbox">
-      <label for="partnerCheckbox">partners</label>
+      <label for="partnerCheckbox">Partners</label>
       <div id="flexContainer">
         <div id="cmdContainer">
-          <p class="headline">commanders</p>
+          <p class="headline">Commanders</p>
           <div id="cmdInnerContainer">
             <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0">
             <label data-attr="1" for="cmdButton0" class="outline"></label>
@@ -133,36 +135,36 @@
           <button value="5" id="plus5" class="invisible">&#43; 5</button>
           <button value="1" id="plus" class="invisible">&#43; 1</button>
           <button value="-1" id="minus" class="invisible">&#8211; 1</button>
+          <button id="cmdExit" class="exit">EXIT</button>
         </div>
         <div id="otherCountersContainer">
           <div class="otherCounters">
-            <p class="headline">poison</p>
-            <input type="radio" value="poison" name="cmdModalGroup" id="poison">
-            <label class="outline hidden" for="poison"></label>
-          </div>
-          <div class="otherCounters">
-            <p class="headline">cast count</p>
+            <p class="headline">Cast Count</p>
             <input type="radio" value="castCount" name="cmdModalGroup" id="castCount">
             <label class="outline hidden" for="castCount"></label>
           </div>
           <div class="otherCounters">
-            <p class="headline">energy</p>
-            <input type="radio" value="energy" name="cmdModalGroup" id="energy">
-            <label class="outline hidden" for="energy"></label>
+            <p id="ccbLabel" class="headline">Cast Count B</p>
+            <input type="radio" value="castCountB" name="cmdModalGroup" id="castCountB">
+            <label class="outline hidden" for="castCountB"></label>
           </div>
           <div class="otherCounters">
-            <p class="headline">experience</p>
+            <p class="headline">Experience</p>
             <input type="radio" value="experience" name="cmdModalGroup" id="experience">
             <label class="outline hidden" for="experience"></label>
           </div>
           <div class="otherCounters">
-            <p id="ccbLabel" class="headline">cast count b</p>
-            <input type="radio" value="castCountB" name="cmdModalGroup" id="castCountB">
-            <label class="outline hidden" for="castCountB"></label>
+            <p class="headline">Poison</p>
+            <input type="radio" value="poison" name="cmdModalGroup" id="poison">
+            <label class="outline hidden" for="poison"></label>
+          </div>
+          <div class="otherCounters">
+            <p class="headline">Energy</p>
+            <input type="radio" value="energy" name="cmdModalGroup" id="energy">
+            <label class="outline hidden" for="energy"></label>
           </div>
         </div>
       </div>
-        <button id="cmdExit" class="exit">EXIT</button>
     </div>
     <div id="modalWindowUtility" class="hidden">
       <div class="utiliBtns">
@@ -182,7 +184,7 @@
       <button id="threeColors" class="colorMenu">3 colors</button>
       <button id="fourFiveColors" class="colorMenu">4/5 colors</button>
       <input type="checkbox" id="gradientCheckbox">
-      <label for="gradientCheckbox" class="hidden">gradients</label>
+      <label for="gradientCheckbox" class="hidden">Gradients</label>
       <div id="allColorContainer">
         <input type="radio" name="chooseColor" value="0" id="radio0"><label for="radio0" class="allColors"></label>
         <input type="radio" name="chooseColor" value="1" id="radio1"><label for="radio1" class="allColors"></label>

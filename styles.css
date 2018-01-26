@@ -45,7 +45,7 @@ label {
   width: 60%;
   height: 21%;
   font-size: 2em;
-  background-color: black;
+  background-color: red;
   color: white;
 }
 
@@ -158,7 +158,8 @@ label {
   width: 100%;
   height: 33.33%;
   font-size: 3em;
-  background-color: black;
+  background-color: red;
+  border: 0.1em white solid;
   color: white;
 }
 #modalWindowLife {
@@ -197,6 +198,16 @@ label {
   justify-content: center;
   align-items: center;
 }
+#lifeHistoryDisplay {
+  position: relative;
+  font-size: 2em;
+  height: 70%;
+  width: 90%;
+  padding-left: 5%;
+  padding-right: 5%;
+  font-family: monospace;
+  overflow-y: scroll;
+}
 img {
   width: 55%;
 }
@@ -226,7 +237,7 @@ img {
 #flexContainer {
   display: flex;
   width: 96%;
-  height: 70%;
+  height: 80%;
   padding: 2%;
 }
 #cmdContainer {
@@ -249,12 +260,12 @@ img {
   z-index: -3;
   width: 102%;
   height: 87%;
-  top: -171%;
+  top: -170%;
 }
 .headline {
   font-size: 1.2em;
   font-weight: bold;
-  font-family: fantasy;
+  font-family: "Berkshire Swash", fantasy;
 }
 #cmdInnerContainer, #cmdPartnerContainer {
   display: flex;
@@ -268,10 +279,10 @@ img {
 }
 #cmdPartnerContainer {
   position: relative;
-  top: -85%;
-  left: 2%;
-  height: 60vh;
-  width: 40vw;
+  top: -84%;
+  left: 1%;
+  height: 68vh;
+  width: 40.3vw;
 }
 [id^=cmdButton] + label, [id^=partnerButton] + label {
   position: relative;
@@ -293,7 +304,7 @@ img {
 [id^=cmdButton] + label::before, [id^=partnerButton] + label::before {
   content: attr(data-attr);
   position: absolute;
-  font-size: 0.4em;
+  font-size: 0.35em;
   color: black;
   background-color: white;
   border: 1px solid black;
@@ -306,7 +317,6 @@ img {
   -webkit-text-stroke: none;
   text-shadow: none;
 }
-
 #cmdPlusMinus {
   width: 30%;
   display: flex;
@@ -314,7 +324,7 @@ img {
   justify-content: center;
   align-items: center;
 }
-#cmdPlusMinus > button {
+#cmdPlusMinus > button:not(#cmdExit) {
   height: 20%;
   width: 80%;
   margin: 5% 0 5% 0;
@@ -354,10 +364,9 @@ img {
   background: purple;
 }
 #cmdExit {
-  height: 11%;
-  margin-top: -2%;
-  width: 50%;
-  font-size: 1.5em;
+  margin: 5% 0 5% 0;
+  width: 80%;
+  font-size: 2em;
 }
 
 /* utilities modal */
@@ -460,7 +469,7 @@ input[type=checkbox]:checked + label {
   font-weight: bold;
 }
 #choosePlayerExit {
-  background-color: black;
+  background-color: red;
   color: white;
   font-size: 2em;
   width: 15%;
@@ -499,8 +508,8 @@ input[type=checkbox]:checked + label {
   color: black;
 }
 #exitDice {
-  background-color: white;
-  color: black;
+  background-color: red;
+  color: white;
   width: 11.5%;
   height: 20%;
   margin: 1%;
@@ -547,24 +556,6 @@ input[type=checkbox]:checked + label {
   flex-grow: 1;
   height: 20vh;
 }
-/* #excludeP0 + label::before {
-  content: "1";
-}
-#excludeP1 + label::before {
-  content: "2";
-}
-#excludeP2 + label::before {
-  content: "3";
-}
-#excludeP3 + label::before {
-  content: "4";
-}
-#excludeP4 + label::before {
-  content: "5";
-}
-#excludeP5 + label::before {
-  content: "6";
-} */
 [id^=excludeP] + label::before {
   content: attr(data-attr);
   position: absolute;
@@ -583,6 +574,7 @@ input[type=checkbox]:checked + label {
 }
 #clearExcluded {
   width: 70%;
+  font-size: 1em;
   height: 8vh;
 }
 #massChangeContainer {
@@ -616,7 +608,7 @@ input[type=checkbox]:checked + label {
   justify-content: space-around;
 }
 #massChangeExit {
-  background-color: black;
+  background-color: red;
   color: white;
   font-size: 2em;
   width: 45%;

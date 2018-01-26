@@ -3,6 +3,7 @@ function Player(i) {
   this.i = i;
   this.poison = 0;
   this.life = 40;
+  this.lifeHistory = [40];
   this.number = this.i + 1;
   this.name = "Player " + this.number;
   this.rotated = false;
@@ -94,6 +95,7 @@ function loadState() {
   for (let i = 0; i < numPlayers; i++) {
     let player = "player" + i;
     let temp = JSON.parse(localStorage.getItem(player));
+    // TO DO: i think i can do this programatically. iterate over each numerable property
     players[i].name = temp.name;
     players[i].life = temp.life;
     players[i].poison = temp.poison;
@@ -104,6 +106,7 @@ function loadState() {
     players[i].experience = temp.experience;
     players[i].energy = temp.energy;
     players[i].hasPartners = temp.hasPartners;
+    players[i].lifeHistory = temp.lifeHistory;
   }
 }
 function saveState() {
@@ -227,22 +230,50 @@ lifeButtons.forEach(function (element, i) {
   element.addEventListener("click", function(){
     // variables
     let player = players[i];
+    let isLifeDisplay = true;
+    let oldLife = player.life;
+    let historyDisplay = document.getElementById("lifeHistoryDisplay");
     // functions
+    function toggleHistory() {
+      isLifeDisplay = !isLifeDisplay;
+      lifeDisplay.classList.toggle("hidden");
+      historyDisplay.classList.toggle("hidden");
+      let display = "";
+      player.lifeHistory.forEach((elem, i) => {
+        if (i == 0) {
+          display += elem;
+        } else {
+          display += ", " + elem;
+        }
+      });
+      historyDisplay.innerHTML = display;
+    }
     function plusMinusLife() {
+      if (!isLifeDisplay) {
+        toggleHistory();
+      }
       player.life += parseInt(this.value);
       player.displayLife();
     };
     function doubleHalveLife() {
+      if (!isLifeDisplay) {
+        toggleHistory();
+      }
       player.life = Math.floor(player.life * parseFloat(this.value));
       player.displayLife();
     }
     let closeLifeModal = () => {
+      if (player.life != oldLife) {
+        player.lifeHistory.push(parseInt(player.life));
+      }
       lifePlusMinusButtons.forEach(function(element) {
         element.removeEventListener("click", plusMinusLife);
       });
       doubleHalveButtons.forEach(function(element) {
         element.removeEventListener("click", doubleHalveLife);
       });
+      lifeDisplay.removeEventListener("click", toggleHistory);
+      historyDisplay.removeEventListener("click", toggleHistory);
       document.getElementById("lifeExit").removeEventListener("click", closeLifeModal);
       closeModal();
     };
@@ -255,6 +286,8 @@ lifeButtons.forEach(function (element, i) {
     // display background color of the appropriate player
     lifeDisplay.style.background = player.color;
     // adding event listeners to buttons
+    lifeDisplay.addEventListener("click", toggleHistory);
+    historyDisplay.addEventListener("click", toggleHistory);
     lifePlusMinusButtons.forEach(function(element) {
       element.addEventListener("click", plusMinusLife);
     });
@@ -267,20 +300,11 @@ lifeButtons.forEach(function (element, i) {
 });
 // commander damage modal window
 const commanderButtons = document.querySelectorAll(".buttonContainer button:nth-child(1)");
-
-// function togglePartnerBox() {
-//   let i = parseInt(this.getAttribute("data-attr")) - 1;
-//   let getFor = this.getAttribute("for");
-//   let inpt = document.getElementById("getFor");
-//   console.log(getFor);
-//   partnerButtons[i].classList.toggle("behind");
-//   commanderDamageButtons[i].classList.toggle("behind");
-// }
 commanderButtons.forEach(function (element, i) {
   element.addEventListener("click", function() {
-
     // variables
     let player = players[i];
+    let oldLife = player.life;
     let partnerCheckbox = document.getElementById("partnerCheckbox");
     // all radios in modal
     let cmdModalGroup = document.querySelectorAll("input[name=cmdModalGroup]");
@@ -293,8 +317,7 @@ commanderButtons.forEach(function (element, i) {
     const energy = document.querySelector("#energy + label");
     const experience = document.querySelector("#experience + label");
     const poison = document.querySelector("#poison + label");
-    const cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus button");
-
+    let cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus > button:not(#cmdExit)");
     // opening and orienting modal window
     let deg = player.rotated ? 180 : 0;
     rotate(modalWindows[1], deg);
@@ -358,9 +381,10 @@ commanderButtons.forEach(function (element, i) {
     // functions
     function togglePartners() {
       let oldId = this.getAttribute("for");
+      let player = players[oldId.slice(-1)];
       let oldElem = document.getElementById(oldId);
       let newElem;
-      if (oldElem.checked) {
+      if (oldElem.checked && player.hasPartners) {
         let i = parseInt(this.getAttribute("data-attr")) - 1;
         partnerButtons[i].classList.toggle("behind");
         commanderDamageButtons[i].classList.toggle("behind");
@@ -428,7 +452,10 @@ commanderButtons.forEach(function (element, i) {
       cmdPlusMinusButtons[1].removeEventListener("click", showMinusButtons);
     }
     function closeCmdModal() {
-      cmdPlusMinusButtons.forEach(elem => {
+      if (player.life != oldLife) {
+        player.lifeHistory.push(parseInt(player.life));
+      }
+      cmdPlusMinusButtons.forEach((elem, i) => {
         elem.removeEventListener("click", plusAndMinus);
         elem.classList.add("invisible");
       });
@@ -765,7 +792,11 @@ document.getElementById("exitDice").addEventListener("click", closeModal);
 
 // mass Life change modal
 const excludePlayerBoxes = document.querySelectorAll("[id^=excludeP] + label");
-document.getElementById("massLife").addEventListener("click", function(){
+document.getElementById("massLife").addEventListener("click", function() {
+  let oldLives = [];
+  for (let i = 0; i < numPlayers; i++) {
+    oldLives.push(players[i].life);
+  }
   modalWindows[5].classList.remove("hidden");
   let deg = utiliRotateBool ? 180 : 0;
   rotate(modalWindows[5], deg);
@@ -776,6 +807,11 @@ document.getElementById("massLife").addEventListener("click", function(){
   }
   let exit = document.getElementById("massChangeExit");
   exit.addEventListener("click", function() {
+    for (let i = 0; i < numPlayers; i++) {
+      if (players[i].life != oldLives[i]) {
+        players[i].lifeHistory.push(parseInt(players[i].life));
+      }
+    }
     document.getElementById("netChange").innerHTML = 0;
     closeModal();
     excludePlayerBoxes.forEach(elem => {

@@ -263,6 +263,9 @@ lifeButtons.forEach(function (element, i) {
       player.displayLife();
     }
     let closeLifeModal = () => {
+      if (!isLifeDisplay) {
+        toggleHistory();
+      }
       if (player.life != oldLife) {
         player.lifeHistory.push(parseInt(player.life));
       }
@@ -805,8 +808,9 @@ document.getElementById("massLife").addEventListener("click", function() {
     excludePlayerBoxes[i].style.background = players[i].color;
     excludePlayerBoxes[i].innerHTML = players[i].life;
   }
-  let exit = document.getElementById("massChangeExit");
-  exit.addEventListener("click", function() {
+  let exitBtn = document.getElementById("massChangeExit");
+  function exit() {
+    deselect();
     for (let i = 0; i < numPlayers; i++) {
       if (players[i].life != oldLives[i]) {
         players[i].lifeHistory.push(parseInt(players[i].life));
@@ -817,7 +821,9 @@ document.getElementById("massLife").addEventListener("click", function() {
     excludePlayerBoxes.forEach(elem => {
       elem.classList.add("hidden");
     });
-  });
+    exitBtn.removeEventListener("click", exit);
+  }
+  exitBtn.addEventListener("click", exit);
 });
 function massLifeChange() {
   let netChange = parseInt(document.getElementById("netChange").innerHTML);
@@ -834,16 +840,18 @@ function massLifeChange() {
   netChange += amount;
   document.getElementById("netChange").innerHTML = netChange;
 };
-document.getElementById("massPlus5").addEventListener("click", massLifeChange);
-document.getElementById("massPlus").addEventListener("click", massLifeChange);
-document.getElementById("massMinus").addEventListener("click", massLifeChange);
-document.getElementById("massMinus5").addEventListener("click", massLifeChange);
-document.getElementById("clearExcluded").addEventListener("click", function() {
+function deselect() {
   let radios = document.querySelectorAll("input[name=excludeGroup]");
   radios.forEach(function(elem) {
     elem.checked = false;
   });
-});
+};
+document.getElementById("massPlus5").addEventListener("click", massLifeChange);
+document.getElementById("massPlus").addEventListener("click", massLifeChange);
+document.getElementById("massMinus").addEventListener("click", massLifeChange);
+document.getElementById("massMinus5").addEventListener("click", massLifeChange);
+document.getElementById("clearExcluded").addEventListener("click", deselect);
+
 document.getElementById("massChangeRotate").addEventListener("click", function() {
   utiliRotateBool = !utiliRotateBool;
   let deg = utiliRotateBool ? 180 : 0;

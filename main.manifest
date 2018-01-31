@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-#v19
+#v20
 
 styles.css
 app.js
@@ -10,3 +10,5 @@ sword.png
 manifest.json
 NoSleep.js
 ring.png
+Berkshire_Swash/BerkshireSwash.woff2
+Berkshire_Swash/BerkshireSwash2.woff2

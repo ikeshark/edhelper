@@ -1,3 +1,20 @@
+/* latin-ext */
+@font-face {
+  font-family: 'Berkshire Swash';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Berkshire Swash Regular'), local('BerkshireSwash-Regular'), url(Berkshire_Swash/BerkshireSwash.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Berkshire Swash';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Berkshire Swash Regular'), local('BerkshireSwash-Regular'), url(Berkshire_Swash/BerkshireSwash2.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
+}
+
 /*Style Resets and General Rules*/
 body {
   overflow: hidden;
@@ -10,7 +27,7 @@ button {
   border-width: 0px;
 }
 button:focus {
-  outline: none;
+  outline-color: transparent;
 }
 body, p {
   margin: 0px;
@@ -227,6 +244,7 @@ img {
 }
 #partnerCheckbox + label {
   background-color: lightgrey;
+  font-family: "Berkshire Swash", cursive;
   font-size: 0.9em;
   position: absolute;
   top: 1.2%;
@@ -265,7 +283,7 @@ img {
 .headline {
   font-size: 1.2em;
   font-weight: bold;
-  font-family: "Berkshire Swash", fantasy;
+  font-family: "Berkshire Swash", cursive;
 }
 #cmdInnerContainer, #cmdPartnerContainer {
   display: flex;
@@ -386,9 +404,9 @@ img {
   position: relative;
   left: 10%;
   top: 1%;
-  width: 14vh;
-  height: 16vh;
-  border: 1px grey solid;
+  width: 16vh;
+  height: 17vh;
+  border: 5px transparent solid;
 }
 #modalWindowChangeColor > p {
   font-size: 1.2em;
@@ -401,15 +419,17 @@ img {
   margin: 2% 0.5% 2% 0.5%;
 }
 .utiliBtns {
+  font-family: "Berkshire Swash", cursive;
   height: 60%;
   width: 18%;
-  font-size: 1.2em;
+  font-size: 1.3em;
   margin: 2% 1% 1% 1%;
   background-color: white;
   display: block;
 }
 .utiliHalfBtns {
-  font-size: 0.75em;
+  font-size: 1em;
+  font-family: inherit;
   height: 48%;
   margin: 1%;
   width: 90%;
@@ -482,7 +502,7 @@ input[type=checkbox]:checked + label {
   background-repeat: no-repeat;
   width: 14vh;
   height: 16vh;
-  border: 1px grey solid;
+  border: 3px transparent solid;
   margin-top: 3%;
   margin-left: 3%;
 }
@@ -576,6 +596,7 @@ input[type=checkbox]:checked + label {
   width: 70%;
   font-size: 1em;
   height: 8vh;
+  background: white;
 }
 #massChangeContainer {
   width: 30%;
@@ -618,9 +639,10 @@ input[type=checkbox]:checked + label {
   background-image: url(rotate.png);
   background-size: contain;
   background-repeat: no-repeat;
-  width: 23%;
-  margin-top: 3.8%;
-  height: 11vh;
+  width: 25%;
+  margin-top: 3.1%;
+  height: 13vh;
+  border: 2px transparent solid;
 }
 
 /* gear button */

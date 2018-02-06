@@ -14,60 +14,60 @@
 </head>
 <body>
   <div id="playersContainer">
-    <div>
+    <div class="flex">
       <div class="lifeAndNameContainer">
         <button class="lifeButtons outline"></button>
-        <p class="playerName outline"></p>
+        <p class="playerName"></p>
       </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="sword.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
       </div>
     </div>
-    <div>
+    <div class="flex">
       <div class="lifeAndNameContainer">
         <button class="lifeButtons outline"></button>
-        <p class="playerName outline"></p>
+        <p class="playerName"></p>
       </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="sword.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
       </div>
     </div>
-    <div>
+    <div class="flex">
       <div class="lifeAndNameContainer">
         <button class="lifeButtons outline"></button>
-        <p class="playerName outline"></p>
+        <p class="playerName"></p>
       </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="sword.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
       </div>
     </div>
-    <div>
+    <div class="flex">
       <div class="lifeAndNameContainer">
         <button class="lifeButtons outline"></button>
-        <p class="playerName outline"></p>
+        <p class="playerName"></p>
       </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="sword.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
       </div>
     </div>
-    <div>
+    <div class="flex">
       <div class="lifeAndNameContainer">
         <button class="lifeButtons outline"></button>
-        <p class="playerName outline"></p>
+        <p class="playerName"></p>
       </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="sword.png"> </button>
         <button> <img class="mainIcons" src="rotate.png"> </button>
       </div>
     </div>
-    <div>
+    <div class="flex">
       <div class="lifeAndNameContainer">
         <button class="lifeButtons outline"></button>
-        <p class="playerName outline"></p>
+        <p class="playerName"></p>
       </div>
       <div class="buttonContainer">
         <button> <img class="mainIcons" src="sword.png"> </button>
@@ -76,16 +76,16 @@
     </div>
   </div>
   <div id="modalBackground" class="hidden">
-    <div id="modalWindowLife" class="hidden">
+    <div id="modalWindowLife" class="hidden flex">
       <div>
         <button value="1" class="plusMinus">&#43; 1</button>
         <button value="5" class="plusMinus">&#43; 5</button>
         <button value="2" class="doubleHalve headline">Double</button>
       </div>
       <div>
-        <p id="modalLifeDisplay" class="outline"></p>
+        <p id="modalLifeDisplay" class="outline flex flex-col"></p>
         <p id="lifeHistoryDisplay" class="hidden"></p>
-        <button id="lifeExit">EXIT</button>
+        <button id="lifeExit" class="exit">EXIT</button>
       </div>
       <div>
         <button value="-1" class="plusMinus">&#8211; 1</button>
@@ -97,10 +97,10 @@
       <p id="currentPlayer" class="outline"></p>
       <input type="checkbox" id="partnerCheckbox">
       <label for="partnerCheckbox">Partners</label>
-      <div id="flexContainer">
+      <div id="flexContainer" class="flex">
         <div id="cmdContainer">
           <p class="headline">Commanders</p>
-          <div id="cmdInnerContainer">
+          <div id="cmdInnerContainer" class="flex">
             <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0">
             <label data-attr="1" for="cmdButton0" class="outline"></label>
             <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1">
@@ -114,7 +114,7 @@
             <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5">
             <label data-attr="6" for="cmdButton5" class="outline"></label>
           </div>
-          <div id="cmdPartnerContainer">
+          <div id="cmdPartnerContainer" class="flex">
             <input type="radio" name="cmdModalGroup" value="6" id="partnerButton0">
             <label data-attr="1B" for="partnerButton0" class="outline behind"></label>
             <input type="radio" name="cmdModalGroup" value="7" id="partnerButton1">
@@ -130,7 +130,7 @@
           </div>
           <div id="cmdBackground"></div>
         </div>
-        <div id="cmdPlusMinus">
+        <div id="cmdPlusMinus" class="flex flex-col">
           <button value="5" id="plus5" class="invisible">&#43; 5</button>
           <button value="1" id="plus" class="invisible">&#43; 1</button>
           <button value="-1" id="minus" class="invisible">&#8211; 1</button>
@@ -165,7 +165,7 @@
         </div>
       </div>
     </div>
-    <div id="modalWindowUtility" class="hidden">
+    <div id="modalWindowUtility" class="hidden flex">
       <div class="utiliBtns">
         <button id="addPlayer" class="utiliHalfBtns">Add Player</button>
         <button id="hidePlayer" class="utiliHalfBtns">Remove Player</button>
@@ -177,14 +177,14 @@
       <button id="utiliExit" class="exit">EXIT</button>
       <button id="utiliRotate"></button>
     </div>
-    <div id="modalWindowChangeColor" class="hidden">
+    <div id="modalWindowChangeColor" class="hidden flex">
       <button id="singleColors" class="colorMenu menuSelected">1 color</button>
       <button id="twoColors" class="colorMenu">2 colors</button>
       <button id="threeColors" class="colorMenu">3 colors</button>
       <button id="fourFiveColors" class="colorMenu">4/5 colors</button>
       <input type="checkbox" id="gradientCheckbox">
       <label for="gradientCheckbox" class="hidden">Gradients</label>
-      <div id="allColorContainer">
+      <div id="allColorContainer" class="flex flex-align">
         <input type="radio" name="chooseColor" value="0" id="radio0"><label for="radio0" class="allColors"></label>
         <input type="radio" name="chooseColor" value="1" id="radio1"><label for="radio1" class="allColors"></label>
         <input type="radio" name="chooseColor" value="2" id="radio2"><label for="radio2" class="allColors"></label>
@@ -202,10 +202,10 @@
       <button value="3" class="choosePlayerButtons hidden outline"></button>
       <button value="4" class="choosePlayerButtons hidden outline"></button>
       <button value="5" class="choosePlayerButtons hidden outline"></button>
-      <button id="choosePlayerExit">EXIT</button>
+      <button id="choosePlayerExit" class="exit">EXIT</button>
       <button id="choosePlayerRotate"></button>
     </div>
-    <div id="modalWindowDice" class="hidden">
+    <div id="modalWindowDice" class="hidden flex flex-align">
       <button value="4" class="dice">4</button>
       <button value="5" class="dice">5</button>
       <button value="7" class="dice">7</button>
@@ -221,13 +221,13 @@
       <button value="17" class="dice">17</button>
       <button value="18" class="dice">18</button>
       <button value="19" class="dice">19</button>
-      <button id="exitDice">EXIT</button>
+      <button id="exitDice" class="exit">EXIT</button>
       <button id="diceRotate"></button>
     </div>
-    <div id="modalWindowMassLife" class="hidden">
+    <div id="modalWindowMassLife" class="hidden flex">
       <div id="excludeContainer">
         <p class="headline">Exclude</p>
-        <div id="excludeInnerContainer">
+        <div id="excludeInnerContainer" class="flex">
           <input type="radio" name="excludeGroup" value="0" id="excludeP0">
           <label data-attr="1" for="excludeP0" class="hidden outline"></label>
           <input type="radio" name="excludeGroup" value="1" id="excludeP1">
@@ -243,17 +243,17 @@
           <button id="clearExcluded">Clear</button>
         </div>
       </div>
-      <div id="massChangeContainer">
+      <div id="massChangeContainer" class="flex flex-col">
         <button value="5" id="massPlus5">&#43; 5</button>
         <button value="1" id="massPlus">&#43; 1</button>
         <button value="-1" id="massMinus">&#8211; 1</button>
         <button value="-5" id="massMinus5">&#8211; 5</button>
       </div>
-      <div id="netChangeContainer">
+      <div id="netChangeContainer" class="flex flex-col">
         <p class="headline">Net Change</p>
-        <div id="netChange" class="outline">0</div>
-        <div id="exitRotateContainer">
-          <button id="massChangeExit">EXIT</button>
+        <div id="netChange" class="outline flex flex-col">0</div>
+        <div id="exitRotateContainer" class="flex flex-col">
+          <button id="massChangeExit" class="exit">EXIT</button>
           <button id="massChangeRotate"></button>
         </div>
       </div>

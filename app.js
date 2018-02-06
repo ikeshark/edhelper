@@ -1,49 +1,47 @@
 // player object and prototype
 function Player(i) {
   this.i = i;
-  this.poison = 0;
-  this.life = 40;
-  this.lifeHistory = [40];
   this.number = this.i + 1;
   this.name = "Player " + this.number;
-  this.rotated = false;
+  this.life = 40;
+  this.lifeHistory = [40];
+  this.commanderDamage = Array(12).fill(0);
+  this.poison = 0;
+  this.energy = 0;
+  this.experience = 0;
   this.castCount = 0;
   this.castCountB = 0;
-  this.color = "";
-  this.experience = 0;
-  this.commanderDamage = Array(12).fill(0);
   this.hasPartners = false;
-  this.energy = 0;
+  this.rotated = false;
+  this.color = "";
 }
 // boolean helper function to enable auto sizing
 function isOverflown(element) {
-  return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+  return element.scrollHeight > element.clientHeight ||
+   element.scrollWidth > element.clientWidth;
 }
 Player.prototype.displayLife = function() {
+  // display main life
   lifeButtons[this.i].innerHTML = this.life;
+  // display modal life
   lifeDisplay.innerHTML = this.life;
   for (let i = 9; i > 0; i -= 0.25) {
     lifeButtons[this.i].style.fontSize = i + "em";
-    let overflow = isOverflown(lifeButtons[this.i]);
-    if (!overflow) {
+    let isOverflow = isOverflown(lifeButtons[this.i]);
+    // continue until no overfill
+    if (!isOverflow) {
+      // make it a bit smaller for 'padding'
       let fontSize = i - 0.5;
       lifeButtons[this.i].style.fontSize = fontSize + "em";
-      break;
-    }
-  }
-  for (let i = 9; i > 0; i -= 0.25) {
-    lifeDisplay.style.fontSize = i + "em";
-    let overflow = isOverflown(lifeDisplay);
-    if (!overflow) {
-      let fontSize = i - 0.5;
+      // if it's good enough for the main life, it's good enough for the modal
+      // note: used to do two separate loops, each testing for overfill
       lifeDisplay.style.fontSize = fontSize + "em";
       break;
     }
   }
 };
 Player.prototype.displayName = function() {
-  let upperName =
-  nameButtons[this.i].innerHTML = this.name.toUpperCase();
+  nameButtons[this.i].innerHTML = this.name;
   for (let i = 1.1; i > 0; i -= 0.05) {
     nameButtons[this.i].style.fontSize = i + "em";
     let overflow = isOverflown(nameButtons[this.i]);
@@ -90,23 +88,22 @@ let numPlayers = 4;
 
 // load and save state functions on localStorage
 function loadState() {
-  temp2 = localStorage.getItem("numPlayers");
-  numPlayers = Number(temp2);
+  numPlayers = Number(localStorage.getItem("numPlayers"));
   for (let i = 0; i < numPlayers; i++) {
     let player = "player" + i;
     let temp = JSON.parse(localStorage.getItem(player));
-    // TO DO: i think i can do this programatically. iterate over each numerable property
     players[i].name = temp.name;
     players[i].life = temp.life;
-    players[i].poison = temp.poison;
-    players[i].color = temp.color;
-    players[i].commanderDamage = temp.commanderDamage;
-    players[i].rotated = temp.rotated;
-    players[i].castCount = temp.castCount;
-    players[i].experience = temp.experience;
-    players[i].energy = temp.energy;
-    players[i].hasPartners = temp.hasPartners;
     players[i].lifeHistory = temp.lifeHistory;
+    players[i].commanderDamage = temp.commanderDamage;
+    players[i].poison = temp.poison;
+    players[i].energy = temp.energy;
+    players[i].experience = temp.experience;
+    players[i].castCount = temp.castCount;
+    players[i].castCountB = temp.castCountB;
+    players[i].hasPartners = temp.hasPartners;
+    players[i].rotated = temp.rotated;
+    players[i].color = temp.color;
   }
 }
 function saveState() {
@@ -115,6 +112,7 @@ function saveState() {
     localStorage.setItem(player, JSON.stringify(players[i]));
   }
   localStorage.setItem("numPlayers", numPlayers);
+  // this boolean determines when to load from local storage
   localStorage.setItem("bool", "true");
 }
 if (localStorage.bool) {
@@ -124,8 +122,8 @@ window.addEventListener("unload", saveState);
 
 // display board function
 const playerDivs = document.querySelectorAll("#playersContainer > div");
-const icons = document.querySelectorAll(".mainIcons");
 function displayBoard() {
+  let icons = document.querySelectorAll(".mainIcons");
   let container = document.getElementById("playersContainer");
   switch (numPlayers) {
     case 6:
@@ -142,7 +140,6 @@ function displayBoard() {
       for (let i = 3; i < 5; i++) {
         playerDivs[i].style.width = "50vw";
       }
-      let flipContainers = document.querySelectorAll(".lifeAndNameContainer");
       let layout5 = '"one one two two three three""five five five four four four"';
       container.style.gridTemplateAreas = layout5;
       break;
@@ -158,7 +155,6 @@ function displayBoard() {
     case 3:
       for (let i = 0; i < 3; i++) {
         playerDivs[i].style.width = "50vw";
-        players[i].number = i + 1;
         icons[i].style.width = "55%";
       }
       playerDivs[2].style.width = "100vw";
@@ -206,7 +202,7 @@ function rotate(element, deg) {
 // reminder: below is in DOM order
 const modalWindows = document.querySelectorAll("[id^=modalWindow]");
 const modalBackground = document.getElementById("modalBackground");
-const closeModal = () => {
+function closeModal() {
   modalWindows.forEach(function(element) {
     element.classList.add("hidden");
   });
@@ -214,7 +210,7 @@ const closeModal = () => {
 };
 // rotate buttons
 const rotateButtons = document.querySelectorAll(".buttonContainer button:nth-child(2)");
-rotateButtons.forEach(function(element, i) {
+rotateButtons.forEach((element, i) => {
   element.addEventListener("click", function() {
     let deg = players[i].rotated ? 0 : 180;
     rotate(playerDivs[i], deg);
@@ -224,14 +220,14 @@ rotateButtons.forEach(function(element, i) {
 // life change modal window
 const lifeButtons = document.querySelectorAll(".lifeButtons");
 const lifeDisplay = document.getElementById("modalLifeDisplay");
-const lifePlusMinusButtons = document.querySelectorAll(".plusMinus");
-const doubleHalveButtons = document.querySelectorAll(".doubleHalve");
 lifeButtons.forEach(function (element, i) {
   element.addEventListener("click", function(){
     // variables
     let player = players[i];
     let isLifeDisplay = true;
     let oldLife = player.life;
+    let lifePlusMinusButtons = document.querySelectorAll(".plusMinus");
+    let doubleHalveButtons = document.querySelectorAll(".doubleHalve");
     let historyDisplay = document.getElementById("lifeHistoryDisplay");
     // functions
     function toggleHistory() {
@@ -517,11 +513,6 @@ commanderButtons.forEach(function (element, i) {
 });
 // utilities modal
 let utiliRotateBool = false;
-document.getElementById("utiliRotate").addEventListener("click", function() {
-  utiliRotateBool = !utiliRotateBool;
-  let deg = utiliRotateBool ? 180 : 0;
-  rotate(modalWindows[2], deg);
-});
 document.getElementById("gearBtn").addEventListener("click", function() {
   utiliRotateBool = false;
   rotate(modalWindows[2], 0);
@@ -533,7 +524,12 @@ document.getElementById("gearBtn").addEventListener("click", function() {
   }
   document.getElementById("utiliExit").addEventListener("click", closeUtiliModal);
 });
-// utilities modal functions and event listeners
+document.getElementById("utiliRotate").addEventListener("click", function() {
+  utiliRotateBool = !utiliRotateBool;
+  let deg = utiliRotateBool ? 180 : 0;
+  rotate(modalWindows[2], deg);
+});
+// add player, subtract player, new game
 document.getElementById("addPlayer").addEventListener("click", addPlayer);
 function addPlayer() {
     if (numPlayers === 6) {
@@ -542,15 +538,12 @@ function addPlayer() {
       numPlayers += 1;
       displayBoard();
       for (let i = 0; i < numPlayers; i++) {
+        // without time out the layout doesn't set correctly
         setTimeout(players[i].displayLife.bind(players[i]), 400);
       }
     }
 };
-document.getElementById("newGamePrompt").addEventListener("click", function() {
-  localStorage.clear();
-  window.removeEventListener("unload", saveState);
-  location.reload();
-});
+document.getElementById("hidePlayer").addEventListener("click", hidePlayer);
 function hidePlayer() {
   if (numPlayers === 2) {
     alert("Two is the minimum number of players");
@@ -562,210 +555,233 @@ function hidePlayer() {
     }
   }
 };
-document.getElementById("hidePlayer").addEventListener("click", hidePlayer);
+document.getElementById("newGamePrompt").addEventListener("click", function() {
+  localStorage.clear();
+  window.removeEventListener("unload", saveState);
+  location.reload();
+});
 // change colors sub modal
-const pBoxes = document.querySelectorAll(".choosePlayerButtons");
-const colorRadios = document.querySelectorAll("[id^=radio]");
-function colorCombinator() {
-  let result = "repeating-linear-gradient(45deg ";
-  for (let i = 0; i < arguments.length; i++) {
-    result += ", " + arguments[i] + " " + (i * 15) + "%";
-    result += ", " + arguments[i] + " " + ((i + 1) * 15) + "%";
-  }
-  result += ")";
-  return result;
-}
-function gradientMaker() {
-  let result = "linear-gradient(to right ";
-  for (let i = 0; i < arguments.length; i++) {
-    result += ", " + arguments[i];
-  }
-  result += ")";
-  return result;
-}
-let gradientBool = false;
-const gradientCheckbox = document.getElementById("gradientCheckbox");
-const gradientCheckboxLabel = document.querySelector("#gradientCheckbox + label");
-gradientCheckbox.addEventListener("click", function() {
-  if (this.checked) {
-    gradientBool = true;
-  } else {
-    gradientBool = false;
-  }
-  let currentPage = document.querySelector(".menuSelected");
-  if (currentPage === colorMenuButtons[1]) {
-    displayTwoColors();
-  }
-  if (currentPage === colorMenuButtons[2]) {
-    displayThreeColors();
-  }
-  if (currentPage === colorMenuButtons[3]) {
-    displayFourColors();
-  }
-});
-const colorMenuButtons = document.querySelectorAll(".colorMenu");
-const colorBoxes = document.querySelectorAll(".allColors");
-colorBoxes.forEach(function(element, i) {
-  element.style.background = colors[i];
-  element.addEventListener("click", () => {
-    for (let i = 0; i < numPlayers; i++) {
-      pBoxes[i].classList.remove("hidden");
-    }
-  });
-});
-function clearSelected() {
-  colorMenuButtons.forEach(function(element) {
-    element.classList.remove("menuSelected");
-  });
-  colorBoxes.forEach(function(element){
-    element.classList.add("hidden");
-  });
-};
-document.getElementById("singleColors").addEventListener("click", function() {
-  clearSelected();
-  gradientCheckboxLabel.classList.add("hidden");
-  colorBoxes.forEach((element, i) => {
-    element.style.background = colors[i];
-  });
-  this.classList.add("menuSelected");
-  for (i = 0; i < 6; i++) {
-    colorBoxes[i].classList.remove("hidden");
-  }
-  colorRadios.forEach((element, i) => {
-    element.value = i;
-  })
-});
-function displayTwoColors() {
-  clearSelected();
-  gradientCheckboxLabel.classList.remove("hidden");
-  let twoColorArray = [];
-  if (gradientBool) {
-    for (let i = 1; i < 5; i++) {
-      for (let j = i + 1; j < 6; j++) {
-        let temp = gradientMaker(colors[i], colors[j]);
-        twoColorArray.push(temp);
-        }
-      }
-    } else {
-    for (let i = 1; i < 5; i++) {
-      for (let j = i + 1; j < 6; j++) {
-        let temp = colorCombinator(colors[i], colors[j]);
-        twoColorArray.push(temp);
-        }
-      }
-    }
-  colorBoxes.forEach((element, i) => {
-    element.style.background = twoColorArray[i];
-  });
-  colorRadios.forEach((element, i) => {
-    element.value = twoColorArray[i];
-  });
-  colorMenuButtons[1].classList.add("menuSelected");
-  for (i = 0; i < 10; i++) {
-    colorBoxes[i].classList.remove("hidden");
-  }
-};
-document.getElementById("twoColors").addEventListener("click", displayTwoColors);
-function displayThreeColors() {
-  clearSelected();
-  gradientCheckboxLabel.classList.remove("hidden");
-  let colorArray = [];
-  if (gradientBool) {
-    for (let i = 1; i < 5; i++) {
-      for (let j = i + 1; j < 6; j++) {
-        for (let k = j + 1; k < 6; k++) {
-           let temp = gradientMaker(colors[i], colors[j], colors[k]);
-           colorArray.push(temp);
-        }
-      }
-    }
-  } else {
-      for (let i = 1; i < 5; i++) {
-        for (let j = i + 1; j < 6; j++) {
-          for (let k = j + 1; k < 6; k++) {
-             let temp = colorCombinator(colors[i], colors[j], colors[k]);
-             colorArray.push(temp);
-          }
-        }
-      }
-    }
-  colorBoxes.forEach((element, i) => {
-    element.style.background = colorArray[i];
-  });
-  colorRadios.forEach((element, i) => {
-    element.value = colorArray[i];
-  });
-  colorMenuButtons[2].classList.add("menuSelected");
-  for (i = 0; i < 10; i++) {
-    colorBoxes[i].classList.remove("hidden");
-  }
-};
-document.getElementById("threeColors").addEventListener("click", displayThreeColors);
-function displayFourColors() {
-  clearSelected();
-  gradientCheckboxLabel.classList.remove("hidden");
-  let wubr, wubg, wurg, ubrg, wbrg, wubrg;
-  if (gradientBool) {
-    wubr = gradientMaker(w, u, b, r);
-    wubg = gradientMaker(w, u, b, g);
-    wurg = gradientMaker(w, u, r, g);
-    ubrg = gradientMaker(u, b, r, g);
-    wbrg = gradientMaker(w, b, r, g);
-    wubrg = gradientMaker(w, u, b, r, g);
-  } else {
-    wubr = colorCombinator(w, u, b, r);
-    wubg = colorCombinator(w, u, b, g);
-    wurg = colorCombinator(w, u, r, g);
-    ubrg = colorCombinator(u, b, r, g);
-    wbrg = colorCombinator(w, b, r, g);
-    wubrg = colorCombinator(w, u, b, r, g);
-  }
-  let colorArray = [wubr, wubg, wurg, ubrg, wbrg, wubrg];
-  colorBoxes.forEach((element, i) => {
-    element.style.background = colorArray[i];
-  });
-  colorRadios.forEach((element, i) => {
-    element.value = colorArray[i];
-  });
-  colorMenuButtons[3].classList.add("menuSelected");
-  for (i = 0; i < 6; i++) {
-    colorBoxes[i].classList.remove("hidden");
-  }
-};
-document.getElementById("fourFiveColors").addEventListener("click", displayFourColors);
-function changeColor() {
-  let player = players[this.value];
-  let checkedRadio = document.querySelector("input[name=chooseColor]:checked").value;
-  if (checkedRadio.length === 1) {
-    player.color = colors[checkedRadio];
-  } else {
-    player.color = checkedRadio;
-  }
-  playerDivs[this.value].style.background = player.color;
-  pBoxes[this.value].style.background = player.color;
-};
-pBoxes.forEach(function(element) {
-  element.addEventListener("click", changeColor);
-});
 document.getElementById("changeColors").addEventListener("click", function() {
+  // variables
+  let pBoxes = document.querySelectorAll(".choosePlayerButtons");
+  let colorRadios = document.querySelectorAll("[id^=radio]");
+  let gradientBool = false;
+  let gradientCheckbox = document.getElementById("gradientCheckbox");
+  let gradientCheckboxLabel = document.querySelector("#gradientCheckbox + label");
+  let colorMenuButtons = document.querySelectorAll(".colorMenu");
+  let colorBoxes = document.querySelectorAll(".allColors");
+
+  // orientation
   modalWindows[3].classList.remove("hidden");
   let deg = utiliRotateBool ? 180 : 0;
   rotate(modalWindows[3], deg);
+
+  // set up player boxes
   pBoxes.forEach(function(element,i) {
     element.style.background = players[i].color;
     element.innerHTML = players[i].number;
   });
-  document.getElementById("choosePlayerExit").addEventListener("click", () => {
+
+  // functions
+  function colorCombinator() {
+    let result = "repeating-linear-gradient(45deg ";
+    for (let i = 0; i < arguments.length; i++) {
+      result += ", " + arguments[i] + " " + (i * 15) + "%";
+      result += ", " + arguments[i] + " " + ((i + 1) * 15) + "%";
+    }
+    result += ")";
+    return result;
+  }
+  function gradientMaker() {
+    let result = "linear-gradient(to right ";
+    for (let i = 0; i < arguments.length; i++) {
+      result += ", " + arguments[i];
+    }
+    result += ")";
+    return result;
+  }
+  function displayMonoColors() {
+    clearSelected();
+    gradientCheckboxLabel.classList.add("hidden");
+    colorBoxes.forEach((element, i) => {
+      element.style.background = colors[i];
+    });
+    colorMenuButtons[0].classList.add("menuSelected");
+    for (i = 0; i < 6; i++) {
+      colorBoxes[i].classList.remove("hidden");
+    }
+    colorRadios.forEach((element, i) => {
+      element.value = i;
+    })
+  }
+  function displayTwoColors() {
+    clearSelected();
+    gradientCheckboxLabel.classList.remove("hidden");
+    let twoColorArray = [];
+    if (gradientBool) {
+      for (let i = 1; i < 5; i++) {
+        for (let j = i + 1; j < 6; j++) {
+          let temp = gradientMaker(colors[i], colors[j]);
+          twoColorArray.push(temp);
+          }
+        }
+      } else {
+      for (let i = 1; i < 5; i++) {
+        for (let j = i + 1; j < 6; j++) {
+          let temp = colorCombinator(colors[i], colors[j]);
+          twoColorArray.push(temp);
+          }
+        }
+      }
+    colorBoxes.forEach((element, i) => {
+      element.style.background = twoColorArray[i];
+    });
+    colorRadios.forEach((element, i) => {
+      element.value = twoColorArray[i];
+    });
+    colorMenuButtons[1].classList.add("menuSelected");
+    for (i = 0; i < 10; i++) {
+      colorBoxes[i].classList.remove("hidden");
+    }
+  };
+  function displayThreeColors() {
+    clearSelected();
+    gradientCheckboxLabel.classList.remove("hidden");
+    let colorArray = [];
+    if (gradientBool) {
+      for (let i = 1; i < 5; i++) {
+        for (let j = i + 1; j < 6; j++) {
+          for (let k = j + 1; k < 6; k++) {
+             let temp = gradientMaker(colors[i], colors[j], colors[k]);
+             colorArray.push(temp);
+          }
+        }
+      }
+    } else {
+        for (let i = 1; i < 5; i++) {
+          for (let j = i + 1; j < 6; j++) {
+            for (let k = j + 1; k < 6; k++) {
+               let temp = colorCombinator(colors[i], colors[j], colors[k]);
+               colorArray.push(temp);
+            }
+          }
+        }
+      }
+    colorBoxes.forEach((element, i) => {
+      element.style.background = colorArray[i];
+    });
+    colorRadios.forEach((element, i) => {
+      element.value = colorArray[i];
+    });
+    colorMenuButtons[2].classList.add("menuSelected");
+    for (i = 0; i < 10; i++) {
+      colorBoxes[i].classList.remove("hidden");
+    }
+  };
+  function displayFourColors() {
+    clearSelected();
+    gradientCheckboxLabel.classList.remove("hidden");
+    let wubr, wubg, wurg, ubrg, wbrg, wubrg;
+    if (gradientBool) {
+      wubr = gradientMaker(w, u, b, r);
+      wubg = gradientMaker(w, u, b, g);
+      wurg = gradientMaker(w, u, r, g);
+      ubrg = gradientMaker(u, b, r, g);
+      wbrg = gradientMaker(w, b, r, g);
+      wubrg = gradientMaker(w, u, b, r, g);
+    } else {
+      wubr = colorCombinator(w, u, b, r);
+      wubg = colorCombinator(w, u, b, g);
+      wurg = colorCombinator(w, u, r, g);
+      ubrg = colorCombinator(u, b, r, g);
+      wbrg = colorCombinator(w, b, r, g);
+      wubrg = colorCombinator(w, u, b, r, g);
+    }
+    let colorArray = [wubr, wubg, wurg, ubrg, wbrg, wubrg];
+    colorBoxes.forEach((element, i) => {
+      element.style.background = colorArray[i];
+    });
+    colorRadios.forEach((element, i) => {
+      element.value = colorArray[i];
+    });
+    colorMenuButtons[3].classList.add("menuSelected");
+    for (i = 0; i < 6; i++) {
+      colorBoxes[i].classList.remove("hidden");
+    }
+  };
+  function changeColor() {
+    let player = players[this.value];
+    let checkedRadio = document.querySelector("input[name=chooseColor]:checked").value;
+    if (checkedRadio.length === 1) {
+      player.color = colors[checkedRadio];
+    } else {
+      player.color = checkedRadio;
+    }
+    playerDivs[this.value].style.background = player.color;
+    pBoxes[this.value].style.background = player.color;
+  };
+  function clearSelected() {
+    colorMenuButtons.forEach(function(element) {
+      element.classList.remove("menuSelected");
+    });
+    colorBoxes.forEach(function(element){
+      element.classList.add("hidden");
+    });
+  };
+  function exit() {
     closeModal();
+    displayMonoColors();
+    let radios = document.querySelectorAll("input[name=chooseColor]");
+    radios.forEach(function(elem) {
+      elem.checked = false;
+    });
     pBoxes.forEach(elem => {
       elem.classList.add("hidden");
+      elem.removeEventListener("click", changeColor);
+    });
+    document.getElementById("singleColors").removeEventListener("click", displayMonoColors);
+    document.getElementById("twoColors").removeEventListener("click", displayTwoColors);
+    document.getElementById("threeColors").removeEventListener("click", displayThreeColors);
+    document.getElementById("fourFiveColors").removeEventListener("click", displayFourColors);
+  }
+  // event listeners
+  gradientCheckbox.addEventListener("click", function() {
+    if (this.checked) {
+      gradientBool = true;
+    } else {
+      gradientBool = false;
+    }
+    let currentPage = document.querySelector(".menuSelected");
+    if (currentPage === colorMenuButtons[1]) {
+      displayTwoColors();
+    }
+    if (currentPage === colorMenuButtons[2]) {
+      displayThreeColors();
+    }
+    if (currentPage === colorMenuButtons[3]) {
+      displayFourColors();
+    }
+  });
+  colorBoxes.forEach(function(element, i) {
+    element.addEventListener("click", () => {
+      for (let i = 0; i < numPlayers; i++) {
+        pBoxes[i].classList.remove("hidden");
+      }
     });
   });
-});
-document.getElementById("choosePlayerRotate").addEventListener("click", function() {
-  utiliRotateBool = !utiliRotateBool;
-  let deg = utiliRotateBool ? 180 : 0;
-  rotate(modalWindows[3], deg);
+  // default is to display mono colors
+  displayMonoColors();
+  document.getElementById("singleColors").addEventListener("click", displayMonoColors);
+  document.getElementById("twoColors").addEventListener("click", displayTwoColors);
+  document.getElementById("threeColors").addEventListener("click", displayThreeColors);
+  document.getElementById("fourFiveColors").addEventListener("click", displayFourColors);
+  pBoxes.forEach((element) => element.addEventListener("click", changeColor));
+  document.getElementById("choosePlayerRotate").addEventListener("click", function() {
+    utiliRotateBool = !utiliRotateBool;
+    let deg = utiliRotateBool ? 180 : 0;
+    rotate(modalWindows[3], deg);
+  });
+  document.getElementById("choosePlayerExit").addEventListener("click", exit);
 });
 // dice modal
 document.getElementById("dice").addEventListener("click", function(){
@@ -863,7 +879,8 @@ document.addEventListener("touchmove", function(e) {
 }, false);
 // stop auto-sleep
 function isMobileDevice() {
-  return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+  return (typeof window.orientation !== "undefined") ||
+   (navigator.userAgent.indexOf('IEMobile') !== -1);
 }
 var noSleep = new NoSleep();
 function enableNoSleep() {
@@ -876,21 +893,4 @@ document.addEventListener("click", enableNoSleep, false);
 window.addEventListener("unload", function() {
   noSleep.disable();
 });
-// full screen attempt no. 68, courtesy Mozilla
-// function enableFullScreen() {
-//   var doc = window.document;
-//   var docEl = doc.documentElement;
-//
-//   var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-//
-//   if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-//     requestFullScreen.call(docEl);
-//   }
-//   document.getElementById("gearBtn").removeEventListener("click", enableFullScreen);
-// }
-// document.addEventListener("click", function() {
-//   if (isMobileDevice()) {
-//     enableFullScreen();
-//   }
-// });
 displayBoard();

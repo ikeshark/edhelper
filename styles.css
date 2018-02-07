@@ -125,7 +125,7 @@ label {
   height: 100%;
 }
 .padding-box {
-  padding: 2%;
+  padding: 1.5%;
   box-sizing: border-box;
 }
 /* app.js uses this class */
@@ -448,6 +448,7 @@ input[type=checkbox]:checked + label {
 }
 #exitDice {
   font-size: 1em;
+  line-height: 85%;
 }
 
 .rotate {
@@ -507,7 +508,7 @@ input[type=checkbox]:checked + label {
   background: white;
 }
 #massChangeContainer {
-  width: 30%;
+  width: 25%;
 }
 #massChangeContainer button {
   font-size: 1.5em;
@@ -518,6 +519,7 @@ input[type=checkbox]:checked + label {
   width: 90%;
 }
 #netChangeContainer {
+  height: 100%;
   width: 30%;
 }
 #netChange {

@@ -612,8 +612,11 @@ document.getElementById("changeColors").addEventListener("click", function() {
     }
     colorRadios.forEach((element, i) => {
       element.value = i;
-    })
+    });
   }
+  // default is to display mono colors
+  displayMonoColors();
+
   function displayTwoColors() {
     clearSelected();
     gradientCheckboxLabel.classList.remove("hidden");
@@ -721,6 +724,10 @@ document.getElementById("changeColors").addEventListener("click", function() {
     pBoxes[this.value].style.background = player.color;
   };
   function clearSelected() {
+    let radios = document.querySelectorAll("input[name=chooseColor]");
+    radios.forEach(function(elem) {
+      elem.checked = false;
+    });
     colorMenuButtons.forEach(function(element) {
       element.classList.remove("menuSelected");
     });
@@ -728,24 +735,7 @@ document.getElementById("changeColors").addEventListener("click", function() {
       element.classList.add("hidden");
     });
   };
-  function exit() {
-    closeModal();
-    displayMonoColors();
-    let radios = document.querySelectorAll("input[name=chooseColor]");
-    radios.forEach(function(elem) {
-      elem.checked = false;
-    });
-    pBoxes.forEach(elem => {
-      elem.classList.add("hidden");
-      elem.removeEventListener("click", changeColor);
-    });
-    document.getElementById("singleColors").removeEventListener("click", displayMonoColors);
-    document.getElementById("twoColors").removeEventListener("click", displayTwoColors);
-    document.getElementById("threeColors").removeEventListener("click", displayThreeColors);
-    document.getElementById("fourFiveColors").removeEventListener("click", displayFourColors);
-  }
-  // event listeners
-  gradientCheckbox.addEventListener("click", function() {
+  function toggleGradient() {
     if (this.checked) {
       gradientBool = true;
     } else {
@@ -761,7 +751,29 @@ document.getElementById("changeColors").addEventListener("click", function() {
     if (currentPage === colorMenuButtons[3]) {
       displayFourColors();
     }
-  });
+  };
+  function toggleRotate() {
+    utiliRotateBool = !utiliRotateBool;
+    let deg = utiliRotateBool ? 180 : 0;
+    rotate(modalWindows[3], deg);
+  };
+  function exit() {
+    closeModal();
+    displayMonoColors();
+    pBoxes.forEach(elem => {
+      elem.classList.add("hidden");
+      elem.removeEventListener("click", changeColor);
+    });
+    gradientCheckbox.removeEventListener("click", toggleGradient);
+    document.getElementById("choosePlayerRotate").removeEventListener("click", toggleRotate);
+    document.getElementById("choosePlayerExit").removeEventListener("click", exit);
+    document.getElementById("singleColors").removeEventListener("click", displayMonoColors);
+    document.getElementById("twoColors").removeEventListener("click", displayTwoColors);
+    document.getElementById("threeColors").removeEventListener("click", displayThreeColors);
+    document.getElementById("fourFiveColors").removeEventListener("click", displayFourColors);
+  }
+  // event listeners
+  gradientCheckbox.addEventListener("click", toggleGradient);
   colorBoxes.forEach(function(element, i) {
     element.addEventListener("click", () => {
       for (let i = 0; i < numPlayers; i++) {
@@ -769,26 +781,35 @@ document.getElementById("changeColors").addEventListener("click", function() {
       }
     });
   });
-  // default is to display mono colors
-  displayMonoColors();
   document.getElementById("singleColors").addEventListener("click", displayMonoColors);
   document.getElementById("twoColors").addEventListener("click", displayTwoColors);
   document.getElementById("threeColors").addEventListener("click", displayThreeColors);
   document.getElementById("fourFiveColors").addEventListener("click", displayFourColors);
   pBoxes.forEach((element) => element.addEventListener("click", changeColor));
-  document.getElementById("choosePlayerRotate").addEventListener("click", function() {
-    utiliRotateBool = !utiliRotateBool;
-    let deg = utiliRotateBool ? 180 : 0;
-    rotate(modalWindows[3], deg);
-  });
+  document.getElementById("choosePlayerRotate").addEventListener("click", toggleRotate);
   document.getElementById("choosePlayerExit").addEventListener("click", exit);
 });
 // dice modal
-document.getElementById("dice").addEventListener("click", function(){
+document.getElementById("dice").addEventListener("click", function() {
   document.getElementById("modalWindowDice").classList.remove("hidden");
   let deg = utiliRotateBool ? 180 : 0;
   rotate(modalWindows[4], deg);
 });
+function animateDice() {
+  let frames = [
+    { transform: "rotate(-8deg)" },
+    { transform: "rotate(-4deg)" },
+    { transform: "rotate(0deg)" },
+    { transform: "rotate(4deg)" },
+    { transform: "rotate(8deg)" }
+  ];
+  let animation = this.animate(frames, {
+    duration: 100,
+    direction: 'alternate',
+    iterations: 4
+  });
+  animation.onfinish = getRandom.bind(this);
+}
 const dice = document.querySelectorAll(".dice");
 function getRandom() {
   dice.forEach(function(element) {
@@ -800,7 +821,7 @@ function getRandom() {
   this.innerHTML = r;
 }
 dice.forEach(function(element) {
-  element.addEventListener("click", getRandom);
+  element.addEventListener("click", animateDice);
 });
 document.getElementById("diceRotate").addEventListener("click", function() {
   utiliRotateBool = !utiliRotateBool;
@@ -878,19 +899,26 @@ document.addEventListener("touchmove", function(e) {
   e.preventDefault();
 }, false);
 // stop auto-sleep
-// function isMobileDevice() {
-//   return (typeof window.orientation !== "undefined") ||
-//    (navigator.userAgent.indexOf('IEMobile') !== -1);
-// }
-// var noSleep = new NoSleep();
-// function enableNoSleep() {
-//   if (isMobileDevice()) {
-//     noSleep.enable();
-//   }
-//   document.removeEventListener("click", enableNoSleep, false);
-// }
-// document.addEventListener("click", enableNoSleep, false);
-// window.addEventListener("unload", function() {
-//   noSleep.disable();
-// });
+
+// test for mobile courtesy of open tech guides
+function isMobileDevice() {
+  testExp = new RegExp('Android|webOS|iPhone|iPad|' +
+    		       'BlackBerry|Windows Phone|'  +
+    		       'Opera Mini|IEMobile|Mobile' ,
+    		      'i');
+
+  if (testExp.test(navigator.userAgent))
+       return true;
+}
+var noSleep = new NoSleep();
+function enableNoSleep() {
+  if (isMobileDevice()) {
+    noSleep.enable();
+  }
+  document.removeEventListener("click", enableNoSleep, false);
+}
+document.addEventListener("click", enableNoSleep, false);
+window.addEventListener("unload", function() {
+  noSleep.disable();
+});
 displayBoard();

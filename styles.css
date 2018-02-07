@@ -165,6 +165,10 @@ label {
   padding: 1%;
   margin: 1%;
 }
+.cmd-box {
+  height: 58vh;
+  width: 34vw;
+}
 .relative-1 {
   position: relative;
   width: 80%;
@@ -173,16 +177,16 @@ label {
 .relative-2 {
   position: relative;
   top: -83%;
-  left: 2%;
-  height: 56vh;
-  width: 34vw;
+  left: 3%;
 }
 .relative-3 {
   position: relative;
   z-index: -3;
-  width: 102%;
-  height: 89%;
-  top: -170%;
+  /* width: 102%;
+  height: 89%; */
+  height: 60vh;
+  width: 35vw;
+  top: -171%;
 }
 [id^=cmdButton] + label, [id^=partnerButton] + label {
   position: relative;
@@ -301,6 +305,8 @@ label {
   font-size: 0.35em;
   background-color: white;
   border: 1px solid black;
+  -webkit-text-stroke: 0;
+  color: black;
   font-weight: normal;
   text-shadow: none;
 }

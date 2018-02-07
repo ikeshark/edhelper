@@ -121,10 +121,10 @@ if (localStorage.bool) {
 window.addEventListener("unload", saveState);
 
 // display board function
-const playerDivs = document.querySelectorAll("#playersContainer > div");
+const playerDivs = document.querySelectorAll("#mainContainer > div");
 function displayBoard() {
   let icons = document.querySelectorAll(".mainIcons");
-  let container = document.getElementById("playersContainer");
+  let container = document.getElementById("mainContainer");
   switch (numPlayers) {
     case 6:
       for (let i = 0; i < 6; i++) {
@@ -209,7 +209,7 @@ function closeModal() {
   modalBackground.classList.add("hidden");
 };
 // rotate buttons
-const rotateButtons = document.querySelectorAll(".buttonContainer button:nth-child(2)");
+const rotateButtons = document.querySelectorAll("[src*=rotate]");
 rotateButtons.forEach((element, i) => {
   element.addEventListener("click", function() {
     let deg = players[i].rotated ? 0 : 180;
@@ -298,7 +298,7 @@ lifeButtons.forEach(function (element, i) {
   });
 });
 // commander damage modal window
-const commanderButtons = document.querySelectorAll(".buttonContainer button:nth-child(1)");
+const commanderButtons = document.querySelectorAll("[src*=sword]");
 commanderButtons.forEach(function (element, i) {
   element.addEventListener("click", function() {
     // variables
@@ -316,7 +316,7 @@ commanderButtons.forEach(function (element, i) {
     const energy = document.querySelector("#energy + label");
     const experience = document.querySelector("#experience + label");
     const poison = document.querySelector("#poison + label");
-    let cmdPlusMinusButtons = document.querySelectorAll("#cmdPlusMinus > button:not(#cmdExit)");
+    let cmdPlusMinusButtons = document.querySelectorAll(".cmd-middle-btn:not(#cmdExit)");
     // opening and orienting modal window
     let deg = player.rotated ? 180 : 0;
     rotate(modalWindows[1], deg);
@@ -878,19 +878,19 @@ document.addEventListener("touchmove", function(e) {
   e.preventDefault();
 }, false);
 // stop auto-sleep
-function isMobileDevice() {
-  return (typeof window.orientation !== "undefined") ||
-   (navigator.userAgent.indexOf('IEMobile') !== -1);
-}
-var noSleep = new NoSleep();
-function enableNoSleep() {
-  if (isMobileDevice()) {
-    noSleep.enable();
-  }
-  document.removeEventListener("click", enableNoSleep, false);
-}
-document.addEventListener("click", enableNoSleep, false);
-window.addEventListener("unload", function() {
-  noSleep.disable();
-});
+// function isMobileDevice() {
+//   return (typeof window.orientation !== "undefined") ||
+//    (navigator.userAgent.indexOf('IEMobile') !== -1);
+// }
+// var noSleep = new NoSleep();
+// function enableNoSleep() {
+//   if (isMobileDevice()) {
+//     noSleep.enable();
+//   }
+//   document.removeEventListener("click", enableNoSleep, false);
+// }
+// document.addEventListener("click", enableNoSleep, false);
+// window.addEventListener("unload", function() {
+//   noSleep.disable();
+// });
 displayBoard();

@@ -15,9 +15,9 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
 }
 
-/*      */
-/* Base */
-/*      */
+/*                          */
+/* Resets and General Rules */
+/*                          */
 
 body {
   overflow: hidden;
@@ -33,25 +33,18 @@ button:focus {
 body, p {
   margin: 0;
 }
-.outline {
-  font-family: sans-serif;
-  font-weight: bold;
-  -webkit-text-stroke: 0.03em #2f4f4f;
-  color: white;
-  text-shadow:
-      3px 3px 0 #000,
-    -1px -1px 0 #000,
-     1px -1px 0 #000,
-     -1px 1px 0 #000,
-      1px 1px 0 #000;
-}
 label {
   border: 0.05em solid black;
+  font-size: 2.5em;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-/* flex */
+
+/*           */
+/* Structure */
+/*           */
+
 .flex {
   display: flex;
   flex-wrap: wrap;
@@ -64,224 +57,132 @@ label {
 .flex-align {
   align-items: center;
 }
-/*Hidden and Exit classes*/
-
-.hidden {
-  display: none !important;
-}
-.invisible {
-  visibility: hidden;
-}
-.exit {
-  background-color: red;
-  color: white;
-  border: 0.1em white solid;
-}
-
-/*Player Container*/
-
-#playersContainer {
+.grid {
   display: grid;
   grid-gap: 4px;
 }
-#playersContainer div:nth-child(1) {
+.grid-child-one {
   grid-area: one;
 }
-#playersContainer div:nth-child(2) {
+.grid-child-two {
   grid-area: two;
 }
-#playersContainer div:nth-child(3) {
+.grid-child-three {
   grid-area: three;
 }
-#playersContainer div:nth-child(4) {
+.grid-child-four {
   grid-area: four;
 }
-#playersContainer div:nth-child(5) {
+.grid-child-five {
   grid-area: five;
 }
-#playersContainer div:nth-child(6) {
+.grid-child-six {
   grid-area: six;
 }
-
-/*Player*/
-#playersContainer > div {
+/* HEIGHT */
+.half-screen-h {
   height: 50vh;
-  transition: all 0.5s ease-in-out;
-  /* box-sizing: border-box; */
 }
-.lifeAndNameContainer {
+.eighty-five-h {
+  height: 85%;
+  width: 100%;
+}
+.two-thirds-h {
+  height: 66.66%;
+  width: 100%;
+}
+.half-h {
+  height: 50%;
+  width: 100%;
+}
+.third-h {
+  height: 33.33%;
+  width: 100%;
+}
+.fifteen-h {
+  height: 15%;
+  width: 100%;
+}
+/* WIDTH */
+.three-quarters-w {
   width: 75%;
   height: 100%;
 }
-.playerName {
-  font-size: 0.9em;
-  height: 15%;
-  background: white;
-  width: 100%;
-  opacity: 0.7;
-  font-family: 'Berkshire Swash';
-  text-align: center;
+.half-w {
+  width: 50%;
+  height: 100%;
 }
-.lifeButtons {
-  background-color: inherit;
-  justify-content: center;
-  /* margin-top: 3%; */
-  width: 100%;
-  height: 85%;
+.forty-two-w {
+  width: 42%;
+  height: 100%;
 }
-.buttonContainer {
+.thirty-w {
+  width: 30%;
+  height: 100%;
+}
+.quarter-w {
   width: 25%;
+  height: 100%;
 }
-.buttonContainer button {
-  background-color: inherit;
-  width: 100%;
-  height: 50%;
-  border-color: white;
-  border-width: 4px;
+.padding-box {
+  padding: 2%;
   box-sizing: border-box;
 }
-.buttonContainer button:nth-child(1) {
-  border-top: 0;
-  border-right: 0;
-  border-bottom: 0;
+/* app.js uses this class */
+.mainIcons {
+  width: 55%;
 }
-.buttonContainer button:nth-child(2) {
-  border-bottom: 0;
-  border-right: 0;
-}
-
-
-/*modals*/
-
-#modalBackground {
-   position: absolute;
-   width: 100vw;
-   height: 100vh;
-   top: 0px;
-   left: 0px;
-   z-index: 9998;
-   background: rgba(0, 0, 0, 0.4);
+.absoluteFull {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
 }
 [id^=modalWindow] {
-   transition: all 0.5s ease-in-out;
-   text-align: center;
    position: absolute;
-   height: 100%;
-   width: 100%;
+   width: 85vw;
+   height: 85vh;
+   margin-top: 7.5vh;
+   margin-left: 7.5vw;
    z-index: 9999;
-   background: darkgrey;
-}
-
-/* life modal */
-
-#lifeExit {
-  width: 100%;
-  height: 33.33%;
-  font-size: 3em;
-}
-#modalWindowLife {
-  width: 85vw;
-  height: 85vh;
-  margin-top: 7.5vh;
-  margin-left: 7.5vw;
-}
-#modalWindowLife div:nth-child(1) {
-  width: 25%;
-}
-#modalWindowLife div:nth-child(2) {
-  width: 50%;
-}
-#modalWindowLife div:nth-child(3) {
-  width: 25%;
-}
-#modalWindowLife button:not(#lifeExit) {
-  width: 100%;
-  font-size: 2em;
-  height: 33.33%;
-  border: 0.07em #65737e solid;
-  border-left: 0;
-  border-right: 0;
-  background-color: #c0c5ce;
-}
-#modalLifeDisplay {
-  font-size: 7em;
-  height: 66.6%;
 }
 #lifeHistoryDisplay {
   position: relative;
-  font-size: 2em;
-  height: 70%;
-  width: 90%;
-  padding-left: 5%;
-  padding-right: 5%;
-  font-family: monospace;
+  padding: 3%;
+  box-sizing: border-box;
   overflow-y: scroll;
 }
-img {
-  width: 55%;
-}
-#headlines {
-  text-align: left;
-  margin: -1% 0% 0% 1.5%;
-}
-
-/* commander damage modal */
-
 #currentPlayer {
-  font-size: 1.5em;
   margin: 1%;
   padding-top: 1%;
   padding-bottom: 1%;
   margin-bottom: 0;
 }
 #partnerCheckbox + label {
-  background-color: lightgrey;
-  font-family: "Berkshire Swash", cursive;
-  font-size: 0.9em;
   position: absolute;
   top: 1.2%;
   left: 1%;
   padding: 1%;
   margin: 1%;
 }
-#flexContainer {
-  width: 96%;
-  height: 80%;
-  padding: 2%;
-}
-#cmdContainer {
-  width: 42%;
-  height: 100%;
-}
-#cmdContainer p {
-  background: whitesmoke;
+.relative-1 {
   position: relative;
   width: 80%;
   left:11%;
 }
-#cmdBackground {
-  background: whitesmoke;
+.relative-2 {
+  position: relative;
+  top: -83%;
+  left: 2%;
+  height: 56vh;
+  width: 34vw;
+}
+.relative-3 {
   position: relative;
   z-index: -3;
   width: 102%;
-  height: 87%;
+  height: 89%;
   top: -170%;
-}
-.headline {
-  font-size: 1.2em;
-  font-weight: bold;
-  font-family: "Berkshire Swash", cursive;
-}
-#cmdInnerContainer {
-  height: 85%;
-  width: 100%;
-}
-#cmdPartnerContainer {
-  position: relative;
-  top: -84%;
-  left: 1%;
-  height: 68vh;
-  width: 40.3vw;
 }
 [id^=cmdButton] + label, [id^=partnerButton] + label {
   position: relative;
@@ -289,65 +190,124 @@ img {
   z-index: 2;
   width: 30%;
   margin: 1.5%;
-  font-size: 2.5em;
-  border-width: 0.09em;
 }
-[id^=partnerButton] + label {
-  bottom: -1%;
-  left: 1%;
-}
-.behind {
-  opacity: .33;
-  z-index: -2 !important;
-}
+/* connects with player number class */
 [id^=cmdButton] + label::before, [id^=partnerButton] + label::before {
-  content: attr(data-attr);
   position: absolute;
-  font-size: 0.35em;
-  color: black;
-  background-color: white;
-  border: 1px solid black;
   left: 0%;
   top: 0%;
   padding: 0.12em;
   width: 3vw;
   height: 3vw;
+}
+.cmd-middle-btn {
+  height: 20%;
+  width: 80%;
+  margin: 3%;
+}
+.scroll {
+  overflow: scroll;
+}
+/* app.js uses this class */
+.otherCounters {
+  margin-bottom: 7%;
+}
+
+/*      */
+/* Skin */
+/*      */
+
+.headline {
+  font-size: 1.2em;
+  font-weight: bold;
+  font-family: "Berkshire Swash", cursive;
+}
+.small-headline {
+  font-family: "Berkshire Swash", cursive;
+  font-size: 0.9em;
+}
+.outline {
+  font-family: sans-serif;
+  font-weight: bold;
+  -webkit-text-stroke: 0.03em #2f4f4f;
+  color: white;
+  text-shadow:
+      3px 3px 0 #000,
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+     -1px 1px 0 #000,
+      1px 1px 0 #000;
+}
+.exit {
+  background-color: red;
+  color: white;
+  font-size: 2em;
+  border: 0.1em white solid;
+}
+.playerName {
+  font-family: 'Berkshire Swash', cursive;
+  font-size: 0.9em;
+  background: white;
+  opacity: 0.7;
+  text-align: center;
+}
+/* app.js uses this class */
+.lifeButtons {
+  background-color: inherit;
+}
+.top-btn {
+  background: inherit;
+  border-color: white;
+  border-width: 0 0 0 4px;
+}
+.bottom-btn {
+  background: inherit;
+  border-color: white;
+  border-width: 4px 0 0 4px;
+}
+#modalBackground {
+  background: rgba(0, 0, 0, 0.4);
+}
+.transition {
+  transition: all 0.5s ease-in-out;
+}
+.dark-grey-bg {
+  background: darkgrey;
+}
+.text-align {
+  text-align: center;
+}
+/* app.js uses these classes */
+.plusMinus, .doubleHalve {
+  font-size: 2em;
+  border: 0.07em #65737E solid;
+  border-left: 0;
+  border-right: 0;
+}
+.three-halves-font {
+  font-size: 1.5em;
+}
+.monospace {
+  font-family: monospace;
+}
+.whitesmoke {
+  background-color: whitesmoke
+}
+.player-btn {
+  border-width: 0.09em;
+}
+.player-number::before {
+  content: attr(data-attr);
+  font-size: 0.35em;
+  background-color: white;
+  border: 1px solid black;
   font-weight: normal;
-  -webkit-text-stroke: none;
   text-shadow: none;
 }
-#cmdPlusMinus {
-  width: 30%;
-}
-#cmdPlusMinus > button:not(#cmdExit) {
-  height: 18%;
-  width: 80%;
-  margin: 3% 0 3% 0;
-  color: white;
+.invert-btn {
   background: black;
   font-size: 2em;
-  font-weight: bold;
-}
-#otherCountersContainer {
-  width: 25%;
-  background: whitesmoke;
-  overflow: scroll;
-  margin-bottom: 1%;
-  padding: 1%;
-  padding-top: 0;
-}
-.otherCounters {
-  border: 1px solid lightgrey;
-  margin-top: 5%;
-  margin-bottom: 5%;
-}
-#castCount  + label, #castCountB + label {
-  background: white;
-}
-#otherCountersContainer label {
-  height: 30%;
-  margin: 2%;
-  font-size: 2em;
+  color: white;
 }
 #experience + label {
   background: yellow;
@@ -358,30 +318,32 @@ img {
 #energy + label {
   background: purple;
 }
-#cmdExit {
-  margin: 5% 0 5% 0;
-  width: 80%;
-  height: 20%;
-  font-size: 2em;
+
+/*        */
+/* States */
+/*        */
+
+.hidden {
+  display: none !important;
+}
+.invisible {
+  visibility: hidden;
+}
+.behind {
+  opacity: .33;
+  z-index: -2 !important;
 }
 
-/* utilities modal */
-#modalWindowUtility {
-  width: 85vw;
-  height: 85vh;
-  margin-top: 7.5vh;
-  margin-left: 7.5vw;
-}
+
+
+
+
 #utiliRotate {
-  background-image: url(rotate.png);
-  background-size: contain;
-  background-repeat: no-repeat;
   position: relative;
   left: 10%;
   top: 1%;
   width: 16vh;
   height: 17vh;
-  border: 5px transparent solid;
 }
 #modalWindowChangeColor > p {
   font-size: 1.2em;
@@ -461,12 +423,8 @@ input[type=checkbox]:checked + label {
   margin: 2% 0.5% 2% 0.5%;
 }
 #choosePlayerRotate {
-  background-image: url(rotate.png);
-  background-size: contain;
-  background-repeat: no-repeat;
   width: 14vh;
   height: 16vh;
-  border: 3px transparent solid;
   margin-top: 3%;
   margin-left: 3%;
 }
@@ -476,12 +434,12 @@ input[type=checkbox]:checked + label {
   font-size: 2em;
 }
 /*dice modal*/
-.dice {
+.dice-s {
   width: 20%;
   height: 20%;
-  background: black;
-  color: white;
   margin: 1%;
+}
+.dice {
   font-size: 2em;
 }
 .selectedDice {
@@ -489,21 +447,15 @@ input[type=checkbox]:checked + label {
   color: black;
 }
 #exitDice {
-  width: 11.5%;
-  height: 20%;
-  margin: 1%;
-  font-size: 2em;
+  font-size: 1em;
 }
-#diceRotate {
+
+.rotate {
   background-image: url(rotate.png);
   background-size: contain;
+  background-position: center;
   background-repeat: no-repeat;
-  width: 14vh;
-  height: 16vh;
-  border: 1px grey solid;
-  position: relative;
-  left: 1%;
-  top: 3.8%;
+  border: 5px transparent solid;
 }
 
 /* mass life change */
@@ -577,16 +529,12 @@ input[type=checkbox]:checked + label {
   width: 100%;
 }
 #massChangeExit {
-  font-size: 2em;
-  width: 45%;
+  /* font-size: 2em;
+  width: 45%; */
 }
 #massChangeRotate {
-  background-image: url(rotate.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 25%;
-  height: 13vh;
-  border: 2px transparent solid;
+  /* width: 25%;
+  height: 13vh; */
 }
 
 /* gear button */

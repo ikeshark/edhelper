@@ -593,7 +593,7 @@ document.getElementById("changeColors").addEventListener("click", function() {
     return result;
   }
   function gradientMaker() {
-    let result = "linear-gradient(to right ";
+    let result = "linear-gradient(45deg ";
     for (let i = 0; i < arguments.length; i++) {
       result += ", " + arguments[i];
     }
@@ -606,7 +606,7 @@ document.getElementById("changeColors").addEventListener("click", function() {
     colorBoxes.forEach((element, i) => {
       element.style.background = colors[i];
     });
-    colorMenuButtons[0].classList.add("menuSelected");
+    colorMenuButtons[0].classList.add("invert-btn");
     for (i = 0; i < 6; i++) {
       colorBoxes[i].classList.remove("hidden");
     }
@@ -642,7 +642,7 @@ document.getElementById("changeColors").addEventListener("click", function() {
     colorRadios.forEach((element, i) => {
       element.value = twoColorArray[i];
     });
-    colorMenuButtons[1].classList.add("menuSelected");
+    colorMenuButtons[1].classList.add("invert-btn");
     for (i = 0; i < 10; i++) {
       colorBoxes[i].classList.remove("hidden");
     }
@@ -676,7 +676,7 @@ document.getElementById("changeColors").addEventListener("click", function() {
     colorRadios.forEach((element, i) => {
       element.value = colorArray[i];
     });
-    colorMenuButtons[2].classList.add("menuSelected");
+    colorMenuButtons[2].classList.add("invert-btn");
     for (i = 0; i < 10; i++) {
       colorBoxes[i].classList.remove("hidden");
     }
@@ -707,7 +707,7 @@ document.getElementById("changeColors").addEventListener("click", function() {
     colorRadios.forEach((element, i) => {
       element.value = colorArray[i];
     });
-    colorMenuButtons[3].classList.add("menuSelected");
+    colorMenuButtons[3].classList.add("invert-btn");
     for (i = 0; i < 6; i++) {
       colorBoxes[i].classList.remove("hidden");
     }
@@ -729,7 +729,7 @@ document.getElementById("changeColors").addEventListener("click", function() {
       elem.checked = false;
     });
     colorMenuButtons.forEach(function(element) {
-      element.classList.remove("menuSelected");
+      element.classList.remove("invert-btn");
     });
     colorBoxes.forEach(function(element){
       element.classList.add("hidden");
@@ -741,7 +741,7 @@ document.getElementById("changeColors").addEventListener("click", function() {
     } else {
       gradientBool = false;
     }
-    let currentPage = document.querySelector(".menuSelected");
+    let currentPage = document.querySelector("#modalWindowChangeColor .invert-btn");
     if (currentPage === colorMenuButtons[1]) {
       displayTwoColors();
     }
@@ -810,14 +810,14 @@ function animateDice() {
   });
   animation.onfinish = getRandom.bind(this);
 }
-const dice = document.querySelectorAll(".dice");
+const dice = document.querySelectorAll(".l-dice:not(div)");
 function getRandom() {
   dice.forEach(function(element) {
-    element.classList.remove("selectedDice");
+    element.classList.add("invert-btn");
     element.innerHTML = element.value;
   });
   let r = Math.floor(Math.random() * this.value) + 1;
-  this.classList.add("selectedDice");
+  this.classList.remove("invert-btn");
   this.innerHTML = r;
 }
 dice.forEach(function(element) {
@@ -906,9 +906,11 @@ function isMobileDevice() {
     		       'BlackBerry|Windows Phone|'  +
     		       'Opera Mini|IEMobile|Mobile' ,
     		      'i');
-
-  if (testExp.test(navigator.userAgent))
-       return true;
+  if (testExp.test(navigator.userAgent)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 var noSleep = new NoSleep();
 function enableNoSleep() {

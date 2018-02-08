@@ -18,7 +18,10 @@
 /*                          */
 /* Resets and General Rules */
 /*                          */
-
+input[type=radio], input[type=checkbox] {
+  visibility: hidden;
+  position: absolute;
+}
 body {
   overflow: hidden;
 }
@@ -79,65 +82,119 @@ label {
 .grid-child-six {
   grid-area: six;
 }
-/* HEIGHT */
-.half-screen-h {
-  height: 50vh;
-}
-.eighty-five-h {
-  height: 85%;
+
+.l-full {
   width: 100%;
-}
-.two-thirds-h {
-  height: 66.66%;
-  width: 100%;
-}
-.half-h {
-  height: 50%;
-  width: 100%;
-}
-.third-h {
-  height: 33.33%;
-  width: 100%;
-}
-.fifteen-h {
-  height: 15%;
-  width: 100%;
-}
-/* WIDTH */
-.three-quarters-w {
-  width: 75%;
   height: 100%;
 }
-.half-w {
-  width: 50%;
-  height: 100%;
-}
-.forty-two-w {
-  width: 42%;
-  height: 100%;
-}
-.thirty-w {
-  width: 30%;
-  height: 100%;
-}
-.quarter-w {
-  width: 25%;
-  height: 100%;
-}
-.padding-box {
-  padding: 1.5%;
-  box-sizing: border-box;
-}
-/* app.js uses this class */
-.mainIcons {
-  width: 55%;
-}
-.absoluteFull {
+.l-full-abs {
   position: absolute;
   width: 100vw;
   height: 100vh;
   top: 0;
 }
+
+.l-50vh {
+  height: 50vh;
+}
+.l-85h {
+  height: 85%;
+  width: 100%;
+}
+.l-66h {
+  height: 66.66%;
+  width: 100%;
+}
+.l-50h {
+  height: 50%;
+  width: 100%;
+}
+.l-33h {
+  height: 33.33%;
+  width: 100%;
+}
+.l-15h {
+  height: 15%;
+  width: 100%;
+}
+.l-75w {
+  width: 75%;
+  height: 100%;
+}
+.l-50w {
+  width: 50%;
+  height: 100%;
+}
+.l-42w {
+  width: 42%;
+  height: 100%;
+}
+.l-30w {
+  width: 30%;
+  height: 100%;
+}
+.l-25w {
+  width: 25%;
+  height: 100%;
+}
+
+.l-padding-box {
+  padding: 1.5%;
+  box-sizing: border-box;
+}
+
+.scroll {
+  overflow: scroll;
+}
+
+
+/* specific things */
+.cmd-box {
+  height: 58vh;
+  width: 34vw;
+}
+.relative-1 {
+  position: relative;
+  width: 80%;
+  left: 11%;
+}
+.relative-2 {
+  position: relative;
+  top: -83%;
+  left: 3%;
+}
+.relative-3 {
+  position: relative;
+  z-index: -3;
+  height: 60vh;
+  width: 35vw;
+  top: -171%;
+}
+#gearBtn {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 15vh;
+   height: 15vh;
+}
+#clearExcluded {
+  width: 70%;
+  height: 8vh;
+}
+#gearIcon {
+  width: 15vh;
+}
+
+#utiliExit {
+  width: 60%;
+  height: 20%;
+}
+/* app.js uses this class */
+.mainIcons {
+  width: 55%;
+}
+
 [id^=modalWindow] {
    position: absolute;
    width: 85vw;
@@ -145,6 +202,12 @@ label {
    margin-top: 7.5vh;
    margin-left: 7.5vw;
    z-index: 9999;
+}
+
+#utiliRotate {
+  margin-left: 5%;
+  width: 16vh;
+  height: 17vh;
 }
 #lifeHistoryDisplay {
   position: relative;
@@ -165,30 +228,7 @@ label {
   padding: 1%;
   margin: 1%;
 }
-.cmd-box {
-  height: 58vh;
-  width: 34vw;
-}
-.relative-1 {
-  position: relative;
-  width: 80%;
-  left:11%;
-}
-.relative-2 {
-  position: relative;
-  top: -83%;
-  left: 3%;
-}
-.relative-3 {
-  position: relative;
-  z-index: -3;
-  /* width: 102%;
-  height: 89%; */
-  height: 60vh;
-  width: 35vw;
-  top: -171%;
-}
-[id^=cmdButton] + label, [id^=partnerButton] + label {
+[id^=cmdButton] + label, [id^=partnerButton] + label, [id^=excludeP] + label {
   position: relative;
   flex-grow: 1;
   z-index: 2;
@@ -196,25 +236,65 @@ label {
   margin: 1.5%;
 }
 /* connects with player number class */
-[id^=cmdButton] + label::before, [id^=partnerButton] + label::before {
+[id^=cmdButton] + label::before, [id^=partnerButton] + label::before,
+[id^=excludeP] + label::before {
   position: absolute;
   left: 0%;
   top: 0%;
   padding: 0.12em;
   width: 3vw;
-  height: 3vw;
+  height: 2.5vw;
 }
 .cmd-middle-btn {
   height: 20%;
   width: 80%;
   margin: 3%;
 }
-.scroll {
-  overflow: scroll;
-}
 /* app.js uses this class */
 .otherCounters {
   margin-bottom: 7%;
+}
+.btn-row {
+  flex-grow: 1;
+  max-width: 30%;
+  height: 20%;
+  margin: 2% 0.5% 2% 0.5%;
+}
+.l-half-btn {
+  width: 90%;
+  height: 48%;
+  margin: 1%;
+}
+.l-big-btn {
+  width: 18%;
+  height: 60%;
+  margin: 2% 1% 1% 1%;
+  display: block;
+}
+.l-short-btn {
+  padding: 1%;
+  margin: 1%;
+  height: 15%;
+}
+.l-squat-btn {
+  width: 15%;
+  height: 35%;
+  margin: 0.5% 1% 0.5% 1%;
+}
+.l-gradient-btn {
+  height: 10vh;
+  padding: 1%;
+  margin: 1%;
+}
+.l-dice {
+  width: 20%;
+  height: 20%;
+  margin: 1%;
+}
+#exitRotateContainer {
+  height: 15%;
+  width: 100%;
+  margin-bottom: 5%;
 }
 
 /*      */
@@ -270,7 +350,7 @@ label {
   border-width: 4px 0 0 4px;
 }
 #modalBackground {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.6);
 }
 .transition {
   transition: all 0.5s ease-in-out;
@@ -291,6 +371,9 @@ label {
 .three-halves-font {
   font-size: 1.5em;
 }
+.dbl-font {
+  font-size: 2em;
+}
 .monospace {
   font-family: monospace;
 }
@@ -304,15 +387,14 @@ label {
   content: attr(data-attr);
   font-size: 0.35em;
   background-color: white;
-  border: 1px solid black;
   -webkit-text-stroke: 0;
   color: black;
   font-weight: normal;
+  text-align: center;
   text-shadow: none;
 }
 .invert-btn {
-  background: black;
-  font-size: 2em;
+  background: black !important;
   color: white;
 }
 #experience + label {
@@ -323,6 +405,34 @@ label {
 }
 #energy + label {
   background: purple;
+}
+.rotate {
+  background-image: url(rotate.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0.7em transparent solid;
+}
+.half-btn {
+  border: 1px grey solid;
+  background: inherit;
+}
+/* used in app.js */
+.colorMenu {
+  font-size: 1.1em;
+}
+/* used in app.js */
+.allColors {
+  border: 0.1em solid black;
+  font-size: 3em;
+}
+.vert-text {
+  font-size: 1em;
+  line-height: 0.4cm;
+}
+#netChange {
+  font-size: 7em;
+  flex-grow: 1;
 }
 
 /*        */
@@ -339,82 +449,6 @@ label {
   opacity: .33;
   z-index: -2 !important;
 }
-
-
-
-
-
-#utiliRotate {
-  position: relative;
-  left: 10%;
-  top: 1%;
-  width: 16vh;
-  height: 17vh;
-}
-#modalWindowChangeColor > p {
-  font-size: 1.2em;
-  font-weight: bold;
-}
-.choosePlayerButtons {
-  font-size: 2em;
-  width: 10%;
-  height: 20%;
-  margin: 2% 0.5% 2% 0.5%;
-}
-.utiliBtns {
-  font-family: "Berkshire Swash", cursive;
-  height: 60%;
-  width: 18%;
-  font-size: 1.3em;
-  margin: 2% 1% 1% 1%;
-  background-color: white;
-  display: block;
-}
-.utiliHalfBtns {
-  font-size: 1em;
-  font-family: inherit;
-  height: 48%;
-  margin: 1%;
-  width: 90%;
-  border: 1px grey solid;
-  background: inherit;
-}
-.colorMenu {
-  background-color: white;
-  padding: 1%;
-  font-size: 1.1em;
-  margin: 1%;
-  height: 15%;
-}
-#gradientCheckbox + label {
-  font-size: 0.8em;
-  padding: 1%;
-  margin: 1%;
-}
-#gradientCheckbox, #partnerCheckbox {
-  visibility: hidden;
-  position: absolute;
-}
-.menuSelected {
-  background-color: black;
-  color: white;
-}
-#allColorContainer {
-  width: 100%;
-  height: 55%;
-}
-.allColors {
-  border: 0.1em solid black;
-  width: 15%;
-  height: 35%;
-  margin: 0.5% 1% 0.5% 1%;
-  font-size: 3em;
-  cursor: pointer;
-}
-input[type=radio] {
-  visibility: hidden;
-  position: absolute;
-}
 input[type=radio]:checked + label {
   border-color: yellow;
 }
@@ -422,147 +456,13 @@ input[type=checkbox]:checked + label {
   background: white !important;
   font-weight: bold;
 }
-#choosePlayerExit {
-  font-size: 2em;
-  width: 15%;
-  height: 20%;
-  margin: 2% 0.5% 2% 0.5%;
-}
-#choosePlayerRotate {
-  width: 14vh;
-  height: 16vh;
-  margin-top: 3%;
-  margin-left: 3%;
-}
-#utiliExit {
-  width: 60%;
-  height: 20%;
-  font-size: 2em;
-}
-/*dice modal*/
-.dice-s {
-  width: 20%;
-  height: 20%;
-  margin: 1%;
-}
-.dice {
-  font-size: 2em;
-}
-.selectedDice {
-  background: white;
-  color: black;
-}
-#exitDice {
-  font-size: 1em;
-  line-height: 85%;
-}
 
-.rotate {
-  background-image: url(rotate.png);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: 5px transparent solid;
-}
+/*               */
+/* Media Queries */
+/*               */
 
-/* mass life change */
-#modalWindowMassLife {
-  width: 85vw;
-  height: 85vh;
-  margin-top: 7.5vh;
-  margin-left: 7.5vw;
-}
-#excludeContainer {
-  width: 40%;
-  height: 80%;
-}
-#excludeContainer p, #netChangeContainer p {
-  margin-top: 2%;
-}
-#excludeInnerContainer {
-  width: 100%;
-  height: 100%;
-}
-[id^=excludeP] + label {
-  position: relative;
-  font-size: 1.5em;
-  width: 30%;
-  margin: 1.5%;
-  flex-grow: 1;
-  height: 20vh;
-}
-[id^=excludeP] + label::before {
-  content: attr(data-attr);
-  position: absolute;
-  font-size: 0.4em;
-  color: black;
-  background-color: white;
-  border: 1px solid black;
-  left: 0%;
-  top: 0%;
-  padding: 0.12em;
-  width: 3vw;
-  height: 3vw;
-  font-weight: normal;
-  -webkit-text-stroke: none;
-  text-shadow: none;
-}
-#clearExcluded {
-  width: 70%;
-  font-size: 1em;
-  height: 8vh;
-  background: white;
-}
-#massChangeContainer {
-  width: 25%;
-}
-#massChangeContainer button {
-  font-size: 1.5em;
-  background-color: black;
-  color: white;
-  height: 20%;
-  margin: 3% 0 3% 0;
-  width: 90%;
-}
-#netChangeContainer {
-  height: 100%;
-  width: 30%;
-}
-#netChange {
-  height: 70%;
-  font-size: 7em;
-}
-#exitRotateContainer {
-  height: 20%;
-  width: 100%;
-}
-#massChangeExit {
-  /* font-size: 2em;
-  width: 45%; */
-}
-#massChangeRotate {
-  /* width: 25%;
-  height: 13vh; */
-}
-
-/* gear button */
-
-#gearBtn {
-   position: fixed;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   width: 15vh;
-   height: 15vh;
-   background: white;
-}
-#gearIcon {
-  width: 15vh;
-}
-
-/*meida queries */
 @media screen and (min-width : 900px) {
   body {
-    font-size: 1.7em;
+    font-size: 1.6em;
   }
 }

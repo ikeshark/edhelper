@@ -122,44 +122,46 @@
       <div class="flex l-85h l-padding-box">
         <div class="l-42w">
           <p class="headline whitesmoke relative-1">Commanders</p>
-          <div class="flex cmd-box">
-            <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0">
-            <label data-attr="1" for="cmdButton0" class="outline player-btn player-number"></label>
-            <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1">
-            <label data-attr="2" for="cmdButton1" class="outline player-btn player-number"></label>
-            <input type="radio" name="cmdModalGroup" value="2" id="cmdButton2">
-            <label data-attr="3" for="cmdButton2" class="outline player-btn player-number"></label>
-            <input type="radio" name="cmdModalGroup" value="3" id="cmdButton3">
-            <label data-attr="4" for="cmdButton3" class="outline player-btn player-number"></label>
-            <input type="radio" name="cmdModalGroup" value="4" id="cmdButton4">
-            <label data-attr="5" for="cmdButton4" class="outline player-btn player-number"></label>
-            <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5">
-            <label data-attr="6" for="cmdButton5" class="outline player-btn player-number"></label>
+          <div class="l-cmd-partner-cont">
+            <div class="flex cmd-box">
+              <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0">
+              <label data-attr="1" for="cmdButton0" class="outline player-btn player-number"></label>
+              <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1">
+              <label data-attr="2" for="cmdButton1" class="outline player-btn player-number"></label>
+              <input type="radio" name="cmdModalGroup" value="2" id="cmdButton2">
+              <label data-attr="3" for="cmdButton2" class="outline player-btn player-number"></label>
+              <input type="radio" name="cmdModalGroup" value="3" id="cmdButton3">
+              <label data-attr="4" for="cmdButton3" class="outline player-btn player-number"></label>
+              <input type="radio" name="cmdModalGroup" value="4" id="cmdButton4">
+              <label data-attr="5" for="cmdButton4" class="outline player-btn player-number"></label>
+              <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5">
+              <label data-attr="6" for="cmdButton5" class="outline player-btn player-number"></label>
+            </div>
+            <div class="flex cmd-box l-partners">
+              <input type="radio" name="cmdModalGroup" value="6" id="partnerButton0">
+              <label data-attr="1B" for="partnerButton0" class="outline behind player-btn player-number"></label>
+              <input type="radio" name="cmdModalGroup" value="7" id="partnerButton1">
+              <label data-attr="2B" for="partnerButton1" class="outline behind player-btn player-number"></label>
+              <input type="radio" name="cmdModalGroup" value="8" id="partnerButton2">
+              <label data-attr="3B" for="partnerButton2" class="outline behind player-btn player-number"></label>
+              <input type="radio" name="cmdModalGroup" value="9" id="partnerButton3">
+              <label data-attr="4B" for="partnerButton3" class="outline behind player-btn player-number"></label>
+              <input type="radio" name="cmdModalGroup" value="10" id="partnerButton4">
+              <label data-attr="5B" for="partnerButton4" class="outline behind player-btn player-number"></label>
+              <input type="radio" name="cmdModalGroup" value="11" id="partnerButton5">
+              <label data-attr="6B" for="partnerButton5" class="outline behind player-btn player-number"></label>
+            </div>
+            <div class="whitesmoke l-cmd-partner-bg"></div>
           </div>
-          <div class="flex cmd-box relative-2">
-            <input type="radio" name="cmdModalGroup" value="6" id="partnerButton0">
-            <label data-attr="1B" for="partnerButton0" class="outline behind player-btn player-number"></label>
-            <input type="radio" name="cmdModalGroup" value="7" id="partnerButton1">
-            <label data-attr="2B" for="partnerButton1" class="outline behind player-btn player-number"></label>
-            <input type="radio" name="cmdModalGroup" value="8" id="partnerButton2">
-            <label data-attr="3B" for="partnerButton2" class="outline behind player-btn player-number"></label>
-            <input type="radio" name="cmdModalGroup" value="9" id="partnerButton3">
-            <label data-attr="4B" for="partnerButton3" class="outline behind player-btn player-number"></label>
-            <input type="radio" name="cmdModalGroup" value="10" id="partnerButton4">
-            <label data-attr="5B" for="partnerButton4" class="outline behind player-btn player-number"></label>
-            <input type="radio" name="cmdModalGroup" value="11" id="partnerButton5">
-            <label data-attr="6B" for="partnerButton5" class="outline behind player-btn player-number"></label>
-          </div>
-          <div class="whitesmoke relative-3"></div>
         </div>
         <div class="flex flex-col l-30w">
-          <button value="5" id="plus5" class="invisible invert-btn cmd-middle-btn">
+          <button value="5" id="plus5" class="j-cmd-inc invisible invert-btn cmd-middle-btn">
             &#43; 5
           </button>
-          <button value="1" id="plus" class="invisible invert-btn cmd-middle-btn">
+          <button value="1" id="plus" class="j-cmd-inc invisible invert-btn cmd-middle-btn">
             &#43; 1
           </button>
-          <button value="-1" id="minus" class="invisible invert-btn cmd-middle-btn">
+          <button value="-1" id="minus" class="j-cmd-inc invisible invert-btn cmd-middle-btn">
             &#8211; 1
           </button>
           <button id="cmdExit" class="exit cmd-middle-btn">
@@ -286,7 +288,7 @@
           <label data-attr="5" for="excludeP4" class="hidden outline player-number"></label>
           <input type="radio" name="excludeGroup" value="5" id="excludeP5">
           <label data-attr="6" for="excludeP5" class="hidden outline player-number"></label>
-          <button id="clearExcluded">Clear</button>
+          <button id="clearExcluded" class="whitesmoke">Clear</button>
         </div>
       </div>
       <div class="flex flex-col l-25w">
@@ -305,8 +307,9 @@
       </div>
     </div>
   </div>
-  <button id="gearBtn"><img id="gearIcon" src="gear.svg"/></button>
+  <button id="gearBtn" class="whitesmoke"><img id="gearIcon" src="gear.svg"/></button>
   <script src="NoSleep.js"></script>
+  <script src="web-animations.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

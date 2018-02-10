@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-#v25
+#v26
 
 styles.css
 app.js
@@ -9,6 +9,7 @@ rotate.png
 sword.png
 manifest.json
 NoSleep.js
+web-animations.min.js
 ring.png
 Berkshire_Swash/BerkshireSwash.woff2
 Berkshire_Swash/BerkshireSwash2.woff2

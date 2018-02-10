@@ -316,7 +316,7 @@ commanderButtons.forEach(function (element, i) {
     const energy = document.querySelector("#energy + label");
     const experience = document.querySelector("#experience + label");
     const poison = document.querySelector("#poison + label");
-    let cmdPlusMinusButtons = document.querySelectorAll(".cmd-middle-btn:not(#cmdExit)");
+    let cmdPlusMinusButtons = document.querySelectorAll(".j-cmd-inc");
     // opening and orienting modal window
     let deg = player.rotated ? 180 : 0;
     rotate(modalWindows[1], deg);
@@ -812,10 +812,7 @@ function animateDice() {
 }
 const dice = document.querySelectorAll(".l-dice:not(div)");
 function getRandom() {
-  dice.forEach(function(element) {
-    element.classList.add("invert-btn");
-    element.innerHTML = element.value;
-  });
+  deselectDice();
   let r = Math.floor(Math.random() * this.value) + 1;
   this.classList.remove("invert-btn");
   this.innerHTML = r;
@@ -828,7 +825,17 @@ document.getElementById("diceRotate").addEventListener("click", function() {
   let deg = utiliRotateBool ? 180 : 0;
   rotate(modalWindows[4], deg);
 });
-document.getElementById("exitDice").addEventListener("click", closeModal);
+function deselectDice() {
+  dice.forEach(function(element) {
+    element.classList.add("invert-btn");
+    element.innerHTML = element.value;
+  });
+}
+function closeDice() {
+  deselectDice();
+  closeModal();
+}
+document.getElementById("exitDice").addEventListener("click", closeDice);
 
 // mass Life change modal
 const excludePlayerBoxes = document.querySelectorAll("[id^=excludeP] + label");
@@ -895,9 +902,11 @@ document.getElementById("massChangeRotate").addEventListener("click", function()
   rotate(modalWindows[5], deg);
 });
 // stopping 'rubberband' scrolling
-document.addEventListener("touchmove", function(e) {
-  e.preventDefault();
-}, false);
+// commented out because it is interfering with scrolling other counters box
+
+// document.addEventListener("touchmove", function(e) {
+//   e.preventDefault();
+// }, false);
 // stop auto-sleep
 
 // test for mobile courtesy of open tech guides

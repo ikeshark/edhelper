@@ -203,6 +203,8 @@ function rotate(element, deg) {
 const modalWindows = document.querySelectorAll("[id^=modalWindow]");
 const modalBackground = document.getElementById("modalBackground");
 function closeModal() {
+  // saving state b/c ios web apps don't unload
+  saveState();
   modalWindows.forEach(function(element) {
     element.classList.add("hidden");
   });
@@ -901,13 +903,13 @@ document.getElementById("massChangeRotate").addEventListener("click", function()
   let deg = utiliRotateBool ? 180 : 0;
   rotate(modalWindows[5], deg);
 });
-// stopping 'rubberband' scrolling
-// commented out because it is interfering with scrolling other counters box
 
-// document.addEventListener("touchmove", function(e) {
-//   e.preventDefault();
-// }, false);
-// stop auto-sleep
+// stop mobile scrolling (to prevent rubber band)
+document.addEventListener("touchmove", function(e) {
+  e.preventDefault();
+}, false);
+// except for other counter container
+let newscroll = new IScroll("#otherCountersContainer");
 
 // test for mobile courtesy of open tech guides
 function isMobileDevice() {
@@ -921,6 +923,8 @@ function isMobileDevice() {
     return false;
   }
 }
+
+// stop auto-lock
 var noSleep = new NoSleep();
 function enableNoSleep() {
   if (isMobileDevice()) {

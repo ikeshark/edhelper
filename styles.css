@@ -26,6 +26,7 @@ body {
   overflow: hidden;
 }
 button {
+  background-color: whitesmoke;
   padding: 0;
   border-radius: 0;
   border-width: 0;
@@ -414,7 +415,7 @@ label {
 }
 .rotate {
   background-color: transparent;
-  background-image: url(rotate.png);
+  background-image: url(img/rotate.png);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

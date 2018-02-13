@@ -1,13 +1,12 @@
 CACHE MANIFEST
 
-#v27
+#v28
 
 styles.css
 app.js
 manifest.json
 scripts/NoSleep.js
 scripts/web-animations.min.js
-scripts/iscroll-lite.js
 img/rotate.png
 img/sword.png
 img/ring.png

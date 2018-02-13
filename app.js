@@ -1,3 +1,8 @@
+// stop mobile scrolling (to prevent rubber band)
+document.addEventListener("touchmove", function(e) {
+  e.preventDefault();
+}, false);
+
 // player object and prototype
 function Player(i) {
   this.i = i;
@@ -10,7 +15,6 @@ function Player(i) {
   this.energy = 0;
   this.experience = 0;
   this.castCount = 0;
-  this.castCountB = 0;
   this.hasPartners = false;
   this.rotated = false;
   this.color = "";
@@ -203,7 +207,7 @@ function rotate(element, deg) {
 const modalWindows = document.querySelectorAll("[id^=modalWindow]");
 const modalBackground = document.getElementById("modalBackground");
 function closeModal() {
-  // saving state b/c ios web apps don't unload
+  // saving state b/c ios web apps don't send unload triggers
   saveState();
   modalWindows.forEach(function(element) {
     element.classList.add("hidden");
@@ -299,6 +303,7 @@ lifeButtons.forEach(function (element, i) {
     document.getElementById("lifeExit").addEventListener("click", closeLifeModal);
   });
 });
+
 // commander damage modal window
 const commanderButtons = document.querySelectorAll("[src*=sword]");
 commanderButtons.forEach(function (element, i) {
@@ -309,20 +314,17 @@ commanderButtons.forEach(function (element, i) {
     let partnerCheckbox = document.getElementById("partnerCheckbox");
     // all radios in modal
     let cmdModalGroup = document.querySelectorAll("input[name=cmdModalGroup]");
-    // non commander radios. do i need?
-    let otherCounters = document.querySelectorAll(".otherCounters");
     const commanderDamageButtons = document.querySelectorAll("[id^=cmdButton] + label");
     const partnerButtons = document.querySelectorAll("[id^=partnerButton] + label");
     const castCount = document.querySelector("#castCount + label");
-    const castCountB = document.querySelector("#castCountB + label");
     const energy = document.querySelector("#energy + label");
     const experience = document.querySelector("#experience + label");
     const poison = document.querySelector("#poison + label");
     let cmdPlusMinusButtons = document.querySelectorAll(".j-cmd-inc");
+
     // opening and orienting modal window
     let deg = player.rotated ? 180 : 0;
     rotate(modalWindows[1], deg);
-
     modalWindows[1].classList.remove("hidden");
     modalBackground.classList.remove("hidden");
 
@@ -356,28 +358,11 @@ commanderButtons.forEach(function (element, i) {
       element.style.background = players[i].color;
       element.innerHTML = player.commanderDamage[i];
     });
-    if (player.poison > 0) {
-      poison.classList.remove("hidden");
-    }
-    if (player.experience > 0) {
-      experience.classList.remove("hidden");
-    }
-    if (player.castCount > 0) {
-      castCount.classList.remove("hidden");
-    }
-    if (player.castCountB > 0) {
-      castCountB.classList.remove("hidden");
-    }
-    if (player.energy > 0) {
-      energy.classList.remove("hidden");
-    }
-
     experience.innerHTML = player.experience;
     castCount.innerHTML = player.castCount;
     energy.innerHTML = player.energy;
     poison.innerHTML = player.poison;
     energy.innerHTML = player.energy;
-    castCountB.innerHTML = player.castCountB;
 
     // functions
     function togglePartners() {
@@ -463,17 +448,12 @@ commanderButtons.forEach(function (element, i) {
       cmdModalGroup.forEach((elem, i) => {
         elem.removeEventListener("click", showPlusMinus);
       });
-      poison.classList.add("hidden");
       commanderDamageButtons.forEach(elem => {
         elem.removeEventListener("click", togglePartners);
         elem.classList.add("hidden");
       });
       partnerButtons.forEach(elem => {
         elem.removeEventListener("click", togglePartners);
-      })
-      otherCounters.forEach(elem => {
-        elem.childNodes[5].classList.add("hidden");
-        elem.removeEventListener("click", toggleOtherCounters);
       });
       cmdPlusMinusButtons[0].removeEventListener("click", showMinusButtons);
       cmdPlusMinusButtons[1].removeEventListener("click", showMinusButtons);
@@ -484,20 +464,13 @@ commanderButtons.forEach(function (element, i) {
         checks.checked = false;
       }
       document.getElementById("cmdExit").removeEventListener("click", closeCmdModal);
-
       closeModal();
     };
-    function toggleOtherCounters() {
-      this.childNodes[5].classList.toggle("hidden");
-    }
 
     // button event listeners and displays
     partnerCheckbox.addEventListener("click", toggleHasPartners);
     cmdModalGroup.forEach(function(elem) {
       elem.addEventListener("click", showPlusMinus);
-    });
-    otherCounters.forEach(elem => {
-      elem.addEventListener("click", toggleOtherCounters);
     });
     cmdPlusMinusButtons.forEach(elem => {
       elem.addEventListener("click", plusAndMinus);
@@ -513,403 +486,467 @@ commanderButtons.forEach(function (element, i) {
     document.getElementById("cmdExit").addEventListener("click", closeCmdModal);
   });
 });
+
 // utilities modal
 let utiliRotateBool = false;
 document.getElementById("gearBtn").addEventListener("click", function() {
+  // variables
+  let rotateBtn = document.getElementById("utiliRotate");
+  let exitBtn = document.getElementById("utiliExit");
+  let addPlayerBtn = document.getElementById("addPlayer");
+  let hidePlayerBtn = document.getElementById("hidePlayer");
+  let newGameBtn = document.getElementById("newGamePrompt");
+  let changeColorsBtn = document.getElementById("changeColors");
+  let massLifeBtn = document.getElementById("massLife");
+  let diceBtn = document.getElementById("dice");
+
+  // always open right-side up
   utiliRotateBool = false;
   rotate(modalWindows[2], 0);
+
   modalBackground.classList.remove("hidden");
   modalWindows[2].classList.remove("hidden");
-  function closeUtiliModal() {
-    closeModal();
-    document.getElementById("utiliExit").removeEventListener("click", closeUtiliModal);
-  }
-  document.getElementById("utiliExit").addEventListener("click", closeUtiliModal);
-});
-document.getElementById("utiliRotate").addEventListener("click", function() {
-  utiliRotateBool = !utiliRotateBool;
-  let deg = utiliRotateBool ? 180 : 0;
-  rotate(modalWindows[2], deg);
-});
-// add player, subtract player, new game
-document.getElementById("addPlayer").addEventListener("click", addPlayer);
-function addPlayer() {
-    if (numPlayers === 6) {
-      alert("6 is maximum number of players");
-    } else {
-      numPlayers += 1;
+
+  // functions
+  function addPlayer() {
+      if (numPlayers < 6) {
+        numPlayers += 1;
+        displayBoard();
+        for (let i = 0; i < numPlayers; i++) {
+          // without time out the layout doesn't set correctly
+          setTimeout(players[i].displayLife.bind(players[i]), 400);
+        }
+      }
+  };
+  function hidePlayer() {
+    if (numPlayers > 2) {
+      numPlayers -= 1;
       displayBoard();
       for (let i = 0; i < numPlayers; i++) {
-        // without time out the layout doesn't set correctly
         setTimeout(players[i].displayLife.bind(players[i]), 400);
       }
     }
-};
-document.getElementById("hidePlayer").addEventListener("click", hidePlayer);
-function hidePlayer() {
-  if (numPlayers === 2) {
-    alert("Two is the minimum number of players");
-  } else {
-    numPlayers -= 1;
-    displayBoard();
-    for (let i = 0; i < numPlayers; i++) {
-      setTimeout(players[i].displayLife.bind(players[i]), 400);
-    }
-  }
-};
-document.getElementById("newGamePrompt").addEventListener("click", function() {
-  localStorage.clear();
-  window.removeEventListener("unload", saveState);
-  location.reload();
-});
-// change colors sub modal
-document.getElementById("changeColors").addEventListener("click", function() {
-  // variables
-  let pBoxes = document.querySelectorAll(".choosePlayerButtons");
-  let colorRadios = document.querySelectorAll("[id^=radio]");
-  let gradientBool = false;
-  let gradientCheckbox = document.getElementById("gradientCheckbox");
-  let gradientCheckboxLabel = document.querySelector("#gradientCheckbox + label");
-  let colorMenuButtons = document.querySelectorAll(".colorMenu");
-  let colorBoxes = document.querySelectorAll(".allColors");
-
-  // orientation
-  modalWindows[3].classList.remove("hidden");
-  let deg = utiliRotateBool ? 180 : 0;
-  rotate(modalWindows[3], deg);
-
-  // set up player boxes
-  pBoxes.forEach(function(element,i) {
-    element.style.background = players[i].color;
-    element.innerHTML = players[i].number;
-  });
-
-  // functions
-  function colorCombinator() {
-    let result = "repeating-linear-gradient(45deg ";
-    for (let i = 0; i < arguments.length; i++) {
-      result += ", " + arguments[i] + " " + (i * 15) + "%";
-      result += ", " + arguments[i] + " " + ((i + 1) * 15) + "%";
-    }
-    result += ")";
-    return result;
-  }
-  function gradientMaker() {
-    let result = "linear-gradient(45deg ";
-    for (let i = 0; i < arguments.length; i++) {
-      result += ", " + arguments[i];
-    }
-    result += ")";
-    return result;
-  }
-  function displayMonoColors() {
-    clearSelected();
-    gradientCheckboxLabel.classList.add("hidden");
-    colorBoxes.forEach((element, i) => {
-      element.style.background = colors[i];
-    });
-    colorMenuButtons[0].classList.add("invert-btn");
-    for (i = 0; i < 6; i++) {
-      colorBoxes[i].classList.remove("hidden");
-    }
-    colorRadios.forEach((element, i) => {
-      element.value = i;
-    });
-  }
-  // default is to display mono colors
-  displayMonoColors();
-
-  function displayTwoColors() {
-    clearSelected();
-    gradientCheckboxLabel.classList.remove("hidden");
-    let twoColorArray = [];
-    if (gradientBool) {
-      for (let i = 1; i < 5; i++) {
-        for (let j = i + 1; j < 6; j++) {
-          let temp = gradientMaker(colors[i], colors[j]);
-          twoColorArray.push(temp);
-          }
-        }
-      } else {
-      for (let i = 1; i < 5; i++) {
-        for (let j = i + 1; j < 6; j++) {
-          let temp = colorCombinator(colors[i], colors[j]);
-          twoColorArray.push(temp);
-          }
-        }
-      }
-    colorBoxes.forEach((element, i) => {
-      element.style.background = twoColorArray[i];
-    });
-    colorRadios.forEach((element, i) => {
-      element.value = twoColorArray[i];
-    });
-    colorMenuButtons[1].classList.add("invert-btn");
-    for (i = 0; i < 10; i++) {
-      colorBoxes[i].classList.remove("hidden");
-    }
   };
-  function displayThreeColors() {
-    clearSelected();
-    gradientCheckboxLabel.classList.remove("hidden");
-    let colorArray = [];
-    if (gradientBool) {
-      for (let i = 1; i < 5; i++) {
-        for (let j = i + 1; j < 6; j++) {
-          for (let k = j + 1; k < 6; k++) {
-             let temp = gradientMaker(colors[i], colors[j], colors[k]);
-             colorArray.push(temp);
+  function newGame() {
+    localStorage.clear();
+    window.removeEventListener("unload", saveState);
+    location.reload();
+  };
+  // change colors sub modal
+  function changeColors() {
+    // variables
+    let pBoxes = document.querySelectorAll(".choosePlayerButtons");
+    let colorRadios = document.querySelectorAll("[id^=radio]");
+    let gradientBool = false;
+    let gradientCheckbox = document.getElementById("gradientCheckbox");
+    let gradientCheckboxLabel = document.querySelector("#gradientCheckbox + label");
+    let colorMenuButtons = document.querySelectorAll(".colorMenu");
+    let colorBoxes = document.querySelectorAll(".allColors");
+    let radios = document.querySelectorAll("input[name=chooseColor]");
+    let rotateBtn = document.getElementById("choosePlayerRotate");
+    let exitBtn = document.getElementById("choosePlayerExit");
+
+    // orientation
+    modalWindows[3].classList.remove("hidden");
+    modalWindows[2].classList.add("hidden");
+    let deg = utiliRotateBool ? 180 : 0;
+    rotate(modalWindows[3], deg);
+
+    // set up player boxes
+    pBoxes.forEach(function(element,i) {
+      element.style.background = players[i].color;
+      element.innerHTML = players[i].number;
+    });
+
+    // functions
+    function colorCombinator() {
+      let result = "repeating-linear-gradient(45deg ";
+      for (let i = 0; i < arguments.length; i++) {
+        result += ", " + arguments[i] + " " + (i * 15) + "%";
+        result += ", " + arguments[i] + " " + ((i + 1) * 15) + "%";
+      }
+      result += ")";
+      return result;
+    }
+    function gradientMaker() {
+      let result = "linear-gradient(45deg ";
+      for (let i = 0; i < arguments.length; i++) {
+        result += ", " + arguments[i];
+      }
+      result += ")";
+      return result;
+    }
+    function displayMonoColors() {
+      clearSelected();
+      gradientCheckboxLabel.classList.add("hidden");
+      colorBoxes.forEach((element, i) => {
+        element.style.background = colors[i];
+      });
+      colorMenuButtons[0].classList.add("invert-btn");
+      for (i = 0; i < 6; i++) {
+        colorBoxes[i].classList.remove("hidden");
+      }
+      colorRadios.forEach((element, i) => {
+        element.value = i;
+      });
+    }
+    // default is to display mono colors
+    displayMonoColors();
+
+    function displayTwoColors() {
+      clearSelected();
+      gradientCheckboxLabel.classList.remove("hidden");
+      let twoColorArray = [];
+      if (gradientBool) {
+        for (let i = 1; i < 5; i++) {
+          for (let j = i + 1; j < 6; j++) {
+            let temp = gradientMaker(colors[i], colors[j]);
+            twoColorArray.push(temp);
+            }
+          }
+        } else {
+        for (let i = 1; i < 5; i++) {
+          for (let j = i + 1; j < 6; j++) {
+            let temp = colorCombinator(colors[i], colors[j]);
+            twoColorArray.push(temp);
+            }
           }
         }
+      colorBoxes.forEach((element, i) => {
+        element.style.background = twoColorArray[i];
+      });
+      colorRadios.forEach((element, i) => {
+        element.value = twoColorArray[i];
+      });
+      colorMenuButtons[1].classList.add("invert-btn");
+      for (i = 0; i < 10; i++) {
+        colorBoxes[i].classList.remove("hidden");
       }
-    } else {
+    };
+    function displayThreeColors() {
+      clearSelected();
+      gradientCheckboxLabel.classList.remove("hidden");
+      let colorArray = [];
+      if (gradientBool) {
         for (let i = 1; i < 5; i++) {
           for (let j = i + 1; j < 6; j++) {
             for (let k = j + 1; k < 6; k++) {
-               let temp = colorCombinator(colors[i], colors[j], colors[k]);
+               let temp = gradientMaker(colors[i], colors[j], colors[k]);
                colorArray.push(temp);
             }
           }
         }
+      } else {
+          for (let i = 1; i < 5; i++) {
+            for (let j = i + 1; j < 6; j++) {
+              for (let k = j + 1; k < 6; k++) {
+                 let temp = colorCombinator(colors[i], colors[j], colors[k]);
+                 colorArray.push(temp);
+              }
+            }
+          }
+        }
+      colorBoxes.forEach((element, i) => {
+        element.style.background = colorArray[i];
+      });
+      colorRadios.forEach((element, i) => {
+        element.value = colorArray[i];
+      });
+      colorMenuButtons[2].classList.add("invert-btn");
+      for (i = 0; i < 10; i++) {
+        colorBoxes[i].classList.remove("hidden");
       }
-    colorBoxes.forEach((element, i) => {
-      element.style.background = colorArray[i];
-    });
-    colorRadios.forEach((element, i) => {
-      element.value = colorArray[i];
-    });
-    colorMenuButtons[2].classList.add("invert-btn");
-    for (i = 0; i < 10; i++) {
-      colorBoxes[i].classList.remove("hidden");
+    };
+    function displayFourColors() {
+      clearSelected();
+      gradientCheckboxLabel.classList.remove("hidden");
+      let wubr, wubg, wurg, ubrg, wbrg, wubrg;
+      if (gradientBool) {
+        wubr = gradientMaker(w, u, b, r);
+        wubg = gradientMaker(w, u, b, g);
+        wurg = gradientMaker(w, u, r, g);
+        ubrg = gradientMaker(u, b, r, g);
+        wbrg = gradientMaker(w, b, r, g);
+        wubrg = gradientMaker(w, u, b, r, g);
+      } else {
+        wubr = colorCombinator(w, u, b, r);
+        wubg = colorCombinator(w, u, b, g);
+        wurg = colorCombinator(w, u, r, g);
+        ubrg = colorCombinator(u, b, r, g);
+        wbrg = colorCombinator(w, b, r, g);
+        wubrg = colorCombinator(w, u, b, r, g);
+      }
+      let colorArray = [wubr, wubg, wurg, ubrg, wbrg, wubrg];
+      colorBoxes.forEach((element, i) => {
+        element.style.background = colorArray[i];
+      });
+      colorRadios.forEach((element, i) => {
+        element.value = colorArray[i];
+      });
+      colorMenuButtons[3].classList.add("invert-btn");
+      for (i = 0; i < 6; i++) {
+        colorBoxes[i].classList.remove("hidden");
+      }
+    };
+    function changeColor() {
+      let player = players[this.value];
+      let checkedRadio = document.querySelector("input[name=chooseColor]:checked").value;
+      if (checkedRadio.length === 1) {
+        player.color = colors[checkedRadio];
+      } else {
+        player.color = checkedRadio;
+      }
+      playerDivs[this.value].style.background = player.color;
+      pBoxes[this.value].style.background = player.color;
+    };
+    function clearSelected() {
+      radios.forEach(function(elem) {
+        elem.checked = false;
+      });
+      colorMenuButtons.forEach(function(element) {
+        element.classList.remove("invert-btn");
+      });
+      colorBoxes.forEach(function(element){
+        element.classList.add("hidden");
+      });
+    };
+    function toggleGradient() {
+      // if something was checked before toggle, it should remain checked
+      let checked;
+      radios.forEach(function(elem) {
+        if (elem.checked === true) {
+          checked = elem;
+        }
+      });
+
+      if (this.checked) {
+        gradientBool = true;
+      } else {
+        gradientBool = false;
+      }
+      let currentPage = document.querySelector("#modalWindowChangeColor .invert-btn");
+      if (currentPage === colorMenuButtons[1]) {
+        displayTwoColors();
+      }
+      if (currentPage === colorMenuButtons[2]) {
+        displayThreeColors();
+      }
+      if (currentPage === colorMenuButtons[3]) {
+        displayFourColors();
+      }
+      // rechecking checked, if it exsists
+      if (checked) {
+        checked.checked = true;
+      }
+    };
+    function toggleRotate() {
+      utiliRotateBool = !utiliRotateBool;
+      let deg = utiliRotateBool ? 180 : 0;
+      rotate(modalWindows[3], deg);
+    };
+    function exit() {
+      closeUtiliModal();
+      displayMonoColors();
+      pBoxes.forEach(elem => {
+        elem.classList.add("hidden");
+        elem.removeEventListener("click", changeColor);
+      });
+      gradientCheckbox.removeEventListener("click", toggleGradient);
+      rotateBtn.removeEventListener("click", toggleRotate);
+      exitBtn.removeEventListener("click", exit);
+      document.getElementById("singleColors").removeEventListener("click", displayMonoColors);
+      document.getElementById("twoColors").removeEventListener("click", displayTwoColors);
+      document.getElementById("threeColors").removeEventListener("click", displayThreeColors);
+      document.getElementById("fourFiveColors").removeEventListener("click", displayFourColors);
     }
+    // event listeners
+    gradientCheckbox.addEventListener("click", toggleGradient);
+    colorBoxes.forEach(function(element, i) {
+      element.addEventListener("click", () => {
+        for (let i = 0; i < numPlayers; i++) {
+          pBoxes[i].classList.remove("hidden");
+        }
+      });
+    });
+    document.getElementById("singleColors").addEventListener("click", displayMonoColors);
+    document.getElementById("twoColors").addEventListener("click", displayTwoColors);
+    document.getElementById("threeColors").addEventListener("click", displayThreeColors);
+    document.getElementById("fourFiveColors").addEventListener("click", displayFourColors);
+    pBoxes.forEach(elem => elem.addEventListener("click", changeColor));
+    rotateBtn.addEventListener("click", toggleRotate);
+    exitBtn.addEventListener("click", exit);
   };
-  function displayFourColors() {
-    clearSelected();
-    gradientCheckboxLabel.classList.remove("hidden");
-    let wubr, wubg, wurg, ubrg, wbrg, wubrg;
-    if (gradientBool) {
-      wubr = gradientMaker(w, u, b, r);
-      wubg = gradientMaker(w, u, b, g);
-      wurg = gradientMaker(w, u, r, g);
-      ubrg = gradientMaker(u, b, r, g);
-      wbrg = gradientMaker(w, b, r, g);
-      wubrg = gradientMaker(w, u, b, r, g);
-    } else {
-      wubr = colorCombinator(w, u, b, r);
-      wubg = colorCombinator(w, u, b, g);
-      wurg = colorCombinator(w, u, r, g);
-      ubrg = colorCombinator(u, b, r, g);
-      wbrg = colorCombinator(w, b, r, g);
-      wubrg = colorCombinator(w, u, b, r, g);
+
+  // dice modal
+  function dice() {
+    // variables
+    let dice = document.querySelectorAll(".l-dice:not(div)");
+    let rotateBtn = document.getElementById("diceRotate");
+    let exitBtn = document.getElementById("exitDice");
+
+    // open and orient
+    modalWindows[4].classList.remove("hidden");
+    modalWindows[2].classList.add("hidden");
+    let deg = utiliRotateBool ? 180 : 0;
+    rotate(modalWindows[4], deg);
+
+    // functions
+    function deselectDice() {
+      dice.forEach(function(element) {
+        element.classList.add("invert-btn");
+        element.innerHTML = element.value;
+      });
     }
-    let colorArray = [wubr, wubg, wurg, ubrg, wbrg, wubrg];
-    colorBoxes.forEach((element, i) => {
-      element.style.background = colorArray[i];
-    });
-    colorRadios.forEach((element, i) => {
-      element.value = colorArray[i];
-    });
-    colorMenuButtons[3].classList.add("invert-btn");
-    for (i = 0; i < 6; i++) {
-      colorBoxes[i].classList.remove("hidden");
+    function animateDice() {
+      let frames = [
+        { transform: "rotate(-8deg)" },
+        { transform: "rotate(-4deg)" },
+        { transform: "rotate(0deg)" },
+        { transform: "rotate(4deg)" },
+        { transform: "rotate(8deg)" }
+      ];
+      let animation = this.animate(frames, {
+        duration: 100,
+        direction: 'alternate',
+        iterations: 4
+      });
+      animation.onfinish = getRandom.bind(this);
     }
+    function getRandom() {
+      deselectDice();
+      let r = Math.floor(Math.random() * this.value) + 1;
+      this.classList.remove("invert-btn");
+      this.innerHTML = r;
+    }
+    function rotateWindow() {
+      utiliRotateBool = !utiliRotateBool;
+      let deg = utiliRotateBool ? 180 : 0;
+      rotate(modalWindows[4], deg);
+    }
+    function closeDice() {
+      deselectDice();
+      closeUtiliModal();
+      dice.forEach(elem => elem.removeEventListener("click", animateDice));
+      rotateBtn.removeEventListener("click", rotateWindow);
+      exitBtn.removeEventListener("click", closeDice);
+    }
+    // event listeners
+    dice.forEach(elem => elem.addEventListener("click", animateDice));
+    rotateBtn.addEventListener("click", rotateWindow);
+    exitBtn.addEventListener("click", closeDice);
   };
-  function changeColor() {
-    let player = players[this.value];
-    let checkedRadio = document.querySelector("input[name=chooseColor]:checked").value;
-    if (checkedRadio.length === 1) {
-      player.color = colors[checkedRadio];
-    } else {
-      player.color = checkedRadio;
+
+  // mass Life change modal
+  function massLife() {
+    // variables
+    let excludePlayerBoxes = document.querySelectorAll("[id^=excludeP] + label");
+    let exitBtn = document.getElementById("massChangeExit");
+    let plus5 = document.getElementById("massPlus5");
+    let plus = document.getElementById("massPlus");
+    let minus = document.getElementById("massMinus");
+    let minus5 = document.getElementById("massMinus5");
+    let clearBtn = document.getElementById("clearExcluded");
+    let rotateBtn = document.getElementById("massChangeRotate");
+    // if lives have changed, we must make history
+    let oldLives = [];
+    for (let i = 0; i < numPlayers; i++) {
+      oldLives.push(players[i].life);
     }
-    playerDivs[this.value].style.background = player.color;
-    pBoxes[this.value].style.background = player.color;
-  };
-  function clearSelected() {
-    let radios = document.querySelectorAll("input[name=chooseColor]");
-    radios.forEach(function(elem) {
-      elem.checked = false;
-    });
-    colorMenuButtons.forEach(function(element) {
-      element.classList.remove("invert-btn");
-    });
-    colorBoxes.forEach(function(element){
-      element.classList.add("hidden");
-    });
-  };
-  function toggleGradient() {
-    if (this.checked) {
-      gradientBool = true;
-    } else {
-      gradientBool = false;
+
+    // open and orient
+    modalWindows[5].classList.remove("hidden");
+    modalWindows[2].classList.add("hidden");
+    let deg = utiliRotateBool ? 180 : 0;
+    rotate(modalWindows[5], deg);
+    for (let i = 0; i < numPlayers; i++) {
+      excludePlayerBoxes[i].classList.remove("hidden");
+      excludePlayerBoxes[i].style.background = players[i].color;
+      excludePlayerBoxes[i].innerHTML = players[i].life;
     }
-    let currentPage = document.querySelector("#modalWindowChangeColor .invert-btn");
-    if (currentPage === colorMenuButtons[1]) {
-      displayTwoColors();
+
+    // functions
+    function massLifeChange() {
+      let netChange = parseInt(document.getElementById("netChange").innerHTML);
+      let amount = parseInt(this.value);
+      let excluded = document.querySelector("input[name=excludeGroup]:checked");
+      for (let i = 0; i < numPlayers; i++) {
+        if (excluded && excluded.value == i) {
+          continue;
+        }
+        players[i].life += amount;
+        players[i].displayLife();
+        excludePlayerBoxes[i].innerHTML = players[i].life;
+      }
+      netChange += amount;
+      document.getElementById("netChange").innerHTML = netChange;
+    };
+    function deselect() {
+      let radios = document.querySelectorAll("input[name=excludeGroup]");
+      radios.forEach(function(elem) {
+        elem.checked = false;
+      });
+    };
+    function rotateWindow() {
+      utiliRotateBool = !utiliRotateBool;
+      let deg = utiliRotateBool ? 180 : 0;
+      rotate(modalWindows[5], deg);
     }
-    if (currentPage === colorMenuButtons[2]) {
-      displayThreeColors();
+    function exit() {
+      deselect();
+      for (let i = 0; i < numPlayers; i++) {
+        if (players[i].life != oldLives[i]) {
+          players[i].lifeHistory.push(parseInt(players[i].life));
+        }
+      }
+      document.getElementById("netChange").innerHTML = 0;
+      closeUtiliModal();
+      excludePlayerBoxes.forEach(elem => elem.classList.add("hidden"));
+      plus5.removeEventListener("click", massLifeChange);
+      plus.removeEventListener("click", massLifeChange);
+      minus.removeEventListener("click", massLifeChange);
+      minus5.removeEventListener("click", massLifeChange);
+      clearBtn.removeEventListener("click", deselect);
+      rotateBtn.removeEventListener("click", rotateWindow);
+      exitBtn.removeEventListener("click", exit);
     }
-    if (currentPage === colorMenuButtons[3]) {
-      displayFourColors();
-    }
-  };
-  function toggleRotate() {
+
+    // event listeners
+    plus5.addEventListener("click", massLifeChange);
+    plus.addEventListener("click", massLifeChange);
+    minus.addEventListener("click", massLifeChange);
+    minus5.addEventListener("click", massLifeChange);
+    clearBtn.addEventListener("click", deselect);
+    rotateBtn.addEventListener("click", rotateWindow);
+    exitBtn.addEventListener("click", exit);
+
+  }
+  function utiliRotate() {
     utiliRotateBool = !utiliRotateBool;
     let deg = utiliRotateBool ? 180 : 0;
-    rotate(modalWindows[3], deg);
+    rotate(modalWindows[2], deg);
   };
-  function exit() {
+  function closeUtiliModal() {
     closeModal();
-    displayMonoColors();
-    pBoxes.forEach(elem => {
-      elem.classList.add("hidden");
-      elem.removeEventListener("click", changeColor);
-    });
-    gradientCheckbox.removeEventListener("click", toggleGradient);
-    document.getElementById("choosePlayerRotate").removeEventListener("click", toggleRotate);
-    document.getElementById("choosePlayerExit").removeEventListener("click", exit);
-    document.getElementById("singleColors").removeEventListener("click", displayMonoColors);
-    document.getElementById("twoColors").removeEventListener("click", displayTwoColors);
-    document.getElementById("threeColors").removeEventListener("click", displayThreeColors);
-    document.getElementById("fourFiveColors").removeEventListener("click", displayFourColors);
-  }
+    addPlayerBtn.removeEventListener("click", addPlayer);
+    hidePlayerBtn.removeEventListener("click", hidePlayer);
+    newGameBtn.removeEventListener("click", newGame);
+    changeColorsBtn.removeEventListener("click", changeColors);
+    diceBtn.removeEventListener("click", dice);
+    massLifeBtn.removeEventListener("click", massLife);
+    rotateBtn.removeEventListener("click", utiliRotate);
+    exitBtn.removeEventListener("click", closeUtiliModal);
+  };
+
   // event listeners
-  gradientCheckbox.addEventListener("click", toggleGradient);
-  colorBoxes.forEach(function(element, i) {
-    element.addEventListener("click", () => {
-      for (let i = 0; i < numPlayers; i++) {
-        pBoxes[i].classList.remove("hidden");
-      }
-    });
-  });
-  document.getElementById("singleColors").addEventListener("click", displayMonoColors);
-  document.getElementById("twoColors").addEventListener("click", displayTwoColors);
-  document.getElementById("threeColors").addEventListener("click", displayThreeColors);
-  document.getElementById("fourFiveColors").addEventListener("click", displayFourColors);
-  pBoxes.forEach((element) => element.addEventListener("click", changeColor));
-  document.getElementById("choosePlayerRotate").addEventListener("click", toggleRotate);
-  document.getElementById("choosePlayerExit").addEventListener("click", exit);
+  addPlayerBtn.addEventListener("click", addPlayer);
+  hidePlayerBtn.addEventListener("click", hidePlayer);
+  newGameBtn.addEventListener("click", newGame);
+  changeColorsBtn.addEventListener("click", changeColors);
+  diceBtn.addEventListener("click", dice);
+  massLifeBtn.addEventListener("click", massLife);
+  rotateBtn.addEventListener("click", utiliRotate);
+  exitBtn.addEventListener("click", closeUtiliModal);
 });
-// dice modal
-document.getElementById("dice").addEventListener("click", function() {
-  document.getElementById("modalWindowDice").classList.remove("hidden");
-  let deg = utiliRotateBool ? 180 : 0;
-  rotate(modalWindows[4], deg);
-});
-function animateDice() {
-  let frames = [
-    { transform: "rotate(-8deg)" },
-    { transform: "rotate(-4deg)" },
-    { transform: "rotate(0deg)" },
-    { transform: "rotate(4deg)" },
-    { transform: "rotate(8deg)" }
-  ];
-  let animation = this.animate(frames, {
-    duration: 100,
-    direction: 'alternate',
-    iterations: 4
-  });
-  animation.onfinish = getRandom.bind(this);
-}
-const dice = document.querySelectorAll(".l-dice:not(div)");
-function getRandom() {
-  deselectDice();
-  let r = Math.floor(Math.random() * this.value) + 1;
-  this.classList.remove("invert-btn");
-  this.innerHTML = r;
-}
-dice.forEach(function(element) {
-  element.addEventListener("click", animateDice);
-});
-document.getElementById("diceRotate").addEventListener("click", function() {
-  utiliRotateBool = !utiliRotateBool;
-  let deg = utiliRotateBool ? 180 : 0;
-  rotate(modalWindows[4], deg);
-});
-function deselectDice() {
-  dice.forEach(function(element) {
-    element.classList.add("invert-btn");
-    element.innerHTML = element.value;
-  });
-}
-function closeDice() {
-  deselectDice();
-  closeModal();
-}
-document.getElementById("exitDice").addEventListener("click", closeDice);
-
-// mass Life change modal
-const excludePlayerBoxes = document.querySelectorAll("[id^=excludeP] + label");
-document.getElementById("massLife").addEventListener("click", function() {
-  let oldLives = [];
-  for (let i = 0; i < numPlayers; i++) {
-    oldLives.push(players[i].life);
-  }
-  modalWindows[5].classList.remove("hidden");
-  let deg = utiliRotateBool ? 180 : 0;
-  rotate(modalWindows[5], deg);
-  for (let i = 0; i < numPlayers; i++) {
-    excludePlayerBoxes[i].classList.remove("hidden");
-    excludePlayerBoxes[i].style.background = players[i].color;
-    excludePlayerBoxes[i].innerHTML = players[i].life;
-  }
-  let exitBtn = document.getElementById("massChangeExit");
-  function exit() {
-    deselect();
-    for (let i = 0; i < numPlayers; i++) {
-      if (players[i].life != oldLives[i]) {
-        players[i].lifeHistory.push(parseInt(players[i].life));
-      }
-    }
-    document.getElementById("netChange").innerHTML = 0;
-    closeModal();
-    excludePlayerBoxes.forEach(elem => {
-      elem.classList.add("hidden");
-    });
-    exitBtn.removeEventListener("click", exit);
-  }
-  exitBtn.addEventListener("click", exit);
-});
-function massLifeChange() {
-  let netChange = parseInt(document.getElementById("netChange").innerHTML);
-  let amount = parseInt(this.value);
-  let excluded = document.querySelector("input[name=excludeGroup]:checked");
-  for (let i = 0; i < numPlayers; i++) {
-    if (excluded && excluded.value == i) {
-      continue;
-    }
-    players[i].life += amount;
-    players[i].displayLife();
-    excludePlayerBoxes[i].innerHTML = players[i].life;
-  }
-  netChange += amount;
-  document.getElementById("netChange").innerHTML = netChange;
-};
-function deselect() {
-  let radios = document.querySelectorAll("input[name=excludeGroup]");
-  radios.forEach(function(elem) {
-    elem.checked = false;
-  });
-};
-document.getElementById("massPlus5").addEventListener("click", massLifeChange);
-document.getElementById("massPlus").addEventListener("click", massLifeChange);
-document.getElementById("massMinus").addEventListener("click", massLifeChange);
-document.getElementById("massMinus5").addEventListener("click", massLifeChange);
-document.getElementById("clearExcluded").addEventListener("click", deselect);
-
-document.getElementById("massChangeRotate").addEventListener("click", function() {
-  utiliRotateBool = !utiliRotateBool;
-  let deg = utiliRotateBool ? 180 : 0;
-  rotate(modalWindows[5], deg);
-});
-
-// stop mobile scrolling (to prevent rubber band)
-document.addEventListener("touchmove", function(e) {
-  e.preventDefault();
-}, false);
-// except for other counter container
-let newscroll = new IScroll("#otherCountersContainer");
 
 // test for mobile courtesy of open tech guides
 function isMobileDevice() {
@@ -923,7 +960,6 @@ function isMobileDevice() {
     return false;
   }
 }
-
 // stop auto-lock
 var noSleep = new NoSleep();
 function enableNoSleep() {

@@ -145,9 +145,8 @@ label {
 }
 
 .scroll {
-  overflow: scroll;
+  /* overflow: scroll; */
 }
-
 
 /* specific things */
 .cmd-box {
@@ -258,7 +257,7 @@ label {
 }
 /* app.js uses this class */
 .otherCounters {
-  margin-bottom: 7%;
+  height: 25%;
 }
 .btn-row {
   flex-grow: 1;
@@ -327,6 +326,9 @@ label {
      1px -1px 0 #000,
      -1px 1px 0 #000,
       1px 1px 0 #000;
+}
+.otherCounters label {
+  font-size: 2em;
 }
 .exit {
   background-color: red;

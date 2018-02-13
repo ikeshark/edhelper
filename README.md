@@ -51,15 +51,11 @@ Each additional tap will reveal another random number in the same range.
 If you accidentally refresh the page, close the window, or navigate away
 don't worry! EDHelper saves game state in local storage.
 
-**To reset game state to the default, beginning state, please click Start New Game in the utilities screen**
+**To reset game state to the default beginning state, please click Start New Game in the utilities screen**
 
 EDHelper uses NoSleep.js to prevent mobile devices from falling asleep. It does this by running a silent audio file periodically in the background.
 
-## Known Issues
+## Mobile Support
 
-EDHelper has issues with the iPhone. It won't let us go full screen,
-and it won't let us stop double tap zoom in Safari.
-In Safari, you can 'Add to Home Screen' to fix both of these problems, however there's a catch.
-**Game state will reset any time you navigate away from the app. You can't multi-task**
-
-I find the app works well on Amazon Fire tablets.
+The best way to use EDHelper on an iOS device is to install it as a progressive web app.
+To do this navigate to EDHelper using Safari. Tap on the share button then select, 'Add to Home Screen.'

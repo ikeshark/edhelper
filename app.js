@@ -10,6 +10,7 @@ function Player(i) {
   this.name = "Player " + this.number;
   this.life = 40;
   this.lifeHistory = [40];
+  this.historyTime = [Date.now()];
   this.commanderDamage = Array(12).fill(0);
   this.poison = 0;
   this.energy = 0;
@@ -99,6 +100,7 @@ function loadState() {
     players[i].name = temp.name;
     players[i].life = temp.life;
     players[i].lifeHistory = temp.lifeHistory;
+    players[i].historyTime = temp.historyTime;
     players[i].commanderDamage = temp.commanderDamage;
     players[i].poison = temp.poison;
     players[i].energy = temp.energy;
@@ -240,14 +242,13 @@ lifeButtons.forEach(function (element, i) {
       isLifeDisplay = !isLifeDisplay;
       lifeDisplay.classList.toggle("hidden");
       historyDisplay.classList.toggle("hidden");
-      let display = "";
-      player.lifeHistory.forEach((elem, i) => {
-        if (i == 0) {
-          display += elem;
-        } else {
-          display += ", " + elem;
-        }
-      });
+      let display = "" + player.lifeHistory[0];
+      let baseNumber = player.historyTime[0];
+      for (let i = 1; i < player.lifeHistory.length; i++) {
+        let time = player.historyTime[i] - baseNumber;
+        time /= 1000;
+        display += ", " + player.lifeHistory[i] + ": " + Math.floor(time);
+      }
       historyDisplay.innerHTML = display;
     }
     function plusMinusLife() {
@@ -270,6 +271,7 @@ lifeButtons.forEach(function (element, i) {
       }
       if (player.life != oldLife) {
         player.lifeHistory.push(parseInt(player.life));
+        player.historyTime.push(Date.now());
       }
       lifePlusMinusButtons.forEach(function(element) {
         element.removeEventListener("click", plusMinusLife);
@@ -440,6 +442,7 @@ commanderButtons.forEach(function (element, i) {
     function closeCmdModal() {
       if (player.life != oldLife) {
         player.lifeHistory.push(parseInt(player.life));
+        player.historyTime.push(Date.now());
       }
       cmdPlusMinusButtons.forEach((elem, i) => {
         elem.removeEventListener("click", plusAndMinus);
@@ -896,6 +899,8 @@ document.getElementById("gearBtn").addEventListener("click", function() {
       for (let i = 0; i < numPlayers; i++) {
         if (players[i].life != oldLives[i]) {
           players[i].lifeHistory.push(parseInt(players[i].life));
+          players[i].historyTime.push(Date.now());
+
         }
       }
       document.getElementById("netChange").innerHTML = 0;

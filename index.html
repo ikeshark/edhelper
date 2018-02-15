@@ -116,12 +116,12 @@
     </div>
     <!-- Commander Modal -->
     <div id="modalWindowCmd" class="hidden transition dark-grey-bg text-align">
-      <p id="currentPlayer" class="outline three-halves-font"></p>
+      <p id="currentPlayer" class="outline large-font"></p>
       <input type="checkbox" id="partnerCheckbox">
       <label for="partnerCheckbox" class="dark-grey-bg small-headline">Partners</label>
-      <div class="flex l-85h l-padding-box">
-        <div class="l-42w">
-          <p class="headline whitesmoke relative-1">Commanders</p>
+      <div class="flex l-78vh-p">
+        <div class="l-42w flex flex-col">
+          <p class="headline whitesmoke l-center-p">Commanders</p>
           <div class="l-cmd-partner-cont">
             <div class="flex cmd-box">
               <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0">
@@ -168,28 +168,23 @@
             EXIT
           </button>
         </div>
-        <div class="whitesmoke l-padding-box l-25w">
-          <div class="otherCounters">
+        <div class="whitesmoke flex flex-col l-25w l-bottom-p">
+          <div class="otherCounters flex flex-col">
             <p class="small-headline">Cast Count</p>
             <input type="radio" value="castCount" name="cmdModalGroup" id="castCount">
             <label class="outline" for="castCount"></label>
           </div>
-          <!-- <div class="otherCounters">
-            <p id="ccbLabel" class="headline">Cast Count B</p>
-            <input type="radio" value="castCountB" name="cmdModalGroup" id="castCountB">
-            <label class="outline hidden" for="castCountB"></label>
-          </div> -->
-          <div class="otherCounters">
+          <div class="otherCounters flex flex-col">
             <p class="small-headline">Experience</p>
             <input type="radio" value="experience" name="cmdModalGroup" id="experience">
             <label class="outline" for="experience"></label>
           </div>
-          <div class="otherCounters">
+          <div class="otherCounters flex flex-col">
             <p class="small-headline">Poison</p>
             <input type="radio" value="poison" name="cmdModalGroup" id="poison">
             <label class="outline" for="poison"></label>
           </div>
-          <div class="otherCounters">
+          <div class="otherCounters flex flex-col">
             <p class="small-headline">Energy</p>
             <input type="radio" value="energy" name="cmdModalGroup" id="energy">
             <label class="outline" for="energy"></label>

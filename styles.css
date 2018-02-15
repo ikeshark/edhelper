@@ -95,9 +95,15 @@ label {
   top: 0;
 }
 
+.l-78vh-p {
+  height: 78vh;
+  padding: 1%;
+  box-sizing: border-box;
+}
 .l-50vh {
   height: 50vh;
 }
+
 .l-85h {
   height: 85%;
   width: 100%;
@@ -144,19 +150,11 @@ label {
   box-sizing: border-box;
 }
 
-.scroll {
-  /* overflow: scroll; */
-}
 
 /* specific things */
 .cmd-box {
   height: 100%;
   width: 98%;
-}
-.relative-1 {
-  position: relative;
-  width: 80%;
-  left: 11%;
 }
 .l-partners {
   position: absolute;
@@ -172,8 +170,10 @@ label {
 }
 .l-cmd-partner-cont {
   position: relative;
-  height: 60vh;
   width: 35vw;
+  height: 64vh;
+  margin-bottom: 1.2vh;
+  flex-grow: 1;
 }
 #gearBtn {
    position: fixed;
@@ -208,6 +208,10 @@ label {
    margin-left: 7.5vw;
    z-index: 9999;
 }
+#modalWindowCmd {
+  height: 90vh;
+  margin-top: 5vh;
+}
 
 #utiliRotate {
   margin-left: 5%;
@@ -221,17 +225,17 @@ label {
   overflow-y: scroll;
 }
 #currentPlayer {
-  margin: 1%;
-  padding-top: 1%;
-  padding-bottom: 1%;
-  margin-bottom: 0;
+  height: 8vh;
+  margin: 1vh;
+  padding: 1vh;
 }
 #partnerCheckbox + label {
   position: absolute;
-  top: 1.2%;
-  left: 1%;
-  padding: 1%;
-  margin: 1%;
+  top: 0.5vh;
+  left: 0.5vh;
+  height: 6.5vh;
+  padding: 1vh;
+  margin: 1vh;
 }
 [id^=cmdButton] + label, [id^=partnerButton] + label, [id^=excludeP] + label {
   position: relative;
@@ -255,9 +259,18 @@ label {
   width: 80%;
   margin: 3%;
 }
+.l-center-p {
+  padding-left: 10%;
+  padding-right: 10%;
+}
 /* app.js uses this class */
 .otherCounters {
   height: 25%;
+  width: 90%;
+}
+.l-bottom-p {
+  padding-bottom: 1%;
+  box-sizing: border-box;
 }
 .btn-row {
   flex-grow: 1;
@@ -329,6 +342,8 @@ label {
 }
 .otherCounters label {
   font-size: 2em;
+  width: 100%;
+  flex-grow: 1;
 }
 .exit {
   background-color: red;
@@ -336,9 +351,15 @@ label {
   font-size: 2em;
   border: 0.1em white solid;
 }
+/* app.js uses this? */
 .playerName {
   font-family: 'Berkshire Swash', cursive;
-  font-size: 0.9em;
+  background: white;
+  opacity: 0.7;
+  text-align: center;
+}
+.opaque-hl {
+  font-family: 'Berkshire Swash', cursive;
   background: white;
   opacity: 0.7;
   text-align: center;
@@ -375,6 +396,9 @@ label {
   border: 0.07em #65737E solid;
   border-left: 0;
   border-right: 0;
+}
+.large-font {
+  font-size: 1.2em;
 }
 .three-halves-font {
   font-size: 1.5em;

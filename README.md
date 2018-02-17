@@ -56,6 +56,6 @@ don't worry! EDHelper saves game state in local storage.
 EDHelper uses NoSleep.js to prevent mobile devices from falling asleep. It does this by running a silent audio file periodically in the background.
 
 ## Mobile Support
-
+**Please use landscape view** 
 The best way to use EDHelper on an iOS device is to install it as a progressive web app.
 To do this navigate to EDHelper using Safari. Tap on the share button then select, 'Add to Home Screen.'

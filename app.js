@@ -129,7 +129,7 @@ window.addEventListener("unload", saveState);
 // display board function
 const playerDivs = document.querySelectorAll("#mainContainer > div");
 function displayBoard() {
-  let icons = document.querySelectorAll(".mainIcons");
+  let icons = document.querySelectorAll(".l-mainIcons");
   let container = document.getElementById("mainContainer");
   switch (numPlayers) {
     case 6:
@@ -219,7 +219,8 @@ function closeModal() {
 // rotate buttons
 const rotateButtons = document.querySelectorAll("[src*=rotate]");
 rotateButtons.forEach((element, i) => {
-  element.addEventListener("click", function() {
+  let parent = element.closest("button");
+  parent.addEventListener("click", function() {
     let deg = players[i].rotated ? 0 : 180;
     rotate(playerDivs[i], deg);
     players[i].rotated = !players[i].rotated;
@@ -309,7 +310,8 @@ lifeButtons.forEach(function (element, i) {
 // commander damage modal window
 const commanderButtons = document.querySelectorAll("[src*=sword]");
 commanderButtons.forEach(function (element, i) {
-  element.addEventListener("click", function() {
+  let parent = element.closest("button");
+  parent.addEventListener("click", function() {
     // variables
     let player = players[i];
     let oldLife = player.life;
@@ -492,10 +494,10 @@ commanderButtons.forEach(function (element, i) {
 
 // utilities modal
 let utiliRotateBool = false;
-document.getElementById("gearBtn").addEventListener("click", function() {
+document.getElementById("l-gearBtn").addEventListener("click", function() {
   // variables
   let rotateBtn = document.getElementById("utiliRotate");
-  let exitBtn = document.getElementById("utiliExit");
+  let exitBtn = document.getElementById("l-utiliExit");
   let addPlayerBtn = document.getElementById("addPlayer");
   let hidePlayerBtn = document.getElementById("hidePlayer");
   let newGameBtn = document.getElementById("newGamePrompt");
@@ -848,7 +850,7 @@ document.getElementById("gearBtn").addEventListener("click", function() {
     let plus = document.getElementById("massPlus");
     let minus = document.getElementById("massMinus");
     let minus5 = document.getElementById("massMinus5");
-    let clearBtn = document.getElementById("clearExcluded");
+    let clearBtn = document.getElementById("l-clearExcluded");
     let rotateBtn = document.getElementById("massChangeRotate");
     // if lives have changed, we must make history
     let oldLives = [];

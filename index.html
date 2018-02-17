@@ -21,8 +21,12 @@
         <p class="playerName l-15h"></p>
       </div>
       <div class="l-25w">
-        <button class="l-50h top-btn"> <img class="mainIcons" src="img/sword.png"> </button>
-        <button class="l-50h bottom-btn"> <img class="mainIcons" src="img/rotate.png"> </button>
+        <button class="l-50h top-btn">
+          <img class="l-mainIcons" src="img/sword.png">
+        </button>
+        <button class="l-50h bottom-btn">
+          <img class="l-mainIcons" src="img/rotate.png">
+        </button>
       </div>
     </div>
     <!-- Player Two -->
@@ -32,8 +36,12 @@
         <p class="playerName l-15h"></p>
       </div>
       <div class="l-25w">
-        <button class="l-50h top-btn"> <img class="mainIcons" src="img/sword.png"> </button>
-        <button class="l-50h bottom-btn"> <img class="mainIcons" src="img/rotate.png"> </button>
+        <button class="l-50h top-btn">
+          <img class="l-mainIcons" src="img/sword.png">
+        </button>
+        <button class="l-50h bottom-btn">
+          <img class="l-mainIcons" src="img/rotate.png">
+        </button>
       </div>
     </div>
     <!-- Player Three -->
@@ -44,10 +52,10 @@
       </div>
       <div class="l-25w">
         <button class="l-50h top-btn">
-          <img class="mainIcons" src="img/sword.png">
+          <img class="l-mainIcons" src="img/sword.png">
         </button>
         <button class="l-50h bottom-btn">
-          <img class="mainIcons" src="img/rotate.png">
+          <img class="l-mainIcons" src="img/rotate.png">
         </button>
       </div>
     </div>
@@ -59,10 +67,10 @@
       </div>
       <div class="l-25w">
         <button class="l-50h top-btn">
-          <img class="mainIcons" src="img/sword.png">
+          <img class="l-mainIcons" src="img/sword.png">
         </button>
         <button class="l-50h bottom-btn">
-          <img class="mainIcons" src="img/rotate.png">
+          <img class="l-mainIcons" src="img/rotate.png">
         </button>
       </div>
     </div>
@@ -74,10 +82,10 @@
       </div>
       <div class="l-25w">
         <button class="l-50h top-btn">
-          <img class="mainIcons" src="img/sword.png">
+          <img class="l-mainIcons" src="img/sword.png">
         </button>
         <button class="l-50h bottom-btn">
-          <img class="mainIcons" src="img/rotate.png">
+          <img class="l-mainIcons" src="img/rotate.png">
         </button>
       </div>
     </div>
@@ -88,8 +96,12 @@
         <p class="playerName l-15h l-15h"></p>
       </div>
       <div class="l-25w">
-        <button class="l-50h top-btn"> <img class="mainIcons" src="img/sword.png"> </button>
-        <button class="l-50h bottom-btn"> <img class="mainIcons" src="img/rotate.png"> </button>
+        <button class="l-50h top-btn">
+          <img class="l-mainIcons" src="img/sword.png">
+        </button>
+        <button class="l-50h bottom-btn">
+          <img class="l-mainIcons" src="img/rotate.png">
+        </button>
       </div>
     </div>
   </div>
@@ -97,7 +109,7 @@
   <!-- Modals -->
   <div id="modalBackground" class="hidden l-full-abs">
     <!-- Life Modal -->
-    <div id="modalWindowLife" class="hidden flex transition dark-grey-bg">
+    <div id="modalWindowLife" class="l-modal hidden flex transition dark-grey-bg">
       <div class="l-25w">
         <button value="1" class="plusMinus l-33h">&#43; 1</button>
         <button value="5" class="plusMinus l-33h">&#43; 5</button>
@@ -115,15 +127,15 @@
       </div>
     </div>
     <!-- Commander Modal -->
-    <div id="modalWindowCmd" class="hidden transition dark-grey-bg text-align">
+    <div id="modalWindowCmd" class="l-modal l-modal-tall hidden transition dark-grey-bg text-align">
       <p id="currentPlayer" class="outline large-font"></p>
       <input type="checkbox" id="partnerCheckbox">
       <label for="partnerCheckbox" class="dark-grey-bg small-headline">Partners</label>
       <div class="flex l-78vh-p">
         <div class="l-42w flex flex-col">
-          <p class="headline whitesmoke l-center-p">Commanders</p>
+          <p class="headline whitesmoke l-full-w">Commanders</p>
           <div class="l-cmd-partner-cont">
-            <div class="flex cmd-box">
+            <div class="flex l-98w">
               <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0">
               <label data-attr="1" for="cmdButton0" class="outline player-btn player-number"></label>
               <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1">
@@ -137,7 +149,7 @@
               <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5">
               <label data-attr="6" for="cmdButton5" class="outline player-btn player-number"></label>
             </div>
-            <div class="flex cmd-box l-partners">
+            <div class="flex l-98w l-partners">
               <input type="radio" name="cmdModalGroup" value="6" id="partnerButton0">
               <label data-attr="1B" for="partnerButton0" class="outline behind player-btn player-number"></label>
               <input type="radio" name="cmdModalGroup" value="7" id="partnerButton1">
@@ -155,16 +167,16 @@
           </div>
         </div>
         <div class="flex flex-col l-30w">
-          <button value="5" id="plus5" class="j-cmd-inc invisible invert-btn cmd-middle-btn">
+          <button value="5" id="plus5" class="j-cmd-inc invisible invert-btn l-middle-btn">
             &#43; 5
           </button>
-          <button value="1" id="plus" class="j-cmd-inc invisible invert-btn cmd-middle-btn">
+          <button value="1" id="plus" class="j-cmd-inc invisible invert-btn l-middle-btn">
             &#43; 1
           </button>
-          <button value="-1" id="minus" class="j-cmd-inc invisible invert-btn cmd-middle-btn">
+          <button value="-1" id="minus" class="j-cmd-inc invisible invert-btn l-middle-btn">
             &#8211; 1
           </button>
-          <button id="cmdExit" class="exit cmd-middle-btn">
+          <button id="cmdExit" class="exit l-middle-btn">
             EXIT
           </button>
         </div>
@@ -193,7 +205,7 @@
       </div>
     </div>
     <!-- Utility Modal -->
-    <div id="modalWindowUtility" class="hidden flex transition dark-grey-bg text-align">
+    <div id="modalWindowUtility" class="l-modal hidden flex transition dark-grey-bg text-align">
       <div class="l-big-btn whitesmoke">
         <button id="addPlayer" class="l-half-btn half-btn small-headline">Add Player</button>
         <button id="hidePlayer" class="l-half-btn half-btn small-headline">Remove Player</button>
@@ -202,11 +214,11 @@
       <button id="changeColors" class="l-big-btn headline whitesmoke">Change Player Colors</button>
       <button id="massLife" class="l-big-btn headline whitesmoke">Mass Life Change</button>
       <button id="dice" class="l-big-btn headline whitesmoke">Random Numbers</button>
-      <button id="utiliExit" class="exit">EXIT</button>
+      <button id="l-utiliExit" class="exit">EXIT</button>
       <button id="utiliRotate" class="rotate"></button>
     </div>
     <!-- Change Color Modal -->
-    <div id="modalWindowChangeColor" class="hidden flex transition dark-grey-bg">
+    <div id="modalWindowChangeColor" class="l-modal hidden flex transition dark-grey-bg">
       <button id="singleColors" class="colorMenu l-short-btn invert-btn">1 color</button>
       <button id="twoColors" class="colorMenu l-short-btn">2 colors</button>
       <button id="threeColors" class="colorMenu l-short-btn">3 colors</button>
@@ -245,7 +257,7 @@
       <button id="choosePlayerRotate" class="btn-row rotate"></button>
     </div>
     <!-- Dice Modal -->
-    <div id="modalWindowDice" class="hidden transition flex flex-align dark-grey-bg">
+    <div id="modalWindowDice" class="l-modal hidden transition flex flex-align dark-grey-bg">
       <button value="4" class="dbl-font l-dice invert-btn">4</button>
       <button value="5" class="dbl-font l-dice invert-btn">5</button>
       <button value="7" class="dbl-font l-dice invert-btn">7</button>
@@ -267,7 +279,7 @@
       </div>
     </div>
     <!-- Mass Life Change Modal -->
-    <div id="modalWindowMassLife" class="hidden flex transition dark-grey-bg">
+    <div id="modalWindowMassLife" class="l-modal hidden flex transition dark-grey-bg">
       <div class="l-42w">
         <p class="headline text-align">Exclude</p>
         <div class="l-full flex">
@@ -283,26 +295,27 @@
           <label data-attr="5" for="excludeP4" class="hidden outline player-number"></label>
           <input type="radio" name="excludeGroup" value="5" id="excludeP5">
           <label data-attr="6" for="excludeP5" class="hidden outline player-number"></label>
-          <button id="clearExcluded" class="whitesmoke">Clear</button>
+          <button id="l-clearExcluded" class="whitesmoke">Clear</button>
         </div>
       </div>
       <div class="flex flex-col l-25w">
-        <button value="5" id="massPlus5" class="invert-btn cmd-middle-btn three-halves-font">&#43; 5</button>
-        <button value="1" id="massPlus" class="invert-btn cmd-middle-btn three-halves-font">&#43; 1</button>
-        <button value="-1" id="massMinus" class="invert-btn cmd-middle-btn three-halves-font">&#8211; 1</button>
-        <button value="-5" id="massMinus5" class="invert-btn cmd-middle-btn three-halves-font">&#8211; 5</button>
+        <button value="5" id="massPlus5" class="invert-btn l-middle-btn three-halves-font">&#43; 5</button>
+        <button value="1" id="massPlus" class="invert-btn l-middle-btn three-halves-font">&#43; 1</button>
+        <button value="-1" id="massMinus" class="invert-btn l-middle-btn three-halves-font">&#8211; 1</button>
+        <button value="-5" id="massMinus5" class="invert-btn l-middle-btn three-halves-font">&#8211; 5</button>
       </div>
       <div class="flex flex-col l-30w">
         <p class="headline">Net Change</p>
         <div id="netChange" class="outline flex flex-col">0</div>
-        <div id="exitRotateContainer" class="flex flex-col">
+        <div id="exitRotateContainer" class="flex">
           <button id="massChangeExit" class="exit l-50w">EXIT</button>
           <button id="massChangeRotate" class="rotate l-42w"></button>
         </div>
       </div>
     </div>
   </div>
-  <button id="gearBtn" class="whitesmoke"><img id="gearIcon" src="img/gear.svg"/></button>
+
+  <button id="l-gearBtn" class="whitesmoke"><img src="img/gear.svg"/></button>
   <script src="scripts/NoSleep.js"></script>
   <script src="scripts/web-animations.min.js"></script>
   <script src="app.js"></script>

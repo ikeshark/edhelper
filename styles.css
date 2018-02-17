@@ -18,6 +18,7 @@
 /*                          */
 /* Resets and General Rules */
 /*                          */
+
 input[type=radio], input[type=checkbox] {
   visibility: hidden;
   position: absolute;
@@ -57,6 +58,7 @@ label {
 .flex-col {
   flex-direction: column;
   align-items: center;
+  flex-wrap: nowrap;
 }
 .flex-align {
   align-items: center;
@@ -94,6 +96,9 @@ label {
   height: 100vh;
   top: 0;
 }
+.l-full-w {
+  width: 100%;
+}
 
 .l-78vh-p {
   height: 78vh;
@@ -124,6 +129,10 @@ label {
   height: 15%;
   width: 100%;
 }
+.l-98w {
+  height: 100%;
+  width: 98%;
+}
 .l-75w {
   width: 75%;
   height: 100%;
@@ -145,16 +154,66 @@ label {
   height: 100%;
 }
 
+/* padding */
 .l-padding-box {
   padding: 1.5%;
   box-sizing: border-box;
 }
+.l-bottom-p {
+  padding-bottom: 1%;
+  box-sizing: border-box;
+}
 
+/* buttons */
+.l-half-btn {
+  width: 90%;
+  height: 48%;
+  margin: 1%;
+}
+.l-middle-btn {
+  width: 80%;
+  height: 20%;
+  margin: 3%;
+}
+.l-big-btn {
+  width: 18%;
+  height: 60%;
+  margin: 2% 1% 1% 1%;
+  display: block;
+}
+.l-squat-btn {
+  width: 15%;
+  height: 35%;
+  margin: 0.5% 1% 0.5% 1%;
+}
+.l-short-btn {
+  padding: 1%;
+  margin: 1%;
+  height: 15%;
+}
 
-/* specific things */
-.cmd-box {
-  height: 100%;
-  width: 98%;
+/* specific things (in DOM order) */
+.l-mainIcons {
+  width: 55%;
+}
+.l-modal {
+   position: absolute;
+   width: 85vw;
+   height: 85vh;
+   margin-top: 7.5vh;
+   margin-left: 7.5vw;
+   z-index: 9999;
+}
+.l-modal-tall {
+  height: 90vh;
+  margin-top: 5vh;
+}
+.l-cmd-partner-cont {
+  position: relative;
+  width: 35vw;
+  height: 64vh;
+  margin-bottom: 1.2vh;
+  flex-grow: 1;
 }
 .l-partners {
   position: absolute;
@@ -168,14 +227,25 @@ label {
   width: 100%;
   top: 0%;
 }
-.l-cmd-partner-cont {
-  position: relative;
-  width: 35vw;
-  height: 64vh;
-  margin-bottom: 1.2vh;
-  flex-grow: 1;
+#l-utiliExit {
+  width: 60%;
+  height: 20%;
 }
-#gearBtn {
+.l-gradient-btn {
+  height: 10vh;
+  padding: 1%;
+  margin: 1%;
+}
+.l-dice {
+  width: 20%;
+  height: 20%;
+  margin: 1%;
+}
+#l-clearExcluded {
+  width: 70%;
+  height: 8vh;
+}
+#l-gearBtn {
    position: fixed;
    top: 50%;
    left: 50%;
@@ -183,35 +253,10 @@ label {
    width: 15vh;
    height: 15vh;
 }
-#clearExcluded {
-  width: 70%;
-  height: 8vh;
-}
-#gearIcon {
+#l-gearBtn > img {
   width: 15vh;
 }
 
-#utiliExit {
-  width: 60%;
-  height: 20%;
-}
-/* app.js uses this class */
-.mainIcons {
-  width: 55%;
-}
-
-[id^=modalWindow] {
-   position: absolute;
-   width: 85vw;
-   height: 85vh;
-   margin-top: 7.5vh;
-   margin-left: 7.5vw;
-   z-index: 9999;
-}
-#modalWindowCmd {
-  height: 90vh;
-  margin-top: 5vh;
-}
 
 #utiliRotate {
   margin-left: 5%;
@@ -254,60 +299,16 @@ label {
   width: 3vw;
   height: 2.5vw;
 }
-.cmd-middle-btn {
-  height: 20%;
-  width: 80%;
-  margin: 3%;
-}
-.l-center-p {
-  padding-left: 10%;
-  padding-right: 10%;
-}
 /* app.js uses this class */
 .otherCounters {
   height: 25%;
   width: 90%;
-}
-.l-bottom-p {
-  padding-bottom: 1%;
-  box-sizing: border-box;
 }
 .btn-row {
   flex-grow: 1;
   max-width: 30%;
   height: 20%;
   margin: 2% 0.5% 2% 0.5%;
-}
-.l-half-btn {
-  width: 90%;
-  height: 48%;
-  margin: 1%;
-}
-.l-big-btn {
-  width: 18%;
-  height: 60%;
-  margin: 2% 1% 1% 1%;
-  display: block;
-}
-.l-short-btn {
-  padding: 1%;
-  margin: 1%;
-  height: 15%;
-}
-.l-squat-btn {
-  width: 15%;
-  height: 35%;
-  margin: 0.5% 1% 0.5% 1%;
-}
-.l-gradient-btn {
-  height: 10vh;
-  padding: 1%;
-  margin: 1%;
-}
-.l-dice {
-  width: 20%;
-  height: 20%;
-  margin: 1%;
 }
 #exitRotateContainer {
   height: 15%;

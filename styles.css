@@ -1,3 +1,14 @@
+/*     */
+/* TOC */
+/*     */
+
+/* UPDATE !! */
+/* Resets and General Rules -- 32 */
+/* Layout -- 63 */
+/* Skin -- 334 */
+/* State -- 477 */
+/* Media Queries -- 505 */
+
 /* latin-ext */
 @font-face {
   font-family: 'Berkshire Swash';
@@ -38,6 +49,11 @@ button:focus {
 body, p {
   margin: 0;
 }
+canvas {
+  z-index: 9;
+  top: 0;
+  position: absolute;
+}
 label {
   border: 0.05em solid black;
   font-size: 2.5em;
@@ -46,9 +62,9 @@ label {
   align-items: center;
 }
 
-/*           */
-/* Structure */
-/*           */
+/*        */
+/* Layout */
+/*        */
 
 .flex {
   display: flex;
@@ -129,6 +145,7 @@ label {
   height: 15%;
   width: 100%;
 }
+
 .l-98w {
   height: 100%;
   width: 98%;
@@ -154,7 +171,7 @@ label {
   height: 100%;
 }
 
-/* padding */
+/* padding & margin */
 .l-padding-box {
   padding: 1.5%;
   box-sizing: border-box;
@@ -162,6 +179,9 @@ label {
 .l-bottom-p {
   padding-bottom: 1%;
   box-sizing: border-box;
+}
+.l-margin-b {
+  margin-bottom: 5%;
 }
 
 /* buttons */
@@ -191,6 +211,29 @@ label {
   margin: 1%;
   height: 15%;
 }
+.l-btn-row {
+  flex-grow: 1;
+  max-width: 30%;
+  height: 20%;
+  margin: 2% 0.5% 2% 0.5%;
+}
+
+/* player boxes (cmd modal & mass life change modal) */
+.l-player-box {
+  position: relative;
+  flex-grow: 1;
+  z-index: 2;
+  width: 30%;
+  margin: 1.5%;
+}
+.l-player-number::before {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  padding: 0.12em;
+  width: 3vw;
+  height: 2.5vw;
+}
 
 /* specific things (in DOM order) */
 .l-mainIcons {
@@ -204,9 +247,28 @@ label {
    margin-left: 7.5vw;
    z-index: 9999;
 }
+#l-lifeHistoryDisplay {
+  position: relative;
+  padding: 3%;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
 .l-modal-tall {
   height: 90vh;
   margin-top: 5vh;
+}
+#l-currentPlayer {
+  height: 8vh;
+  margin: 1vh;
+  padding: 1vh;
+}
+.l-checkbox-p {
+  position: absolute;
+  top: 0.5vh;
+  left: 0.5vh;
+  height: 6.5vh;
+  padding: 1vh;
+  margin: 1vh;
 }
 .l-cmd-partner-cont {
   position: relative;
@@ -227,9 +289,22 @@ label {
   width: 100%;
   top: 0%;
 }
+.l-otherCounters {
+  height: 25%;
+  width: 90%;
+}
+.l-otherCounters label {
+  width: 100%;
+  flex-grow: 1;
+}
 #l-utiliExit {
   width: 60%;
   height: 20%;
+}
+#l-utiliRotate {
+  margin-left: 5%;
+  width: 16vh;
+  height: 17vh;
 }
 .l-gradient-btn {
   height: 10vh;
@@ -258,68 +333,26 @@ label {
 }
 
 
-#utiliRotate {
-  margin-left: 5%;
-  width: 16vh;
-  height: 17vh;
-}
-#lifeHistoryDisplay {
-  position: relative;
-  padding: 3%;
-  box-sizing: border-box;
-  overflow-y: scroll;
-}
-#currentPlayer {
-  height: 8vh;
-  margin: 1vh;
-  padding: 1vh;
-}
-#partnerCheckbox + label {
-  position: absolute;
-  top: 0.5vh;
-  left: 0.5vh;
-  height: 6.5vh;
-  padding: 1vh;
-  margin: 1vh;
-}
-[id^=cmdButton] + label, [id^=partnerButton] + label, [id^=excludeP] + label {
-  position: relative;
-  flex-grow: 1;
-  z-index: 2;
-  width: 30%;
-  margin: 1.5%;
-}
-/* connects with player number class */
-[id^=cmdButton] + label::before, [id^=partnerButton] + label::before,
-[id^=excludeP] + label::before {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  padding: 0.12em;
-  width: 3vw;
-  height: 2.5vw;
-}
-/* app.js uses this class */
-.otherCounters {
-  height: 25%;
-  width: 90%;
-}
-.btn-row {
-  flex-grow: 1;
-  max-width: 30%;
-  height: 20%;
-  margin: 2% 0.5% 2% 0.5%;
-}
-#exitRotateContainer {
-  height: 15%;
-  width: 100%;
-  margin-bottom: 5%;
-}
-
 /*      */
 /* Skin */
 /*      */
 
+/* font */
+.dbl-font {
+  font-size: 2em;
+}
+.three-halves-font {
+  font-size: 1.5em;
+}
+.large-font {
+  font-size: 1.2em;
+}
+.text-align {
+  text-align: center;
+}
+.monospace {
+  font-family: monospace;
+}
 .headline {
   font-size: 1.2em;
   font-weight: bold;
@@ -341,34 +374,66 @@ label {
      -1px 1px 0 #000,
       1px 1px 0 #000;
 }
-.otherCounters label {
-  font-size: 2em;
-  width: 100%;
-  flex-grow: 1;
-}
+
+/* exit buttons */
 .exit {
   background-color: red;
   color: white;
   font-size: 2em;
   border: 0.1em white solid;
 }
-/* app.js uses this? */
+/* rotate buttons */
+.rotate {
+  background-color: transparent;
+  background-image: url(img/rotate.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0.7em transparent solid;
+}
+
+#modalBackground {
+  background: rgba(0, 0, 0, 0.6);
+}
+.dark-grey-bg {
+  background-color: darkgrey;
+}
+.whitesmoke {
+  background-color: whitesmoke
+}
+#experience + label {
+  background: yellow;
+}
+#poison + label {
+  background: lightgreen;
+}
+#energy + label {
+  background: purple;
+}
+
+.transition {
+  transition: all 0.5s ease-in-out;
+}
+.vert-text {
+  font-size: 0.9em;
+  line-height: 0.9em;
+}
+.half-btn {
+  border: 1px grey solid;
+  background: inherit;
+}
+
+/* specific things */
 .playerName {
   font-family: 'Berkshire Swash', cursive;
   background: white;
   opacity: 0.7;
   text-align: center;
 }
-.opaque-hl {
-  font-family: 'Berkshire Swash', cursive;
-  background: white;
-  opacity: 0.7;
-  text-align: center;
-}
-/* app.js uses this class */
 .lifeButtons {
   background-color: inherit;
 }
+/* cmd and rotate btns */
 .top-btn {
   background: inherit;
   border-color: white;
@@ -379,39 +444,11 @@ label {
   border-color: white;
   border-width: 4px 0 0 4px;
 }
-#modalBackground {
-  background: rgba(0, 0, 0, 0.6);
-}
-.transition {
-  transition: all 0.5s ease-in-out;
-}
-.dark-grey-bg {
-  background: darkgrey;
-}
-.text-align {
-  text-align: center;
-}
-/* app.js uses these classes */
 .plusMinus, .doubleHalve {
   font-size: 2em;
   border: 0.07em #65737E solid;
   border-left: 0;
   border-right: 0;
-}
-.large-font {
-  font-size: 1.2em;
-}
-.three-halves-font {
-  font-size: 1.5em;
-}
-.dbl-font {
-  font-size: 2em;
-}
-.monospace {
-  font-family: monospace;
-}
-.whitesmoke {
-  background-color: whitesmoke
 }
 .player-btn {
   border-width: 0.09em;
@@ -426,49 +463,20 @@ label {
   text-align: center;
   text-shadow: none;
 }
-.invert-btn {
-  background: black !important;
-  font-size: 2em;
-  color: white;
-}
-#experience + label {
-  background: yellow;
-}
-#poison + label {
-  background: lightgreen;
-}
-#energy + label {
-  background: purple;
-}
-.rotate {
-  background-color: transparent;
-  background-image: url(img/rotate.png);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: 0.7em transparent solid;
-}
-.half-btn {
-  border: 1px grey solid;
-  background: inherit;
-}
-/* used in app.js */
 .colorMenu {
   font-size: 1.1em;
   background-color: whitesmoke;
 }
-/* used in app.js */
 .allColors {
   border: 0.1em solid black;
   font-size: 3em;
 }
-.vert-text {
-  font-size: 0.9em;
-  line-height: 0.9em;
-}
 #netChange {
   font-size: 7em;
   flex-grow: 1;
+}
+#canvasBg {
+  background-color: lightyellow;
 }
 
 /*        */
@@ -491,6 +499,11 @@ input[type=radio]:checked + label {
 input[type=checkbox]:checked + label {
   background: white !important;
   font-weight: bold;
+}
+/* sometimes state, sometimes not */
+.invert-btn {
+  background: black !important;
+  color: white;
 }
 
 /*               */

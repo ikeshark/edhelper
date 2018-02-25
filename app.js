@@ -237,7 +237,7 @@ lifeButtons.forEach(function (element, i) {
     let oldLife = player.life;
     let lifePlusMinusButtons = document.querySelectorAll(".plusMinus");
     let doubleHalveButtons = document.querySelectorAll(".doubleHalve");
-    let historyDisplay = document.getElementById("lifeHistoryDisplay");
+    let historyDisplay = document.getElementById("l-lifeHistoryDisplay");
     // functions
     function toggleHistory() {
       isLifeDisplay = !isLifeDisplay;
@@ -333,7 +333,7 @@ commanderButtons.forEach(function (element, i) {
     modalBackground.classList.remove("hidden");
 
     // current player banner
-    let currentPlayer = document.getElementById("currentPlayer");
+    let currentPlayer = document.getElementById("l-currentPlayer");
     currentPlayer.innerHTML = player.name;
     currentPlayer.style.background = player.color;
 
@@ -496,7 +496,7 @@ commanderButtons.forEach(function (element, i) {
 let utiliRotateBool = false;
 document.getElementById("l-gearBtn").addEventListener("click", function() {
   // variables
-  let rotateBtn = document.getElementById("utiliRotate");
+  let rotateBtn = document.getElementById("l-utiliRotate");
   let exitBtn = document.getElementById("l-utiliExit");
   let addPlayerBtn = document.getElementById("addPlayer");
   let hidePlayerBtn = document.getElementById("hidePlayer");
@@ -504,6 +504,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
   let changeColorsBtn = document.getElementById("changeColors");
   let massLifeBtn = document.getElementById("massLife");
   let diceBtn = document.getElementById("dice");
+  let graphGameBtn = document.getElementById("graphGame");
 
   // always open right-side up
   utiliRotateBool = false;
@@ -522,7 +523,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
           setTimeout(players[i].displayLife.bind(players[i]), 400);
         }
       }
-  };
+  }
   function hidePlayer() {
     if (numPlayers > 2) {
       numPlayers -= 1;
@@ -531,12 +532,114 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
         setTimeout(players[i].displayLife.bind(players[i]), 400);
       }
     }
-  };
+  }
   function newGame() {
     localStorage.clear();
     window.removeEventListener("unload", saveState);
     location.reload();
-  };
+  }
+
+  function graphGame() {
+    closeUtiliModal();
+    document.querySelector("#canvasBg").classList.remove("hidden");
+    let highestLife = 0;
+    let lowestLife = 0;
+    let endTime = 0;
+    for (let i = 0; i < numPlayers; i++) {
+      let length = players[i].lifeHistory.length;
+      for (let j = 0; j < length; j++) {
+        if (players[i].lifeHistory[j] > highestLife) {
+          highestLife = players[i].lifeHistory[j];
+        } else if (players[i].lifeHistory[j] < lowestLife) {
+          lowestLife = players[i].lifeHistory[j];
+        }
+        if (players[i].historyTime[j] > endTime) {
+          endTime = players[i].historyTime[j];
+        }
+      }
+    }
+    // setting base time to 0
+    let baseTime = player0.historyTime[0];
+    endTime -= baseTime;
+    // setting lowest life to 0
+    highestLife -= lowestLife;
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let margin = height * 0.08;
+    let innerH = height - (margin * 2);
+    let innerW = width - (margin * 2);
+
+    function findX(time) {
+      time = time - baseTime;
+      let x = time / endTime;
+      x *= innerW;
+      x += margin;
+      return x;
+    }
+    function findY(life) {
+      let y = life / highestLife;
+      y *= innerH;
+      y = innerH - y;
+      y += margin;
+      return y;
+    }
+    let startY = findY(40);
+
+    let canvas = document.querySelector('canvas');
+    let context = canvas.getContext('2d');
+    context.canvas.width = width;
+    context.canvas.height = height;
+
+    context.font = "bold 10px sans-serif";
+
+    // life grid lines (to do, have lines at variable intervals to accommidate super high life totals)
+    if (highestLife < 251) {
+      for (let i = 0; i <= highestLife; i = i + 10) {
+        let y = findY(i);
+        let number = i + "";
+        context.font="10px sans-serif";
+        context.fillText(number, margin/3, y);
+        context.beginPath();
+        context.moveTo(margin, y);
+        context.lineTo(innerW + margin, y);
+        context.strokeStyle = 'black';
+        context.lineWidth = 0.5;
+        context.stroke();
+      }
+    }
+    let colors = ['purple', 'yellow', 'red', 'green', 'orange', 'blue'];
+    for (let i = 0; i < numPlayers; i++) {
+      let length = players[i].lifeHistory.length;
+      context.beginPath();
+      context.moveTo(margin, startY);
+      for (let j = 0; j < length; j++) {
+        let x = findX(players[i].historyTime[j]);
+        let oldY;
+        if (j !== 0) {
+          let tempY = players[i].lifeHistory[j - 1];
+          oldY = findY(tempY);
+        } else {
+          oldY = findY(40);
+        }
+        let y = findY(players[i].lifeHistory[j]);
+        context.lineTo(x, oldY);
+        context.lineTo(x, y);
+      }
+      context.lineWidth = 5;
+      context.strokeStyle = colors[i];
+      context.stroke();
+    }
+    function exit() {
+      document.querySelector("#canvasBg").classList.add("hidden");
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      document.querySelector('canvas').removeEventListener("click", exit);
+      context.canvas.width = 0;
+      context.canvas.height = 0;
+    }
+    document.querySelector('canvas').addEventListener("click", exit);
+  }
+
   // change colors sub modal
   function changeColors() {
     // variables
@@ -567,16 +670,18 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     function colorCombinator() {
       let result = "repeating-linear-gradient(45deg ";
       for (let i = 0; i < arguments.length; i++) {
-        result += ", " + arguments[i] + " " + (i * 15) + "%";
-        result += ", " + arguments[i] + " " + ((i + 1) * 15) + "%";
+        result += ", " + arguments[i] + " " + (i * 10.5) + "%";
+        result += ", " + arguments[i] + " " + ((i + 1) * 10.5) + "%";
       }
       result += ")";
       return result;
     }
     function gradientMaker() {
       let result = "linear-gradient(45deg ";
-      for (let i = 0; i < arguments.length; i++) {
-        result += ", " + arguments[i];
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < arguments.length; j++) {
+          result += ", " + arguments[j];
+        }
       }
       result += ")";
       return result;
@@ -934,6 +1039,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
   };
   function closeUtiliModal() {
     closeModal();
+    graphGameBtn.removeEventListener("click", graphGame);
     addPlayerBtn.removeEventListener("click", addPlayer);
     hidePlayerBtn.removeEventListener("click", hidePlayer);
     newGameBtn.removeEventListener("click", newGame);
@@ -945,6 +1051,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
   };
 
   // event listeners
+  graphGameBtn.addEventListener("click", graphGame);
   addPlayerBtn.addEventListener("click", addPlayer);
   hidePlayerBtn.addEventListener("click", hidePlayer);
   newGameBtn.addEventListener("click", newGame);

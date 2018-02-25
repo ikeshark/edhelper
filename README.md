@@ -23,6 +23,7 @@ The commander damage screen is also where you can find the partners button on th
 The partner button will summon another commander counter (behind the current one).
 To access the second commander counter tap on the first twice.
 Any other touches will toggle between the two partners.
+
 **Please note that add commander damage automatically subtracts from the player's life total.**
 
 ### Utility Screen
@@ -51,11 +52,19 @@ Each additional tap will reveal another random number in the same range.
 If you accidentally refresh the page, close the window, or navigate away
 don't worry! EDHelper saves game state in local storage.
 
-**To reset game state to the default beginning state, please click Start New Game in the utilities screen**
+**To reset game state to the default beginning state, please tap on Start New Game in the utilities screen**
 
 EDHelper uses NoSleep.js to prevent mobile devices from falling asleep. It does this by running a silent audio file periodically in the background.
 
+EDHelper supports offline usage via cacheing!
+
 ## Mobile Support
-**Please use landscape view** 
-The best way to use EDHelper on an iOS device is to install it as a progressive web app.
-To do this navigate to EDHelper using Safari. Tap on the share button then select, 'Add to Home Screen.'
+**Please use landscape view.**
+
+**iOS** Please use Safari's 'Add to Home Screen' feature to enable fullscreen mode.
+
+**Android** Please use Chrome's 'Add to Home Screen' feature to enable fullscreen and
+landscape only mode.  
+
+## Troubleshooting
+If you are having issues with EDHelper try 'Start New Game' (found in the utilities screen).

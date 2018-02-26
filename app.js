@@ -74,9 +74,9 @@ let player5 = new Player(5);
 let players = [player0, player1, player2, player3, player4, player5];
 
 // Colors
-const artifact = "linear-gradient(45deg, lightgrey, #bfbfbf, lightgrey)";
+const artifact = "#c0c0c0"
 const w = "#fffafa";
-const u = "#2283D7";
+const u = "#2283d7";
 const b = "#000000";
 const r = "#bf0000";
 const g = "#228b22";
@@ -244,11 +244,8 @@ lifeButtons.forEach(function (element, i) {
       lifeDisplay.classList.toggle("hidden");
       historyDisplay.classList.toggle("hidden");
       let display = "" + player.lifeHistory[0];
-      let baseNumber = player.historyTime[0];
       for (let i = 1; i < player.lifeHistory.length; i++) {
-        let time = player.historyTime[i] - baseNumber;
-        time /= 1000;
-        display += ", " + player.lifeHistory[i] + ": " + Math.floor(time);
+        display += ", " + player.lifeHistory[i];
       }
       historyDisplay.innerHTML = display;
     }
@@ -562,7 +559,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     let baseTime = player0.historyTime[0];
     endTime -= baseTime;
     // setting lowest life to 0
-    highestLife -= lowestLife;
+    let totalLife = highestLife - lowestLife;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
@@ -578,7 +575,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
       return x;
     }
     function findY(life) {
-      let y = life / highestLife;
+      let y = (life - lowestLife) / totalLife;
       y *= innerH;
       y = innerH - y;
       y += margin;
@@ -591,14 +588,22 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     context.canvas.width = width;
     context.canvas.height = height;
 
-    context.font = "bold 10px sans-serif";
-
-    // life grid lines (to do, have lines at variable intervals to accommidate super high life totals)
-    if (highestLife < 251) {
-      for (let i = 0; i <= highestLife; i = i + 10) {
+    // guidelines printed if largest life isn't too big
+    let increment = (totalLife < 251) ? 10 : 20;
+    // dealing with negative life
+    let start;
+    if (lowestLife < -9) {
+      let temp = lowestLife / 10;
+      start = Math.ceil(temp);
+      start *= 10;
+    } else {
+      start = 0;
+    }
+    if (totalLife < 501) {
+      for (let i = start; i <= highestLife; i = i + increment) {
         let y = findY(i);
         let number = i + "";
-        context.font="10px sans-serif";
+        context.font = "bold 10px sans-serif";
         context.fillText(number, margin/3, y);
         context.beginPath();
         context.moveTo(margin, y);
@@ -608,7 +613,6 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
         context.stroke();
       }
     }
-    let colors = ['purple', 'yellow', 'red', 'green', 'orange', 'blue'];
     for (let i = 0; i < numPlayers; i++) {
       let length = players[i].lifeHistory.length;
       context.beginPath();
@@ -627,7 +631,23 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
         context.lineTo(x, y);
       }
       context.lineWidth = 5;
-      context.strokeStyle = colors[i];
+      if (players[i].color.length === 7) {
+        context.strokeStyle = players[i].color;
+      } else {
+        // search for colors in player.color string
+        let re = /#[0-9a-f]{6}/g;
+        let colorId = players[i].color.match(re);
+        // remove duplicates
+        colorId = colorId.filter((v,i,a) => a.indexOf(v) === i);
+        // create gradient from colors
+        let lingrad = context.createLinearGradient(0, 0, width, height);
+        for (let j = 0; j < 50; j++) {
+          let k = j % colorId.length;
+          let stop = j/50;
+          lingrad.addColorStop(stop, colorId[k]);
+        }
+        context.strokeStyle = lingrad;
+      }
       context.stroke();
     }
     function exit() {

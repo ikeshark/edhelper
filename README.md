@@ -1,5 +1,9 @@
 # EDHelper
 
+## Overview
+EDHelper is a mobile capable web app that helps Magic: the Gathering players keep track of complicated board states. EDHelper tracks life, life history, commander damage, poison, energy, commander cast count, and experience. EDHelper also supports partner commanders.
+EDHelper allows each player to change their background to correspond to their deck's color identity. Any combination of Magic's five colors can be selected in either stripes or striped gradients. EDHelper also supports mass life change. EDHelper provides a random number generator and a graphing function to visualize your game's changing dynamic.
+
 ## Usage
 
 ### Main View
@@ -51,6 +55,8 @@ Each additional tap will reveal another random number in the same range.
 ### Other Features
 If you accidentally refresh the page, close the window, or navigate away
 don't worry! EDHelper saves game state in local storage.
+
+Graph game (in the utilities screen) will graph each player's life total over the game's history.
 
 **To reset game state to the default beginning state, please tap on Start New Game in the utilities screen**
 

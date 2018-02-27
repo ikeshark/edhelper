@@ -604,11 +604,12 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
         let y = findY(i);
         let number = i + "";
         context.font = "bold 10px sans-serif";
+        context.fillStyle = "white";
         context.fillText(number, margin/3, y);
         context.beginPath();
         context.moveTo(margin, y);
         context.lineTo(innerW + margin, y);
-        context.strokeStyle = 'black';
+        context.strokeStyle = "white";
         context.lineWidth = 0.5;
         context.stroke();
       }
@@ -630,7 +631,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
         context.lineTo(x, oldY);
         context.lineTo(x, y);
       }
-      context.lineWidth = 5;
+      context.lineWidth = 7;
       if (players[i].color.length === 7) {
         context.strokeStyle = players[i].color;
       } else {

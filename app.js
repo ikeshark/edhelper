@@ -583,8 +583,9 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     }
     let startY = findY(40);
 
-    let canvas = document.querySelector('canvas');
-    let context = canvas.getContext('2d');
+    let canvas = document.querySelector("canvas");
+    canvas.classList.remove("hidden");
+    let context = canvas.getContext("2d");
     context.canvas.width = width;
     context.canvas.height = height;
 
@@ -652,13 +653,14 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
       context.stroke();
     }
     function exit() {
+      canvas.classList.add("hidden");
       document.querySelector("#canvasBg").classList.add("hidden");
       context.clearRect(0, 0, canvas.width, canvas.height);
-      document.querySelector('canvas').removeEventListener("click", exit);
+      canvas.removeEventListener("click", exit);
       context.canvas.width = 0;
       context.canvas.height = 0;
     }
-    document.querySelector('canvas').addEventListener("click", exit);
+    canvas.addEventListener("click", exit);
   }
 
   // change colors sub modal

@@ -76,18 +76,18 @@ let players = [player0, player1, player2, player3, player4, player5];
 // Colors
 const artifact = "#c0c0c0"
 const w = "#fffafa";
-const u = "#2283d7";
+const u = "#1bb3f5";
 const b = "#000000";
-const r = "#bf0000";
+const r = "#ff0800";
 const g = "#228b22";
-const colors = [artifact, w, u, b, r, g];
+const colors = [w, u, b, r, g, artifact];
 // default color assignment
-player0.color = colors[5];
-player1.color = colors[2];
-player2.color = colors[3];
-player3.color = colors[4];
-player4.color = colors[1];
-player5.color = colors[0];
+player0.color = colors[4];
+player1.color = colors[1];
+player2.color = colors[2];
+player3.color = colors[3];
+player4.color = colors[0];
+player5.color = colors[5];
 // default number of players
 let numPlayers = 4;
 
@@ -730,21 +730,16 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
       clearSelected();
       gradientCheckboxLabel.classList.remove("hidden");
       let twoColorArray = [];
-      if (gradientBool) {
-        for (let i = 1; i < 5; i++) {
-          for (let j = i + 1; j < 6; j++) {
-            let temp = gradientMaker(colors[i], colors[j]);
-            twoColorArray.push(temp);
-            }
-          }
-        } else {
-        for (let i = 1; i < 5; i++) {
-          for (let j = i + 1; j < 6; j++) {
-            let temp = colorCombinator(colors[i], colors[j]);
-            twoColorArray.push(temp);
-            }
-          }
-        }
+      for (let i = 0; i < 5; i++) {
+        let j = (i + 1) % 5;
+        let combo = (gradientBool) ? gradientMaker(colors[i], colors[j]) : colorCombinator(colors[i], colors[j]);
+        twoColorArray.push(combo);
+      }
+      for (let i = 0; i < 5; i++) {
+        let j = (i + 2) % 5;
+        let combo = (gradientBool) ? gradientMaker(colors[i], colors[j]) : colorCombinator(colors[i], colors[j]);
+        twoColorArray.push(combo);
+      }
       colorBoxes.forEach((element, i) => {
         element.style.background = twoColorArray[i];
       });
@@ -760,25 +755,20 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
       clearSelected();
       gradientCheckboxLabel.classList.remove("hidden");
       let colorArray = [];
-      if (gradientBool) {
-        for (let i = 1; i < 5; i++) {
-          for (let j = i + 1; j < 6; j++) {
-            for (let k = j + 1; k < 6; k++) {
-               let temp = gradientMaker(colors[i], colors[j], colors[k]);
-               colorArray.push(temp);
-            }
-          }
-        }
-      } else {
-          for (let i = 1; i < 5; i++) {
-            for (let j = i + 1; j < 6; j++) {
-              for (let k = j + 1; k < 6; k++) {
-                 let temp = colorCombinator(colors[i], colors[j], colors[k]);
-                 colorArray.push(temp);
-              }
-            }
-          }
-        }
+      for (let i = 0; i < 5; i++) {
+        let j = (i + 1) % 5;
+        let k = (i + 4) % 5;
+        let combo = (gradientBool) ? gradientMaker(colors[i], colors[j], colors[k]) :
+          colorCombinator(colors[i], colors[j], colors[k]);
+        colorArray.push(combo);
+      }
+      for (let i = 0; i < 5; i++) {
+        let j = (i + 2) % 5;
+        let k = (i + 3) % 5;
+        let combo = (gradientBool) ? gradientMaker(colors[i], colors[j], colors[k]) :
+          colorCombinator(colors[i], colors[j], colors[k]);
+        colorArray.push(combo);
+      }
       colorBoxes.forEach((element, i) => {
         element.style.background = colorArray[i];
       });
@@ -820,7 +810,35 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
       for (i = 0; i < 6; i++) {
         colorBoxes[i].classList.remove("hidden");
       }
-    };
+    }
+
+    function displayOtherColors() {
+      clearSelected();
+      gradientCheckboxLabel.classList.add("hidden");
+      let umber = "#635147";
+      let copper = "#b87333";
+      let gold = "#ffd700";
+      let yellow = "#ffff00";
+      let orange = "#f9812a";
+
+      let magenta = "#cd00cd";
+      let purple = "#551a8b";
+      let pink = "#ff69b4";
+      let mint = "#98ff98";
+      let teal = "#468499";
+      let colors = [umber, copper, gold, yellow, orange, magenta, purple, pink, mint, teal];
+      colorBoxes.forEach((element, i) => {
+        element.style.background = colors[i];
+      });
+      colorRadios.forEach((element, i) => {
+        element.value = colors[i];
+      });
+      colorMenuButtons[4].classList.add("invert-btn");
+      for (i = 0; i < 10; i++) {
+        colorBoxes[i].classList.remove("hidden");
+      }
+    }
+
     function changeColor() {
       let player = players[this.value];
       let checkedRadio = document.querySelector("input[name=chooseColor]:checked").value;
@@ -891,6 +909,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
       document.getElementById("twoColors").removeEventListener("click", displayTwoColors);
       document.getElementById("threeColors").removeEventListener("click", displayThreeColors);
       document.getElementById("fourFiveColors").removeEventListener("click", displayFourColors);
+      document.getElementById("otherColors").removeEventListener("click", displayOtherColors);
     }
     // event listeners
     gradientCheckbox.addEventListener("click", toggleGradient);
@@ -905,6 +924,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     document.getElementById("twoColors").addEventListener("click", displayTwoColors);
     document.getElementById("threeColors").addEventListener("click", displayThreeColors);
     document.getElementById("fourFiveColors").addEventListener("click", displayFourColors);
+    document.getElementById("otherColors").addEventListener("click", displayOtherColors);
     pBoxes.forEach(elem => elem.addEventListener("click", changeColor));
     rotateBtn.addEventListener("click", toggleRotate);
     exitBtn.addEventListener("click", exit);

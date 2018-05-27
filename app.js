@@ -673,6 +673,20 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
       }
       context.stroke();
     }
+    // animating lines
+    let canvasAnimation = document.querySelector("#canvasAnimation");
+    canvasAnimation.classList.remove("hidden");
+    let frames = [
+      { left: "0%" },
+      { left: "100%"}
+    ];
+    let animation = canvasAnimation.animate(frames, {
+      duration: 5500,
+      easing: "ease-out"
+    });
+    animation.onfinish = function() {
+      canvasAnimation.classList.add("hidden");
+    }
     function exit() {
       canvas.classList.add("hidden");
       document.querySelector("#canvasBg").classList.add("hidden");

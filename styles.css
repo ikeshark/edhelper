@@ -474,8 +474,11 @@ label {
   font-size: 7em;
   flex-grow: 1;
 }
-#canvasBg {
+#canvasBg, #canvasAnimation {
   background-color: darkslategrey;
+}
+#canvasAnimation {
+  z-index: 100;
 }
 
 /*        */

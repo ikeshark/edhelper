@@ -230,6 +230,26 @@ rotateButtons.forEach((element, i) => {
 const lifeButtons = document.querySelectorAll(".lifeButtons");
 const lifeDisplay = document.getElementById("modalLifeDisplay");
 lifeButtons.forEach(function (element, i) {
+  // swiping
+  let touchstartY, touchendY;
+  element.addEventListener("touchstart", function(e) {
+    touchstartY = e.changedTouches[0].screenY;
+  });
+  element.addEventListener("touchend", function(e) {
+    let oldLife = players[i].life;
+    touchendY = e.changedTouches[0].screenY;
+    if (touchendY < (touchstartY * 0.8)) {
+      players[i].life += 1;
+    } else if (touchendY > (touchstartY * 1.2)) {
+      players[i].life -= 1;
+    }
+    if (players[i].life != oldLife) {
+      players[i].lifeHistory.push(parseInt(players[i].life));
+      players[i].historyTime.push(Date.now());
+    }
+    players[i].displayLife();
+  });
+  // modal window
   element.addEventListener("click", function(){
     // variables
     let player = players[i];
@@ -270,6 +290,7 @@ lifeButtons.forEach(function (element, i) {
       if (player.life != oldLife) {
         player.lifeHistory.push(parseInt(player.life));
         player.historyTime.push(Date.now());
+
       }
       lifePlusMinusButtons.forEach(function(element) {
         element.removeEventListener("click", plusMinusLife);

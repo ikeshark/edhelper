@@ -226,12 +226,31 @@
       <button id="l-utiliRotate" class="rotate"></button>
     </div>
     <!-- Metagame Modal -->
-    <div id="modalWindowMetagame" class="l-modal hidden flex transition dark-grey-bg">
-      <div id="numGames"></div>
-      <div id="poisonKills"></div>
-      <div id="cmdKills"></div>
-      <div id="timePerPlayer"></div>
-      <div id="totalTime"></div>
+    <div id="modalWindowMetagame" class="l-modal hidden transition dark-grey-bg">
+      <div>
+        <p>Total Number of Games</p>
+        <div id="numGames" class="flex flex-align"></div>
+      </div>
+      <div>
+        <p>Average Poison Kills Per Game</p>
+        <div id="poisonKills" class="flex flex-align"></div>
+      </div>
+      <div>
+        <p>Average Commander Kills Per Game</p>
+        <div id="cmdKills" class="flex flex-align"></div>
+      </div>
+      <div>
+        <p>Total Time</p>
+        <div id="totalTime" class="flex flex-align"></div>
+      </div>
+      <div>
+        <p>Average Time Per Player</p>
+        <div id="timePerPlayer" class="flex flex-align"></div>
+      </div>
+      <div class="flex">
+        <button id="metaExit" class="exit">EXIT</button>
+        <button id="metaRotate" class="rotate"></button>
+      </div>
     </div>
     <!-- Change Color Modal -->
     <div id="modalWindowChangeColor" class="l-modal hidden flex transition dark-grey-bg">

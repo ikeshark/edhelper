@@ -620,10 +620,57 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     location.reload();
   }
   function openMetagame() {
+    let aveCmd = (metagame.numGames != 0) ? metagame.cmdKills / metagame.numGames : 0;
+    aveCmd *= 100;
+    aveCmd = Math.floor(aveCmd);
+    aveCmd += "%";
+    let avePoison = (metagame.numGames != 0) ? metagame.poisonKills / metagame.numGames : 0;
+    avePoison *= 100;
+    avePoison += "%";
+    let avePerPlayer = 0;
+    for (let i = 0; i < metagame.timePerPlayer.length; i++) {
+      avePerPlayer += metagame.timePerPlayer[i];
+    }
+    avePerPlayer = avePerPlayer / metagame.timePerPlayer.length;
+    function msToTime(s) {
+      let ms = s % 1000;
+      s = (s - ms) / 1000;
+      let secs = s % 60;
+      s = (s - secs) / 60;
+      let mins = s % 60;
+      let hrs = (s - mins) / 60;
+      mins += "";
+      if (mins.length == 1) {
+        mins = mins.padStart(2, "0");
+      }
+      hrs += "";
+      if (hrs.length == 1) {
+        hrs = hrs.padStart(2, "0");
+      }
+      return hrs + ":" + mins;
+    }
+    let totalMinutes = msToTime(metagame.totalTime);
+    avePerPlayer = msToTime(avePerPlayer);
     document.querySelector("#modalWindowMetagame").classList.remove("hidden");
-    console.log(metagame);
+    document.querySelector("#poisonKills").innerHTML = avePoison;
     document.querySelector("#numGames").innerHTML = metagame.numGames;
-    document.querySelector("#cmdKills").innerHTML = metagame.cmdKills;
+    document.querySelector("#cmdKills").innerHTML = aveCmd;
+    document.querySelector("#totalTime").innerHTML = totalMinutes;
+    document.querySelector("#timePerPlayer").innerHTML = avePerPlayer;
+
+    function toggleRotate() {
+      utiliRotateBool = !utiliRotateBool;
+      let deg = utiliRotateBool ? 180 : 0;
+      rotate(modalWindows[3], deg);
+    };
+
+    function exit() {
+      closeUtiliModal();
+      document.querySelector("#metaRotate").removeEventListener("click", toggleRotate);
+      document.querySelector("#metaExit").removeEventListener("click", exit);
+    }
+    document.querySelector("#metaRotate").addEventListener("click", toggleRotate);
+    document.querySelector("#metaExit").addEventListener("click", exit);
   }
   function graphGame() {
     closeUtiliModal();
@@ -781,10 +828,10 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     let exitBtn = document.getElementById("choosePlayerExit");
 
     // orientation
-    modalWindows[3].classList.remove("hidden");
+    modalWindows[4].classList.remove("hidden");
     modalWindows[2].classList.add("hidden");
     let deg = utiliRotateBool ? 180 : 0;
-    rotate(modalWindows[3], deg);
+    rotate(modalWindows[4], deg);
 
     // set up player boxes
     pBoxes.forEach(function(element,i) {
@@ -996,7 +1043,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     function toggleRotate() {
       utiliRotateBool = !utiliRotateBool;
       let deg = utiliRotateBool ? 180 : 0;
-      rotate(modalWindows[3], deg);
+      rotate(modalWindows[4], deg);
     };
     function exit() {
       closeUtiliModal();
@@ -1041,10 +1088,10 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     let exitBtn = document.getElementById("exitDice");
 
     // open and orient
-    modalWindows[4].classList.remove("hidden");
+    modalWindows[5].classList.remove("hidden");
     modalWindows[2].classList.add("hidden");
     let deg = utiliRotateBool ? 180 : 0;
-    rotate(modalWindows[4], deg);
+    rotate(modalWindows[5], deg);
 
     // functions
     function deselectDice() {
@@ -1077,7 +1124,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     function rotateWindow() {
       utiliRotateBool = !utiliRotateBool;
       let deg = utiliRotateBool ? 180 : 0;
-      rotate(modalWindows[4], deg);
+      rotate(modalWindows[5], deg);
     }
     function closeDice() {
       deselectDice();
@@ -1110,10 +1157,10 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     }
 
     // open and orient
-    modalWindows[5].classList.remove("hidden");
+    modalWindows[6].classList.remove("hidden");
     modalWindows[2].classList.add("hidden");
     let deg = utiliRotateBool ? 180 : 0;
-    rotate(modalWindows[5], deg);
+    rotate(modalWindows[6], deg);
     for (let i = 0; i < numPlayers; i++) {
       excludePlayerBoxes[i].classList.remove("hidden");
       excludePlayerBoxes[i].style.background = players[i].color;
@@ -1145,7 +1192,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     function rotateWindow() {
       utiliRotateBool = !utiliRotateBool;
       let deg = utiliRotateBool ? 180 : 0;
-      rotate(modalWindows[5], deg);
+      rotate(modalWindows[6], deg);
     }
     function exit() {
       deselect();

@@ -216,11 +216,22 @@
         <button id="newGamePrompt" class="l-half-btn half-btn small-headline">Start New Game</button>
         <button id="graphGame" class="l-half-btn half-btn small-headline">Graph Game</button>
       </div>
-      <button id="changeColors" class="l-big-btn headline whitesmoke">Change Player Colors</button>
+      <div class="l-big-btn whitesmoke">
+        <button id="changeColors" class="l-half-btn half-btn small-headline">Change Colors</button>
+        <button id="metagame" class="l-half-btn half-btn small-headline">Metagame Data</button>
+      </div>
       <button id="massLife" class="l-big-btn headline whitesmoke">Mass Life Change</button>
       <button id="dice" class="l-big-btn headline whitesmoke">Random Numbers</button>
       <button id="l-utiliExit" class="exit">EXIT</button>
       <button id="l-utiliRotate" class="rotate"></button>
+    </div>
+    <!-- Metagame Modal -->
+    <div id="modalWindowMetagame" class="l-modal hidden flex transition dark-grey-bg">
+      <div id="numGames"></div>
+      <div id="poisonKills"></div>
+      <div id="cmdKills"></div>
+      <div id="timePerPlayer"></div>
+      <div id="totalTime"></div>
     </div>
     <!-- Change Color Modal -->
     <div id="modalWindowChangeColor" class="l-modal hidden flex transition dark-grey-bg">

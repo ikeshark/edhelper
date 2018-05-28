@@ -3,6 +3,15 @@ document.addEventListener("touchmove", function(e) {
   e.preventDefault();
 }, false);
 
+// metagame object
+const metagame = {
+  numGames: 0,
+  cmdKills: 0,
+  poisonKills: 0,
+  totalTime: 0,
+  timePerPlayer: []
+}
+
 // player object and prototype
 function Player(i) {
   this.i = i;
@@ -93,23 +102,33 @@ let numPlayers = 4;
 
 // load and save state functions on localStorage
 function loadState() {
-  numPlayers = Number(localStorage.getItem("numPlayers"));
-  for (let i = 0; i < numPlayers; i++) {
-    let player = "player" + i;
-    let temp = JSON.parse(localStorage.getItem(player));
-    players[i].name = temp.name;
-    players[i].life = temp.life;
-    players[i].lifeHistory = temp.lifeHistory;
-    players[i].historyTime = temp.historyTime;
-    players[i].commanderDamage = temp.commanderDamage;
-    players[i].poison = temp.poison;
-    players[i].energy = temp.energy;
-    players[i].experience = temp.experience;
-    players[i].castCount = temp.castCount;
-    players[i].castCountB = temp.castCountB;
-    players[i].hasPartners = temp.hasPartners;
-    players[i].rotated = temp.rotated;
-    players[i].color = temp.color;
+  if (localStorage.metagame != null) {
+    let temp = JSON.parse(localStorage.getItem("metagame"));
+    metagame.numGames = temp.numGames;
+    metagame.cmdKills = temp.cmdKills;
+    metagame.poisonKills = temp.poisonKills;
+    metagame.totalTime = temp.totalTime;
+    metagame.timePerPlayer = temp.timePerPlayer;
+  }
+  if (localStorage.bool) {
+    numPlayers = Number(localStorage.getItem("numPlayers"));
+    for (let i = 0; i < numPlayers; i++) {
+      let player = "player" + i;
+      let temp = JSON.parse(localStorage.getItem(player));
+      players[i].name = temp.name;
+      players[i].life = temp.life;
+      players[i].lifeHistory = temp.lifeHistory;
+      players[i].historyTime = temp.historyTime;
+      players[i].commanderDamage = temp.commanderDamage;
+      players[i].poison = temp.poison;
+      players[i].energy = temp.energy;
+      players[i].experience = temp.experience;
+      players[i].castCount = temp.castCount;
+      players[i].castCountB = temp.castCountB;
+      players[i].hasPartners = temp.hasPartners;
+      players[i].rotated = temp.rotated;
+      players[i].color = temp.color;
+    }
   }
 }
 function saveState() {
@@ -121,9 +140,8 @@ function saveState() {
   // this boolean determines when to load from local storage
   localStorage.setItem("bool", "true");
 }
-if (localStorage.bool) {
-  loadState();
-}
+
+loadState();
 window.addEventListener("unload", saveState);
 
 // display board function
@@ -519,6 +537,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
   let addPlayerBtn = document.getElementById("addPlayer");
   let hidePlayerBtn = document.getElementById("hidePlayer");
   let newGameBtn = document.getElementById("newGamePrompt");
+  let metagameBtn = document.getElementById("metagame");
   let changeColorsBtn = document.getElementById("changeColors");
   let massLifeBtn = document.getElementById("massLife");
   let diceBtn = document.getElementById("dice");
@@ -552,11 +571,60 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     }
   }
   function newGame() {
-    localStorage.clear();
+    // find total time
+    let endTime = 0;
+    for (let i = 0; i < numPlayers; i++) {
+      let length = players[i].lifeHistory.length;
+      for (let j = 0; j < length; j++) {
+        if (players[i].historyTime[j] > endTime) {
+          endTime = players[i].historyTime[j];
+        }
+      }
+    }
+    let totalTime = endTime - player0.historyTime[0];
+    // record function
+    function record() {
+      // find poison or cmd kills
+      for (let i = 0; i < numPlayers; i++) {
+        if (players[i].poison >= 10) {
+          metagame.poisonKills += 1;
+        }
+        players[i].commanderDamage.forEach(function(elem) {
+          if (elem >= 21) {
+            metagame.cmdKills += 1;
+          }
+        });
+      }
+      metagame.totalTime += totalTime;
+      let timePerPlayer = totalTime / numPlayers;
+      metagame.timePerPlayer.push(timePerPlayer);
+      metagame.numGames += 1;
+      if (localStorage.metagame) {
+        localStorage.removeItem("metagame");
+      }
+      localStorage.setItem("metagame", JSON.stringify(metagame));
+    }
+
+    let fakeCheck = confirm("Do you want to record the current game to the metagame statistics?");
+    if (fakeCheck) {
+      record();
+    }
+
+    for (let i = 0; i < numPlayers; i++) {
+      let player = "player" + i;
+      localStorage.removeItem(player);
+    }
+    localStorage.removeItem("bool");
+    localStorage.removeItem("numPlayers");
     window.removeEventListener("unload", saveState);
     location.reload();
   }
-
+  function openMetagame() {
+    document.querySelector("#modalWindowMetagame").classList.remove("hidden");
+    console.log(metagame);
+    document.querySelector("#numGames").innerHTML = metagame.numGames;
+    document.querySelector("#cmdKills").innerHTML = metagame.cmdKills;
+  }
   function graphGame() {
     closeUtiliModal();
     document.querySelector("#canvasBg").classList.remove("hidden");
@@ -1097,6 +1165,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
   };
   function closeUtiliModal() {
     closeModal();
+    metagameBtn.removeEventListener("click", openMetagame);
     graphGameBtn.removeEventListener("click", graphGame);
     addPlayerBtn.removeEventListener("click", addPlayer);
     hidePlayerBtn.removeEventListener("click", hidePlayer);
@@ -1109,6 +1178,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
   };
 
   // event listeners
+  metagameBtn.addEventListener("click", openMetagame);
   graphGameBtn.addEventListener("click", graphGame);
   addPlayerBtn.addEventListener("click", addPlayer);
   hidePlayerBtn.addEventListener("click", hidePlayer);

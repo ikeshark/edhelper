@@ -469,12 +469,22 @@ label {
   border: 0.1em solid black;
   font-size: 3em;
 }
+#cmdKills, #poisonKills, #numGames {
+  border-radius: 50%;
+  color: white;
+  background: blue;
+  height: 20vh;
+  width: 20vh;
+}
 #netChange {
   font-size: 7em;
   flex-grow: 1;
 }
-#canvasBg {
+#canvasBg, #canvasAnimation {
   background-color: darkslategrey;
+}
+#canvasAnimation {
+  z-index: 100;
 }
 
 /*        */

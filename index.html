@@ -107,126 +107,144 @@
   </div>
 
   <!-- Modals -->
-  <div id="modalBackground" class="hidden l-full-abs">
+  <div id="modalBackground" class="hidden-modal l-full-abs">
     <!-- Life Modal -->
-    <div id="modalWindowLife" class="l-modal hidden flex transition dark-grey-bg">
-      <div class="l-25w">
-        <button value="1" class="plusMinus l-33h">&#43; 1</button>
-        <button value="5" class="plusMinus l-33h">&#43; 5</button>
+    <div id="modalWindowLife" class="l-modal hidden-modal flex transition dark-grey-bg">
+      <div style="width:31%;">
+        <div class="l-33h flex">
+          <button value="1" class="plusMinus l-50w">&#43; 1</button>
+          <button value="2" class="plusMinus l-50w">&#43; 2</button>
+        </div>
+        <div class="l-33h flex">
+          <button value="5" class="plusMinus l-50w">&#43; 5</button>
+          <button value="10" class="plusMinus l-50w">&#43; 10</button>
+        </div>
         <button value="2" class="doubleHalve l-33h headline">Double</button>
       </div>
-      <div class="l-50w">
+      <div style="width:38%;">
         <p id="modalLifeDisplay" class="outline flex flex-col l-66h"></p>
         <p id="l-lifeHistoryDisplay" class="hidden monospace three-halves-font text-align l-66h"></p>
-        <button id="lifeExit" class="exit l-33h">EXIT</button>
+        <button id="showLH" class="headline l-33h">Show <br> Life History</button>
       </div>
-      <div class="l-25w">
-        <button value="-1" class="plusMinus l-33h">&#8211; 1</button>
-        <button value="-5" class="plusMinus l-33h">&#8211; 5</button>
-        <button value="0.5" class="doubleHalve headline l-33h">Halve</button>
+      <div style="width:31%;">
+        <div class="l-33h flex">
+          <button value="-1" class="plusMinus l-50w">&#8211; 1</button>
+          <button value="-2" class="plusMinus l-50w">&#8211; 2</button>
+        </div>
+        <div class="l-33h flex">
+          <button value="-5" class="plusMinus l-50w">&#8211; 5</button>
+          <button value="-10" class="plusMinus l-50w">&#8211; 10</button>
+        </div>
+        <div class="l-33h flex">
+          <button value="0.5" class="doubleHalve halveUp l-50w headline">Halve <span class="sub">(Up)</span></button>
+          <button value="0.5" class="doubleHalve l-50w headline">Halve <span class="sub">(Down)</span></button>
+        </div>
       </div>
+      <button id="lifeExit" class="exit l-33h">&times;</button>
     </div>
     <!-- Commander Modal -->
-    <div id="modalWindowCmd" class="l-modal l-modal-tall hidden transition dark-grey-bg text-align">
-      <p id="l-currentPlayer" class="outline large-font"></p>
+    <div id="modalWindowCmd" class="l-modal l-modal-tall hidden-modal transition dark-grey-bg text-align">
+      <p id="l-currentPlayer" class="large-font"><span></span></p>
       <input type="checkbox" id="partnerCheckbox">
       <label for="partnerCheckbox" class="l-checkbox-p dark-grey-bg small-headline">
         Partners
       </label>
       <div class="flex l-78vh-p">
-        <div class="l-42w flex flex-col">
-          <p class="headline whitesmoke l-full-w">Commanders</p>
+        <div class="l-37w flex flex-col">
+          <p class="headline whitesmoke l-full-w l-cmd-cont-headline">Commanders</p>
           <div class="l-cmd-partner-cont">
             <div class="flex l-98w">
               <input type="radio" name="cmdModalGroup" value="0" id="cmdButton0">
-              <label data-attr="1" for="cmdButton0" class="l-player-box outline player-btn l-player-number player-number"></label>
+              <label data-attr="1" for="cmdButton0" class="l-player-box outline small player-btn l-player-number player-number"></label>
               <input type="radio" name="cmdModalGroup" value="1" id="cmdButton1">
-              <label data-attr="2" for="cmdButton1" class="l-player-box outline player-btn l-player-number player-number"></label>
+              <label data-attr="2" for="cmdButton1" class="l-player-box outline small player-btn l-player-number player-number"></label>
               <input type="radio" name="cmdModalGroup" value="2" id="cmdButton2">
-              <label data-attr="3" for="cmdButton2" class="l-player-box outline player-btn l-player-number player-number"></label>
+              <label data-attr="3" for="cmdButton2" class="l-player-box outline small player-btn l-player-number player-number"></label>
               <input type="radio" name="cmdModalGroup" value="3" id="cmdButton3">
-              <label data-attr="4" for="cmdButton3" class="l-player-box outline player-btn l-player-number player-number"></label>
+              <label data-attr="4" for="cmdButton3" class="l-player-box outline small player-btn l-player-number player-number"></label>
               <input type="radio" name="cmdModalGroup" value="4" id="cmdButton4">
-              <label data-attr="5" for="cmdButton4" class="l-player-box outline player-btn l-player-number player-number"></label>
+              <label data-attr="5" for="cmdButton4" class="l-player-box outline small player-btn l-player-number player-number"></label>
               <input type="radio" name="cmdModalGroup" value="5" id="cmdButton5">
-              <label data-attr="6" for="cmdButton5" class="l-player-box outline player-btn l-player-number player-number"></label>
+              <label data-attr="6" for="cmdButton5" class="l-player-box outline small player-btn l-player-number player-number"></label>
             </div>
             <div class="flex l-98w l-partners">
               <input type="radio" name="cmdModalGroup" value="6" id="partnerButton0">
-              <label data-attr="1B" for="partnerButton0" class="l-player-box outline behind player-btn l-player-number player-number"></label>
+              <label data-attr="1B" for="partnerButton0" class="l-player-box outline small behind player-btn l-player-number player-number"></label>
               <input type="radio" name="cmdModalGroup" value="7" id="partnerButton1">
-              <label data-attr="2B" for="partnerButton1" class="l-player-box outline behind player-btn l-player-number player-number"></label>
+              <label data-attr="2B" for="partnerButton1" class="l-player-box outline small behind player-btn l-player-number player-number"></label>
               <input type="radio" name="cmdModalGroup" value="8" id="partnerButton2">
-              <label data-attr="3B" for="partnerButton2" class="l-player-box outline behind player-btn l-player-number player-number"></label>
+              <label data-attr="3B" for="partnerButton2" class="l-player-box outline small behind player-btn l-player-number player-number"></label>
               <input type="radio" name="cmdModalGroup" value="9" id="partnerButton3">
-              <label data-attr="4B" for="partnerButton3" class="l-player-box outline behind player-btn l-player-number player-number"></label>
+              <label data-attr="4B" for="partnerButton3" class="l-player-box outline small behind player-btn l-player-number player-number"></label>
               <input type="radio" name="cmdModalGroup" value="10" id="partnerButton4">
-              <label data-attr="5B" for="partnerButton4" class="l-player-box outline behind player-btn l-player-number player-number"></label>
+              <label data-attr="5B" for="partnerButton4" class="l-player-box outline small behind player-btn l-player-number player-number"></label>
               <input type="radio" name="cmdModalGroup" value="11" id="partnerButton5">
-              <label data-attr="6B" for="partnerButton5" class="l-player-box outline behind player-btn l-player-number player-number"></label>
+              <label data-attr="6B" for="partnerButton5" class="l-player-box outline small behind player-btn l-player-number player-number"></label>
             </div>
-            <div class="whitesmoke l-cmd-partner-bg"></div>
+            <div class="whitesmoke l-cmd-partner-bg boxShadow"></div>
           </div>
         </div>
-        <div class="flex flex-col l-30w">
-          <button value="5" id="plus5" class="j-cmd-inc invisible invert-btn dbl-font l-middle-btn">
+        <div class="flex flex-col l-25w">
+          <button value="5" id="plus5" class="j-cmd-inc disabled invert-btn dbl-font l-middle-btn-1">
             &#43; 5
           </button>
-          <button value="1" id="plus" class="j-cmd-inc invisible invert-btn dbl-font l-middle-btn">
+          <button value="1" id="plus" class="j-cmd-inc disabled invert-btn dbl-font l-middle-btn-1">
             &#43; 1
           </button>
-          <button value="-1" id="minus" class="j-cmd-inc invisible invert-btn dbl-font l-middle-btn">
+          <button value="-1" id="minus" class="j-cmd-inc disabled invert-btn dbl-font l-middle-btn-1">
             &#8211; 1
           </button>
-          <button id="cmdExit" class="exit l-middle-btn">
-            EXIT
+          <button id="cmdExit" class="exit">
+            &times;
           </button>
         </div>
-        <div class="whitesmoke flex flex-col l-25w l-bottom-p">
+        <div class="whitesmoke flex flex-spaceAround l-37w otherCounter-cont boxShadow l-bottom-p">
           <div class="l-otherCounters flex flex-col">
-            <p class="small-headline">Cast Count</p>
+            <p class="headline">Cast Count</p>
             <input type="radio" value="castCount" name="cmdModalGroup" id="castCount">
-            <label class="outline" for="castCount"></label>
+            <label class="outline small" for="castCount"></label>
           </div>
           <div class="l-otherCounters flex flex-col">
-            <p class="small-headline">Experience</p>
+            <p class="headline">Experience</p>
             <input type="radio" value="experience" name="cmdModalGroup" id="experience">
-            <label class="outline" for="experience"></label>
+            <label class="outline small" for="experience"></label>
           </div>
           <div class="l-otherCounters flex flex-col">
-            <p class="small-headline">Poison</p>
+            <p class="headline">Poison</p>
             <input type="radio" value="poison" name="cmdModalGroup" id="poison">
-            <label class="outline" for="poison"></label>
+            <label class="outline small" for="poison"></label>
           </div>
           <div class="l-otherCounters flex flex-col">
-            <p class="small-headline">Energy</p>
+            <p class="headline">Energy</p>
             <input type="radio" value="energy" name="cmdModalGroup" id="energy">
-            <label class="outline" for="energy"></label>
+            <label class="outline small" for="energy"></label>
           </div>
         </div>
       </div>
     </div>
     <!-- Utility Modal -->
-    <div id="modalWindowUtility" class="l-modal hidden flex transition dark-grey-bg text-align">
+    <div id="modalWindowUtility" class="l-modal hidden-modal flex transition dark-grey-bg text-align">
       <div class="l-big-btn whitesmoke">
-        <button id="addPlayer" class="l-half-btn half-btn small-headline">Add Player</button>
-        <button id="hidePlayer" class="l-half-btn half-btn small-headline">Remove Player</button>
+        <button id="addPlayer" class="l-half-btn half-btn headline">Add Player</button>
+        <button id="hidePlayer" class="l-half-btn half-btn headline">Remove Player</button>
       </div>
       <div class="l-big-btn whitesmoke">
-        <button id="newGamePrompt" class="l-half-btn half-btn small-headline">Start New Game</button>
-        <button id="graphGame" class="l-half-btn half-btn small-headline">Graph Game</button>
+        <button id="newGamePrompt" class="l-half-btn half-btn headline">Start New Game</button>
+        <button id="graphGame" class="l-half-btn half-btn headline">Graph Game</button>
       </div>
       <div class="l-big-btn whitesmoke">
-        <button id="changeColors" class="l-half-btn half-btn small-headline">Change Colors</button>
-        <button id="metagame" class="l-half-btn half-btn small-headline">Metagame Data</button>
+        <button id="changeColors" class="l-half-btn half-btn headline">Change Colors</button>
+        <button id="metagame" class="l-half-btn half-btn headline">Metagame Data</button>
       </div>
-      <button id="massLife" class="l-big-btn headline whitesmoke">Mass Life Change</button>
-      <button id="dice" class="l-big-btn headline whitesmoke">Random Numbers</button>
-      <button id="l-utiliExit" class="exit">EXIT</button>
+      <div class="l-big-btn whitesmoke">
+        <button id="massLife" class="l-half-btn half-btn headline">Mass Life Change</button>
+        <button id="dice" class="l-half-btn half-btn headline">Random Numbers</button>
+      </div>
+      <button id="l-utiliExit" class="exit">&times;</button>
       <button id="l-utiliRotate" class="rotate"></button>
     </div>
     <!-- Metagame Modal -->
-    <div id="modalWindowMetagame" class="l-modal hidden transition dark-grey-bg">
+    <div id="modalWindowMetagame" class="l-modal hidden-modal transition dark-grey-bg">
       <div>
         <p>Total Number of Games</p>
         <div id="numGames" class="flex flex-align"></div>
@@ -248,12 +266,13 @@
         <div id="timePerPlayer" class="flex flex-align"></div>
       </div>
       <div class="flex">
-        <button id="metaExit" class="exit">EXIT</button>
-        <button id="metaRotate" class="rotate"></button>
+        <button id="metaReset">Reset Stats</button>
       </div>
+      <button id="metaExit" class="exit">&times;</button>
+      <button id="metaRotate" class="rotate"></button>
     </div>
     <!-- Change Color Modal -->
-    <div id="modalWindowChangeColor" class="l-modal hidden flex transition dark-grey-bg">
+    <div id="modalWindowChangeColor" class="l-modal hidden-modal flex transition dark-grey-bg">
       <button id="singleColors" class="colorMenu l-short-btn invert-btn">1 color</button>
       <button id="twoColors" class="colorMenu l-short-btn">2 colors</button>
       <button id="threeColors" class="colorMenu l-short-btn">3 colors</button>
@@ -283,17 +302,17 @@
         <input type="radio" name="chooseColor" value="" id="radio9">
         <label for="radio9" class="allColors l-squat-btn hidden"></label>
       </div>
-      <button value="0" class="choosePlayerButtons dbl-font l-btn-row hidden outline"></button>
-      <button value="1" class="choosePlayerButtons dbl-font l-btn-row hidden outline"></button>
-      <button value="2" class="choosePlayerButtons dbl-font l-btn-row hidden outline"></button>
-      <button value="3" class="choosePlayerButtons dbl-font l-btn-row hidden outline"></button>
-      <button value="4" class="choosePlayerButtons dbl-font l-btn-row hidden outline"></button>
-      <button value="5" class="choosePlayerButtons dbl-font l-btn-row hidden outline"></button>
-      <button id="choosePlayerExit" class="l-btn-row exit">EXIT</button>
-      <button id="choosePlayerRotate" class="l-btn-row rotate"></button>
+      <button value="0" class="choosePlayerButtons dbl-font l-btn-row invisible outline small"></button>
+      <button value="1" class="choosePlayerButtons dbl-font l-btn-row invisible outline small"></button>
+      <button value="2" class="choosePlayerButtons dbl-font l-btn-row invisible outline small"></button>
+      <button value="3" class="choosePlayerButtons dbl-font l-btn-row invisible outline small"></button>
+      <button value="4" class="choosePlayerButtons dbl-font l-btn-row invisible outline small"></button>
+      <button value="5" class="choosePlayerButtons dbl-font l-btn-row invisible outline small"></button>
+      <button id="choosePlayerExit" class="exit">&times;</button>
+      <button id="choosePlayerRotate" class="rotate"></button>
     </div>
     <!-- Dice Modal -->
-    <div id="modalWindowDice" class="l-modal hidden transition flex flex-align dark-grey-bg">
+    <div id="modalWindowDice" class="l-modal hidden-modal transition flex flex-align dark-grey-bg">
       <button value="4" class="dbl-font l-dice invert-btn">4</button>
       <button value="5" class="dbl-font l-dice invert-btn">5</button>
       <button value="7" class="dbl-font l-dice invert-btn">7</button>
@@ -309,28 +328,29 @@
       <button value="17" class="dbl-font l-dice invert-btn">17</button>
       <button value="18" class="dbl-font l-dice invert-btn">18</button>
       <button value="19" class="dbl-font l-dice invert-btn">19</button>
+      <button value="21" class="dbl-font l-dice invert-btn">21</button>
       <div class="l-dice flex">
-        <button id="exitDice" class="exit vert-text l-50w">E<br />X<br />I<br />T</button>
+        <button id="exitDice" class="exit vert-text l-50w">&times;</button>
         <button id="diceRotate" class="l-50w rotate"></button>
       </div>
     </div>
     <!-- Mass Life Change Modal -->
-    <div id="modalWindowMassLife" class="l-modal hidden flex transition dark-grey-bg">
-      <div class="l-42w">
+    <div id="modalWindowMassLife" class="l-modal hidden-modal flex transition dark-grey-bg">
+      <div class="l-50w">
         <p class="headline text-align">Exclude</p>
         <div class="l-full flex">
           <input type="radio" name="excludeGroup" value="0" id="excludeP0">
-          <label data-attr="1" for="excludeP0" class="l-player-box hidden outline l-player-number player-number"></label>
+          <label data-attr="1" for="excludeP0" class="l-player-box hidden outline small l-player-number player-number"></label>
           <input type="radio" name="excludeGroup" value="1" id="excludeP1">
-          <label data-attr="2" for="excludeP1" class="l-player-box hidden outline l-player-number player-number"></label>
+          <label data-attr="2" for="excludeP1" class="l-player-box hidden outline small l-player-number player-number"></label>
           <input type="radio" name="excludeGroup" value="2" id="excludeP2">
-          <label data-attr="3" for="excludeP2" class="l-player-box hidden outline l-player-number player-number"></label>
+          <label data-attr="3" for="excludeP2" class="l-player-box hidden outline small l-player-number player-number"></label>
           <input type="radio" name="excludeGroup" value="3" id="excludeP3">
-          <label data-attr="4" for="excludeP3" class="l-player-box hidden outline l-player-number player-number"></label>
+          <label data-attr="4" for="excludeP3" class="l-player-box hidden outline small l-player-number player-number"></label>
           <input type="radio" name="excludeGroup" value="4" id="excludeP4">
-          <label data-attr="5" for="excludeP4" class="l-player-box hidden outline l-player-number player-number"></label>
+          <label data-attr="5" for="excludeP4" class="l-player-box hidden outline small l-player-number player-number"></label>
           <input type="radio" name="excludeGroup" value="5" id="excludeP5">
-          <label data-attr="6" for="excludeP5" class="l-player-box hidden outline l-player-number player-number"></label>
+          <label data-attr="6" for="excludeP5" class="l-player-box hidden outline small l-player-number player-number"></label>
           <button id="l-clearExcluded" class="whitesmoke">Clear</button>
         </div>
       </div>
@@ -340,14 +360,13 @@
         <button value="-1" id="massMinus" class="invert-btn l-middle-btn three-halves-font">&#8211; 1</button>
         <button value="-5" id="massMinus5" class="invert-btn l-middle-btn three-halves-font">&#8211; 5</button>
       </div>
-      <div class="flex flex-col l-30w">
-        <p class="headline">Net Change</p>
-        <div id="netChange" class="outline flex flex-col">0</div>
-        <div class="flex l-15h l-margin-b">
-          <button id="massChangeExit" class="exit l-50w">EXIT</button>
-          <button id="massChangeRotate" class="rotate l-42w"></button>
-        </div>
+      <div class="flex flex-col l-25w">
+        <button value="2" id="massDouble" class="invert-btn l-middle-btn three-halves-font">Double</button>
+        <button value="0.5" id="massHalveUp" class="invert-btn halveUp l-middle-btn three-halves-font">Halve <br><span class="sub">(Up)</span></button>
+        <button value="0.5" id="massHalveDown" class="invert-btn l-middle-btn three-halves-font">Halve <br><span class="sub">(Down)</span></button>
       </div>
+      <button id="massChangeExit" class="exit vert-text l-50w">&times;</button>
+      <button id="massChangeRotate" class="l-50w rotate"></button>
     </div>
   </div>
 

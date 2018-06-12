@@ -1,4 +1,4 @@
-// stop mobile scrolling (to prevent rubber band)
+// stop mobile scrolling (to prevent ios rubber band)
 document.addEventListener("touchmove", function(e) {
   e.preventDefault();
 }, false);
@@ -9,7 +9,8 @@ const metagame = {
   cmdKills: 0,
   poisonKills: 0,
   totalTime: 0,
-  timePerPlayer: []
+  timePerPlayer: [],
+  history: []
 }
 
 // player object and prototype
@@ -49,7 +50,7 @@ Player.prototype.displayLife = function() {
       lifeButtons[this.i].style.fontSize = fontSize + "em";
       // if it's good enough for the main life, it's good enough for the modal
       // note: used to do two separate loops, each testing for overfill
-      lifeDisplay.style.fontSize = fontSize + "em";
+      lifeDisplay.style.fontSize = (fontSize - 1) + "em";
       break;
     }
   }
@@ -104,6 +105,7 @@ let numPlayers = 4;
 function loadState() {
   if (localStorage.metagame != null) {
     let temp = JSON.parse(localStorage.getItem("metagame"));
+    metagame.history = temp.history;
     metagame.numGames = temp.numGames;
     metagame.cmdKills = temp.cmdKills;
     metagame.poisonKills = temp.poisonKills;
@@ -230,10 +232,16 @@ function closeModal() {
   // saving state b/c ios web apps don't send unload triggers
   saveState();
   modalWindows.forEach(function(element) {
-    element.classList.add("hidden");
+    element.classList.add("hidden-modal");
+    element.classList.remove("visible");
   });
-  modalBackground.classList.add("hidden");
+  modalBackground.classList.add("hidden-modal");
 };
+modalBackground.addEventListener("click", function(e) {
+  if (e.target.id === "modalBackground") {
+    closeModal();
+  }
+});
 // rotate buttons
 const rotateButtons = document.querySelectorAll("[src*=rotate]");
 rotateButtons.forEach((element, i) => {
@@ -273,12 +281,15 @@ lifeButtons.forEach(function (element, i) {
     let player = players[i];
     let isLifeDisplay = true;
     let oldLife = player.life;
+    let showLH = document.getElementById("showLH");
     let lifePlusMinusButtons = document.querySelectorAll(".plusMinus");
     let doubleHalveButtons = document.querySelectorAll(".doubleHalve");
     let historyDisplay = document.getElementById("l-lifeHistoryDisplay");
     // functions
     function toggleHistory() {
       isLifeDisplay = !isLifeDisplay;
+      showLH.style.background = isLifeDisplay ? '#a7a7a7' : '#f5f5f5';
+      showLH.innerHTML = isLifeDisplay ? 'Show <br> Life History' : 'Hide <br> Life History';
       lifeDisplay.classList.toggle("hidden");
       historyDisplay.classList.toggle("hidden");
       let display = "" + player.lifeHistory[0];
@@ -298,8 +309,17 @@ lifeButtons.forEach(function (element, i) {
       if (!isLifeDisplay) {
         toggleHistory();
       }
-      player.life = Math.floor(player.life * parseFloat(this.value));
+      if (this.classList.contains('halveUp')) {
+        player.life = Math.ceil(player.life * parseFloat(this.value));
+      } else {
+        player.life = Math.floor(player.life * parseFloat(this.value));
+      }
       player.displayLife();
+    }
+    function sideClose(e) {
+      if (e.target.id === "modalBackground") {
+        closeLifeModal();
+      }
     }
     let closeLifeModal = () => {
       if (!isLifeDisplay) {
@@ -316,21 +336,23 @@ lifeButtons.forEach(function (element, i) {
       doubleHalveButtons.forEach(function(element) {
         element.removeEventListener("click", doubleHalveLife);
       });
-      lifeDisplay.removeEventListener("click", toggleHistory);
+      showLH.removeEventListener("click", toggleHistory);
       historyDisplay.removeEventListener("click", toggleHistory);
+      modalBackground.removeEventListener("click", sideClose);
       document.getElementById("lifeExit").removeEventListener("click", closeLifeModal);
       closeModal();
     };
     // opening and orienting modal window and displaying current life total
+    modalWindows[0].classList.add("visible");
+    modalWindows[0].classList.remove("hidden-modal");
+    modalBackground.classList.remove("hidden-modal");
     let deg = player.rotated ? 180 : 0;
     rotate(modalWindows[0], deg);
-    modalWindows[0].classList.remove("hidden");
-    modalBackground.classList.remove("hidden");
     player.displayLife();
     // display background color of the appropriate player
     lifeDisplay.style.background = player.color;
     // adding event listeners to buttons
-    lifeDisplay.addEventListener("click", toggleHistory);
+    showLH.addEventListener("click", toggleHistory);
     historyDisplay.addEventListener("click", toggleHistory);
     lifePlusMinusButtons.forEach(function(element) {
       element.addEventListener("click", plusMinusLife);
@@ -339,6 +361,7 @@ lifeButtons.forEach(function (element, i) {
       element.addEventListener("click", doubleHalveLife);
     });
     // close modal event listeners
+    modalBackground.addEventListener("click", sideClose);
     document.getElementById("lifeExit").addEventListener("click", closeLifeModal);
   });
 });
@@ -363,15 +386,19 @@ commanderButtons.forEach(function (element, i) {
     let cmdPlusMinusButtons = document.querySelectorAll(".j-cmd-inc");
 
     // opening and orienting modal window
+
     let deg = player.rotated ? 180 : 0;
     rotate(modalWindows[1], deg);
-    modalWindows[1].classList.remove("hidden");
-    modalBackground.classList.remove("hidden");
+    modalWindows[1].classList.add("visible");
+    modalWindows[1].classList.remove("hidden-modal");
+    modalBackground.classList.remove("hidden-modal");
+
 
     // current player banner
     let currentPlayer = document.getElementById("l-currentPlayer");
-    currentPlayer.innerHTML = player.name;
     currentPlayer.style.background = player.color;
+    currentPlayer = currentPlayer.childNodes[0];
+    currentPlayer.innerHTML = player.name;
 
     if (player.hasPartners) {
       partnerCheckbox.checked = true;
@@ -430,8 +457,8 @@ commanderButtons.forEach(function (element, i) {
       }
     }
     function showPlusMinus() {
-      cmdPlusMinusButtons[0].classList.remove("invisible");
-      cmdPlusMinusButtons[1].classList.remove("invisible");
+      cmdPlusMinusButtons[0].classList.remove("disabled");
+      cmdPlusMinusButtons[1].classList.remove("disabled");
       cmdModalGroup.forEach(function(elem) {
         elem.removeEventListener("click", showPlusMinus);
       });
@@ -473,9 +500,14 @@ commanderButtons.forEach(function (element, i) {
       }
     }
     function showMinusButtons() {
-      cmdPlusMinusButtons[2].classList.remove("invisible");
+      cmdPlusMinusButtons[2].classList.remove("disabled");
       cmdPlusMinusButtons[0].removeEventListener("click", showMinusButtons);
       cmdPlusMinusButtons[1].removeEventListener("click", showMinusButtons);
+    }
+    function sideClose(e) {
+      if (e.target.id === "modalBackground") {
+        closeCmdModal();
+      }
     }
     function closeCmdModal() {
       if (player.life != oldLife) {
@@ -484,7 +516,7 @@ commanderButtons.forEach(function (element, i) {
       }
       cmdPlusMinusButtons.forEach((elem, i) => {
         elem.removeEventListener("click", plusAndMinus);
-        elem.classList.add("invisible");
+        elem.classList.add("disabled");
       });
       cmdModalGroup.forEach((elem, i) => {
         elem.removeEventListener("click", showPlusMinus);
@@ -504,6 +536,7 @@ commanderButtons.forEach(function (element, i) {
       if (checks) {
         checks.checked = false;
       }
+      modalBackground.removeEventListener("click", sideClose);
       document.getElementById("cmdExit").removeEventListener("click", closeCmdModal);
       closeModal();
     };
@@ -525,6 +558,8 @@ commanderButtons.forEach(function (element, i) {
     cmdPlusMinusButtons[0].addEventListener("click", showMinusButtons);
     cmdPlusMinusButtons[1].addEventListener("click", showMinusButtons);
     document.getElementById("cmdExit").addEventListener("click", closeCmdModal);
+    modalBackground.addEventListener("click", sideClose);
+
   });
 });
 
@@ -547,8 +582,15 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
   utiliRotateBool = false;
   rotate(modalWindows[2], 0);
 
-  modalBackground.classList.remove("hidden");
-  modalWindows[2].classList.remove("hidden");
+  modalWindows[2].classList.add("visible");
+  modalBackground.classList.remove("hidden-modal");
+  modalWindows[2].classList.remove("hidden-modal");
+  function sideExit(e) {
+    if (e.target.id === "modalBackground") { closeUtiliModal(); }
+  }
+  modalBackground.addEventListener("click", sideExit);
+
+
 
   // functions
   function addPlayer() {
@@ -585,7 +627,10 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     // record function
     function record() {
       // find poison or cmd kills
+      // record players
+      let ourPlayers = [];
       for (let i = 0; i < numPlayers; i++) {
+        ourPlayers.push(players[i]);
         if (players[i].poison >= 10) {
           metagame.poisonKills += 1;
         }
@@ -595,6 +640,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
           }
         });
       }
+      metagame.history.push(ourPlayers);
       metagame.totalTime += totalTime;
       let timePerPlayer = totalTime / numPlayers;
       metagame.timePerPlayer.push(timePerPlayer);
@@ -618,7 +664,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     localStorage.removeItem("numPlayers");
     window.removeEventListener("unload", saveState);
     location.reload();
-  }
+  } // newGame
   function openMetagame() {
     let aveCmd = (metagame.numGames != 0) ? metagame.cmdKills / metagame.numGames : 0;
     aveCmd *= 100;
@@ -651,12 +697,26 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     }
     let totalMinutes = msToTime(metagame.totalTime);
     avePerPlayer = msToTime(avePerPlayer);
-    document.querySelector("#modalWindowMetagame").classList.remove("hidden");
+    document.querySelector("#modalWindowMetagame").classList.add("visible");
+    document.querySelector("#modalWindowMetagame").classList.remove("hidden-modal");
     document.querySelector("#poisonKills").innerHTML = avePoison;
     document.querySelector("#numGames").innerHTML = metagame.numGames;
     document.querySelector("#cmdKills").innerHTML = aveCmd;
     document.querySelector("#totalTime").innerHTML = totalMinutes;
     document.querySelector("#timePerPlayer").innerHTML = avePerPlayer;
+
+    function resetStats() {
+      let check = confirm("do you really want to reset all meta stats?");
+      if (check) {
+        metagame.numGames = 0;
+        metagame.cmdKills = 0;
+        metagame.poisonKills = 0;
+        metagame.totalTime = 0;
+        metagame.timePerPlayer = [];
+        metagame.history = [];
+        exit();
+      }
+    }
 
     function toggleRotate() {
       utiliRotateBool = !utiliRotateBool;
@@ -668,9 +728,13 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
       closeUtiliModal();
       document.querySelector("#metaRotate").removeEventListener("click", toggleRotate);
       document.querySelector("#metaExit").removeEventListener("click", exit);
+      document.querySelector("#metaReset").removeEventListener("click", resetStats);
+
     }
+    document.querySelector("#metaReset").addEventListener("click", resetStats);
     document.querySelector("#metaRotate").addEventListener("click", toggleRotate);
     document.querySelector("#metaExit").addEventListener("click", exit);
+
   }
   function graphGame() {
     closeUtiliModal();
@@ -828,8 +892,9 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     let exitBtn = document.getElementById("choosePlayerExit");
 
     // orientation
-    modalWindows[4].classList.remove("hidden");
-    modalWindows[2].classList.add("hidden");
+    modalWindows[4].classList.add("visible");
+    modalWindows[4].classList.remove("hidden-modal");
+    modalWindows[2].classList.add("hidden-modal");
     let deg = utiliRotateBool ? 180 : 0;
     rotate(modalWindows[4], deg);
 
@@ -1049,7 +1114,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
       closeUtiliModal();
       displayMonoColors();
       pBoxes.forEach(elem => {
-        elem.classList.add("hidden");
+        elem.classList.add("invisible");
         elem.removeEventListener("click", changeColor);
       });
       gradientCheckbox.removeEventListener("click", toggleGradient);
@@ -1066,7 +1131,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     colorBoxes.forEach(function(element, i) {
       element.addEventListener("click", () => {
         for (let i = 0; i < numPlayers; i++) {
-          pBoxes[i].classList.remove("hidden");
+          pBoxes[i].classList.remove("invisible");
         }
       });
     });
@@ -1088,8 +1153,10 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     let exitBtn = document.getElementById("exitDice");
 
     // open and orient
-    modalWindows[5].classList.remove("hidden");
-    modalWindows[2].classList.add("hidden");
+    modalWindows[5].classList.remove("hidden-modal");
+    modalWindows[5].classList.add("visible");
+
+    modalWindows[2].classList.add("hidden-modal");
     let deg = utiliRotateBool ? 180 : 0;
     rotate(modalWindows[5], deg);
 
@@ -1148,6 +1215,9 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     let plus = document.getElementById("massPlus");
     let minus = document.getElementById("massMinus");
     let minus5 = document.getElementById("massMinus5");
+    let double = document.getElementById("massDouble");
+    let halveUp = document.getElementById("massHalveUp");
+    let halveDown = document.getElementById("massHalveDown");
     let clearBtn = document.getElementById("l-clearExcluded");
     let rotateBtn = document.getElementById("massChangeRotate");
     // if lives have changed, we must make history
@@ -1157,10 +1227,13 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     }
 
     // open and orient
-    modalWindows[6].classList.remove("hidden");
-    modalWindows[2].classList.add("hidden");
     let deg = utiliRotateBool ? 180 : 0;
     rotate(modalWindows[6], deg);
+    modalWindows[6].classList.remove("hidden-modal");
+    modalWindows[6].classList.add("visible");
+
+    modalWindows[2].classList.add("hidden-modal");
+
     for (let i = 0; i < numPlayers; i++) {
       excludePlayerBoxes[i].classList.remove("hidden");
       excludePlayerBoxes[i].style.background = players[i].color;
@@ -1169,19 +1242,26 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
 
     // functions
     function massLifeChange() {
-      let netChange = parseInt(document.getElementById("netChange").innerHTML);
-      let amount = parseInt(this.value);
+      let amount = parseFloat(this.value);
       let excluded = document.querySelector("input[name=excludeGroup]:checked");
       for (let i = 0; i < numPlayers; i++) {
         if (excluded && excluded.value == i) {
           continue;
         }
-        players[i].life += amount;
+        if (this.id == 'massDouble' || this.id == 'massHalveUp' || this.id == 'massHalveDown') {
+          if (this.id == 'massHalveUp') {
+            players[i].life = Math.ceil(players[i].life * amount);
+          } else if (this.id == 'massHalveDown') {
+            players[i].life = Math.floor(players[i].life * amount);
+          } else {
+            players[i].life *= amount;
+          }
+        } else {
+          players[i].life += amount;
+        }
         players[i].displayLife();
         excludePlayerBoxes[i].innerHTML = players[i].life;
       }
-      netChange += amount;
-      document.getElementById("netChange").innerHTML = netChange;
     };
     function deselect() {
       let radios = document.querySelectorAll("input[name=excludeGroup]");
@@ -1194,6 +1274,11 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
       let deg = utiliRotateBool ? 180 : 0;
       rotate(modalWindows[6], deg);
     }
+    function sideExit(e) {
+      if (e.target.id === "modalBackground") {
+        exit();
+      }
+    }
     function exit() {
       deselect();
       for (let i = 0; i < numPlayers; i++) {
@@ -1203,15 +1288,18 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
 
         }
       }
-      document.getElementById("netChange").innerHTML = 0;
       closeUtiliModal();
       excludePlayerBoxes.forEach(elem => elem.classList.add("hidden"));
       plus5.removeEventListener("click", massLifeChange);
       plus.removeEventListener("click", massLifeChange);
       minus.removeEventListener("click", massLifeChange);
       minus5.removeEventListener("click", massLifeChange);
+      double.removeEventListener("click", massLifeChange);
+      halveUp.removeEventListener("click", massLifeChange);
+      halveDown.removeEventListener("click", massLifeChange);
       clearBtn.removeEventListener("click", deselect);
       rotateBtn.removeEventListener("click", rotateWindow);
+      modalBackground.removeEventListener("click", sideExit);
       exitBtn.removeEventListener("click", exit);
     }
 
@@ -1220,10 +1308,13 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
     plus.addEventListener("click", massLifeChange);
     minus.addEventListener("click", massLifeChange);
     minus5.addEventListener("click", massLifeChange);
+    double.addEventListener("click", massLifeChange);
+    halveUp.addEventListener("click", massLifeChange);
+    halveDown.addEventListener("click", massLifeChange);
     clearBtn.addEventListener("click", deselect);
     rotateBtn.addEventListener("click", rotateWindow);
     exitBtn.addEventListener("click", exit);
-
+    modalBackground.addEventListener("click", sideExit);
   }
   function utiliRotate() {
     utiliRotateBool = !utiliRotateBool;
@@ -1232,6 +1323,7 @@ document.getElementById("l-gearBtn").addEventListener("click", function() {
   };
   function closeUtiliModal() {
     closeModal();
+    modalBackground.removeEventListener("click", sideExit);
     metagameBtn.removeEventListener("click", openMetagame);
     graphGameBtn.removeEventListener("click", graphGame);
     addPlayerBtn.removeEventListener("click", addPlayer);

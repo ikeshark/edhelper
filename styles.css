@@ -391,10 +391,13 @@ label {
 .monospace {
   font-family: monospace;
 }
-.headline {
+.headline, .headline-med {
   font-size: 1.2em;
   font-weight: bold;
   font-family: "Berkshire Swash", cursive;
+}
+.headline-med {
+  font-size: 1em;
 }
 .small-headline {
   font-family: "Berkshire Swash", cursive;
@@ -718,14 +721,14 @@ img {
   font-size: 1.5em;
   height: 27%;
 }
-@media screen and (min-width: 1023px) {
+@media screen and (min-width: 900px) {
   .rotate {
-    width: 55px !important;
-    height: 55px !important;
+    width: 75px !important;
+    height: 75px !important;
   }
   .exit {
-    width: 50px !important;
-    height: 50px !important;
+    width: 70px !important;
+    height: 70px !important;
   }
   .player-btn {
     max-height: 175px;
